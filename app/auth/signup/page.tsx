@@ -123,7 +123,7 @@ export default function Signup() {
             <p className="text-sm text-[#3E3E3E]">
               I have an account?{' '}
               <span className="text-brand-500 cursor-pointer font-medium">
-                Login
+              <Link href={"/auth/login"}>Login </Link>
               </span>
             </p>
 
