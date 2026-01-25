@@ -8,14 +8,13 @@ type InputProps = {
 export default function Input({ label, error, ...props }: InputProps) {
   return (
     <div>
-      <label className="block text-sm text-[#3E3E3E] mb-1">
+      <label className="block text-[16px] text-[#3E3E3E] mb-2">
         {label}
       </label>
 
       <input
         {...props}
-        className={`w-full px-4 py-3 rounded-xl border text-sm
-          focus:outline-none focus:border-brand-500
+        className={`w-full px-4 py-3 border border-[#808080] rounded-lg focus:outline-none focus:ring-2 focus:ring-[#e87722] focus:border-transparent
           ${error ? 'border-red-500' : 'border-[#808080]'}`}
       />
 

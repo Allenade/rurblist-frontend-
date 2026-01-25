@@ -5,6 +5,7 @@ import classes from "./page.module.css"
 import Link from "next/link";
 import Input from "@/components/input";
 import { useState } from "react";
+import { OrangeButton } from "@/components/button/button";
 
 type FormState = {
 
@@ -128,18 +129,15 @@ export default function Login() {
 
             {/* Forgot password */}
             <Link
-                href="/auth/forgot-password"
+                href="/auth/forgotpassword"
                 className="text-[16px] text-[#555555] hover:text-brand-500 transition"
             >
                 Forgot Password?
             </Link>
         </div>
-        <button 
-        type="submit"
-            className="w-full bg-brand-500 hover:bg-[#d85f0e] text-white py-3 rounded-xl font-medium transition"
-            >
+          <OrangeButton type="submit" fullWidth>
             Login
-        </button>
+          </OrangeButton>
         {/* Login */}
         <p className="text-sm text-[#3E3E3E]">
             Don’t have an account?{' '}

@@ -5,6 +5,7 @@ import classes from "./page.module.css"
 import Link from "next/link";
 import Input from "@/components/input";
 import { useState } from "react";
+import { OrangeButton } from "@/components/button/button";
 
 type FormState = {
   name: string;
@@ -113,12 +114,10 @@ export default function Signup() {
               error={errors.password}
             />
 
-      <button 
-       type="submit"
-        className="w-full bg-brand-500 hover:bg-[#d85f0e] text-white py-3 rounded-xl font-medium transition"
-            >
-        Create an account
-      </button>
+      
+        <OrangeButton type="submit" fullWidth>
+             Create an account
+          </OrangeButton>
  {/* Login */}
             <p className="text-sm text-[#3E3E3E]">
               I have an account?{' '}
