@@ -3,6 +3,7 @@
 import { cn } from "@/lib/utils"
 import { StaticImport } from "next/dist/shared/lib/get-img-props";
 import Image from "next/image";
+import Link from "next/link";
 
 interface RoleCardProps {
   title: string
@@ -61,6 +62,7 @@ export function RoleCard({
       </p>
 
       <button
+      
         className={cn(
           "px-8 py-3 rounded-lg font-medium transition-colors",
           selected
@@ -68,7 +70,7 @@ export function RoleCard({
             : "bg-[#7A7A7A] hover:bg-gray-600 text-white"
         )}
       >
-        Continue
+        <Link href='/kyc'>Continue</Link>
       </button>
     </div>
   )
