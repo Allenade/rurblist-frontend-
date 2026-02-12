@@ -15,6 +15,7 @@ interface RoleCardProps {
   selected?: boolean
   onClick?: () => void
   className?: string
+  url?:string
 }
 
 export function RoleCard({
@@ -26,6 +27,7 @@ export function RoleCard({
   selected = false,
   onClick,
   className,
+  url,
 }: RoleCardProps) {
   const isPrimary = variant === "primary"
 
@@ -70,7 +72,7 @@ export function RoleCard({
             : "bg-[#7A7A7A] hover:bg-gray-600 text-white"
         )}
       >
-        <Link href='/kyc'>Continue</Link>
+        <Link href={url??''}>Continue</Link>
       </button>
     </div>
   )

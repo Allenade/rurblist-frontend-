@@ -66,6 +66,7 @@ export default function OnboardingPage() {
               icon={role.icon}
               variant={role.variant}
               imageW={role.w}
+              url="/kyc"
               imageH={role.h}
               selected={selectedRole === role.id}
               onClick={() => setSelectedRole(role.id)}

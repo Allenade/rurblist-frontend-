@@ -1,12 +1,12 @@
 'use client'
 
 import { useState } from 'react'
-import { FileUp, Camera } from 'lucide-react'
 import { TermsContainer } from '@/components/terms-container/terms-container'
 import { OrangeButton } from '@/components/button/button'
 import { Footer } from '@/components/footer/footer'
 
 export default function KYCPage() {
+  const router = useRouter();
   const [uploadedFiles, setUploadedFiles] = useState({
     document: false,
     facial: false
@@ -52,25 +52,22 @@ export default function KYCPage() {
       {/* Header */}
       <header className="sticky top-0 z-50 px-6 py-8 bg-white">
         <div className="max-w-7xl mx-auto flex items-center justify-between">
-          <button className="text-gray-600 hover:text-gray-900">
-            <svg
-              className="w-6 h-6"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M15 19l-7-7 7-7"
-              />
-            </svg>
+             <button 
+            onClick={() => router.back()}
+            className="text-gray-600 hover:text-gray-900 transition-colors"
+          >
+            <IconImage
+              src="/chevron-left.png"
+              alt="back"
+              width={24}
+              height={24}
+            />
           </button>
-          <h1 className="text-2xl font-bold text-gray-900">KYC Verification</h1>
+         
+          <h1 className="text-2xl font-semibold text-[#000000]">KYC Verification</h1>
           <p className="font-semibold">
-            <span className="text-[#e87722] font-bold">01</span>
-            <span className="text-gray-900"> of 03</span>
+            <span className="text-brand-500 font-bold ">01</span>
+            <span className="text-[24] font-normal"> of 03</span>
           </p>
         </div>
       </header>
@@ -94,7 +91,14 @@ export default function KYCPage() {
                 )}
                 onClick={() => handleFileUpload('document')}
               >
-                <FileUp className="w-10 h-10 text-gray-400 mx-auto mb-3" />
+                <IconImage
+                            src="/upload-cloud.png"
+                            alt="back"
+                            width={24}
+                            height={24}
+                            className="mx-auto mb-3"
+                          />
+               
                 <p className="text-gray-600">
                   {uploadedFiles.document ? 'Document uploaded' : 'Click to upload'}
                 </p>
@@ -114,8 +118,14 @@ export default function KYCPage() {
                     : 'border-gray-300 hover:border-gray-400'
                 )}
                 onClick={() => handleFileUpload('facial')}
-              >
-                <Camera className="w-10 h-10 text-gray-400 mx-auto mb-3" />
+              > <IconImage
+                            src="/solar_camera-outline.png"
+                            alt="back"
+                            width={24}
+                            height={24}
+                            className="mx-auto mb-3"
+                          />
+               
                 <p className="text-gray-600">
                   {uploadedFiles.facial ? 'Verified' : 'Click to verify'}
                 </p>
@@ -141,7 +151,7 @@ export default function KYCPage() {
 
           {/* Action button */}
           <div className="flex justify-center">
-            <OrangeButton fullWidth>Agree & Continue</OrangeButton>
+           <Link href="/kyc/add-property"> <OrangeButton fullWidth>Agree & Continue</OrangeButton></Link>
           </div>
         </div>
       </main>
@@ -153,3 +163,7 @@ export default function KYCPage() {
 }
 
 import { cn } from '@/lib/utils'
+import Link from 'next/link'
+import { IconImage } from '@/components/icon-image/icon-image'
+import { useRouter } from 'next/navigation'
+
