@@ -1,14 +1,12 @@
-'use client';
+"use client";
 
 import Image from "next/image";
-import classes from "./page.module.css"
 import Link from "next/link";
 import Input from "@/components/input";
 import { useState } from "react";
 import { OrangeButton } from "@/components/button/button";
 
 type FormState = {
-
   email: string;
   password: string;
 };
@@ -17,9 +15,8 @@ type Errors = Partial<FormState>;
 
 export default function Login() {
   const [form, setForm] = useState<FormState>({
-   
-    email: '',
-    password: '',
+    email: "",
+    password: "",
   });
 
   const [errors, setErrors] = useState<Errors>({});
@@ -27,9 +24,9 @@ export default function Login() {
   function validate(): Errors {
     const newErrors: Errors = {};
 
-    if (!form.email.includes('@')) newErrors.email = 'Valid email is required';
+    if (!form.email.includes("@")) newErrors.email = "Valid email is required";
     if (form.password.length < 6)
-      newErrors.password = 'Password must be at least 6 characters';
+      newErrors.password = "Password must be at least 6 characters";
 
     return newErrors;
   }
@@ -41,45 +38,42 @@ export default function Login() {
     setErrors(validationErrors);
 
     if (Object.keys(validationErrors).length === 0) {
-      console.log('Form submitted:', form);
+      console.log("Form submitted:", form);
       // submit to API here
     }
   }
 
-  function handleChange(
-    e: React.ChangeEvent<HTMLInputElement>
-  ) {
+  function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
     setForm({ ...form, [e.target.name]: e.target.value });
   }
 
   return (
-  <div className="min-h-screen flex flex-col md:flex-row">
-  {/* LEFT IMAGE SECTION */}
-  <div className="hidden md:flex w-1/2 bg-brand-50 items-center justify-start pl-16">
-    <Image
-      src="/Hand_holding_house.png"
-      alt="Keys"
-      width={520}
-      height={520}
-      priority
-      className="object-contain"
-    />
-  </div>
+    <div className="min-h-screen flex flex-col md:flex-row">
+      {/* LEFT IMAGE SECTION */}
+      <div className="hidden md:flex w-1/2 bg-brand-50 items-center justify-start pl-16">
+        <Image
+          src="/Hand_holding_house.png"
+          alt="Keys"
+          width={520}
+          height={520}
+          priority
+          className="object-contain"
+        />
+      </div>
 
-  {/* RIGHT FORM SECTION */}
-  <div className="w-full md:w-1/2 flex items-center justify-center px-6 md:px-20">
-    {/* <div className="flex min-h-screen md:min-h-0 items-center"> */}
+      {/* RIGHT FORM SECTION */}
+      <div className="w-full md:w-1/2 flex items-center justify-center px-4 mt-20 md:mt-0 md:px-20">
+        {/* <div className="flex min-h-screen md:min-h-0 items-center"> */}
         <div className="w-full max-w-md  bg-white px-8 py-10 rounded-2xl">
-            <h1 className="text-4xl font-normal text-[#555555] text-center md:text-left">
-                Welcome back!
-            </h1>
-    
-            <p className="text-[#8A8A8A] mt-2 mb-8 text-center md:text-left">
-                Welcome, Please enter your details.
-            </p>
+          <h1 className="text-4xl font-normal text-[#555555] text-center md:text-left">
+            Welcome back!
+          </h1>
 
-            <form onSubmit={handleSubmit} className="space-y-5">
-      
+          <p className="text-[#8A8A8A] mt-2 mb-8 text-center md:text-left">
+            Welcome, Please enter your details.
+          </p>
+
+          <form onSubmit={handleSubmit} className="space-y-5">
             {/* Google */}
             <button
               type="button"
@@ -87,7 +81,7 @@ export default function Login() {
             >
               Login with google
             </button>
-              {/* Divider */}
+            {/* Divider */}
             <div className="flex items-center gap-3 my-4">
               <div className="flex-1 h-px bg-[#EC6C101C]" />
               <span className="text-sm text-[#808080]">or</span>
@@ -115,41 +109,38 @@ export default function Login() {
             />
             {/* Remember me + Forgot password */}
             <div className="flex items-center justify-between">
-            {/* Remember me */}
-            <label className="flex items-center gap-1 cursor-pointer">
+              {/* Remember me */}
+              <label className="flex items-center gap-1 cursor-pointer">
                 <input
-                    type="checkbox"
-                    className="h-4 w-4 rounded-xl border border-[#36CB4C] 
+                  type="checkbox"
+                  className="h-4 w-4 rounded-xl border border-[#36CB4C] 
                   accent-brand-500 focus:ring-brand-500"
                 />
-                <span className="text-[16px] text-[#555555]">
-                    Remember me
-                </span>
-            </label>
+                <span className="text-[16px] text-[#555555]">Remember me</span>
+              </label>
 
-            {/* Forgot password */}
-            <Link
+              {/* Forgot password */}
+              <Link
                 href="/auth/forgotpassword"
                 className="text-[16px] text-[#555555] hover:text-brand-500 transition"
-            >
+              >
                 Forgot Password?
-            </Link>
-        </div>
-          <OrangeButton type="submit" fullWidth>
-            Login
-          </OrangeButton>
-        {/* Login */}
-        <p className="text-sm text-[#3E3E3E]">
-            Don’t have an account?{' '}
-            <span className="text-brand-500 cursor-pointer font-medium">
+              </Link>
+            </div>
+            <OrangeButton type="submit" fullWidth>
+              Login
+            </OrangeButton>
+            {/* Login */}
+            <p className="text-sm text-[#3E3E3E]">
+              Don’t have an account?{" "}
+              <span className="text-brand-500 cursor-pointer font-medium">
                 <Link href="/auth/signup">Sign up for free</Link>
-            </span>
-        </p>
-    </form>
-    </div> 
- </div>
-  </div>
-// </div>
-
+              </span>
+            </p>
+          </form>
+        </div>
+      </div>
+    </div>
+    // </div>
   );
 }

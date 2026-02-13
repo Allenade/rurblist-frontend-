@@ -1,21 +1,20 @@
-"use client"
+"use client";
 
-import { OrangeButton } from "@/components/button/button"
-import Input from "@/components/input"
-import React from "react"
+import { OrangeButton } from "@/components/button/button";
+import Input from "@/components/input";
+import React from "react";
 
-import { useState } from "react"
-
+import { useState } from "react";
 
 export default function ResetPassword() {
-  const [newPassword, setNewPassword] = useState("")
-  const [confirmPassword, setConfirmPassword] = useState("")
+  const [newPassword, setNewPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
 
   const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault()
+    e.preventDefault();
     // Handle password reset logic here
-    console.log("Password reset submitted")
-  }
+    console.log("Password reset submitted");
+  };
 
   return (
     <main className="min-h-screen flex items-center justify-center bg-white px-4">
@@ -28,24 +27,22 @@ export default function ResetPassword() {
         </div>
 
         <form onSubmit={handleSubmit} className="space-y-6">
-          
-            <Input
-              label="New password"
-              type="password"
-              id="newPassword"
-              value={newPassword}
-              onChange={(e) => setNewPassword(e.target.value)}
-              required
-            />
-            <Input
-              label="Confirm password"
-              type="password"
-              id="confirmPassword"
-              value={confirmPassword}
-              onChange={(e) => setConfirmPassword(e.target.value)}
-              required
-            />
-                
+          <Input
+            label="New password"
+            type="password"
+            id="newPassword"
+            value={newPassword}
+            onChange={(e) => setNewPassword(e.target.value)}
+            required
+          />
+          <Input
+            label="Confirm password"
+            type="password"
+            id="confirmPassword"
+            value={confirmPassword}
+            onChange={(e) => setConfirmPassword(e.target.value)}
+            required
+          />
 
           <div className="pt-4">
             <OrangeButton type="submit" fullWidth>
@@ -55,5 +52,5 @@ export default function ResetPassword() {
         </form>
       </div>
     </main>
-  )
+  );
 }

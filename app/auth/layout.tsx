@@ -1,10 +1,7 @@
-import { Box } from "lucide-react";
-
 export default function AuthLayout({
-     children
-}: { children: React.ReactNode }) {
-    return (<>{children}</>
-      
-   
-    );
-};
+  children,
+}: {
+  children: React.ReactNode;
+}) {
+  return <>{children}</>;
+}
