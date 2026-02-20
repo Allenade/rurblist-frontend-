@@ -30,7 +30,7 @@ function Navbar() {
                 <NavLink href="/" activeClassName="text-brand-400">Home</NavLink>
               </li>
               <li>
-                <NavLink href="/browse" activeClassName="text-brand-400">Browse Properties</NavLink>
+                <NavLink href="/property" activeClassName="text-brand-400">Browse Properties</NavLink>
               </li>
               <li>
                 <NavLink href="/list" activeClassName="text-brand-400">List your property</NavLink>
@@ -125,7 +125,7 @@ function Navbar() {
                 Home
               </NavLink>
               <NavLink
-                href="/browse"
+                href="/property"
                 onClick={() => setMobileMenuOpen(false)}
                 activeClassName="text-brand-400"
               >
