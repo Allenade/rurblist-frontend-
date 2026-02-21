@@ -5,6 +5,7 @@ import SearchBar from '@/components/search-bar/search-bar2'
 import  { BedsBathsFilter, ForSaleFilter, PriceFilter, TypeFilter } from '@/components/dropdown/filter-dropdown'
 import PropertyBanner from '@/components/propety-details/property-banner'
 import PropertyCard from '@/components/propety-details/property-card'
+import { redirect } from 'next/navigation'
 
 
 const mockComments = [
@@ -115,7 +116,9 @@ export default function PropertiesPage() {
               profileName="Emily James"
               // profileRole="Agent"
               comments={mockComments}
-              onChatClick={() => console.log('Chat clicked')}
+              onChatClick={() => {
+               
+              }}
             />
           ))}
         </div>

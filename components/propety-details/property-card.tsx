@@ -8,6 +8,7 @@ import CommentModal from '../comment/comment-modal'
 import type { CommentType } from '../comment/comment-modal'
 import Input from '../input'
 import { IconImage } from '../icon-image/icon-image'
+import Link from 'next/link'
 
 interface GalleryImage {
   id: string
@@ -169,13 +170,13 @@ const handleUnlike = () => {
             </div>
           </div>
 
-          <OrangeButton
+         <Link href="/property/escrow" > <OrangeButton
             variant="orange"
             className="mt-4 px-6 py-2 text-sm"
             onClick={onChatClick}
           >
             CHAT
-          </OrangeButton>
+          </OrangeButton></Link>
         </div>
 
          {/* Engagement */}
@@ -295,13 +296,13 @@ const handleUnlike = () => {
         Posted on 12/03/2023
       </p>
 
-      <OrangeButton
+   <Link href="/property/escrow" >   <OrangeButton
         variant="orange"
         className="mt-3 px-7 py-2 text-[12px]"
         onClick={onChatClick}
       >
         CHAT
-      </OrangeButton>
+      </OrangeButton></Link>
     </div>
   </div>
 </div>
