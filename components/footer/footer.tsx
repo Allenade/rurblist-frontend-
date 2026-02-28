@@ -20,7 +20,7 @@ const defaultColumns: FooterColumn[] = [
   {
     title: 'Locations',
     links: [
-      { label: 'Logos', href: '#' },
+      { label: 'Lagos', href: '#' },
       { label: 'Delta', href: '#' },
       { label: 'Enugu', href: '#' },
       { label: 'Abuja etc', href: '#' }
