@@ -1,4 +1,4 @@
-import Image from 'next/image'
+import NextImage from 'next/image'
 
 interface IconImageProps {
   src: string
@@ -16,7 +16,7 @@ export function IconImage({
   className = ''
 }: IconImageProps) {
   return (
-    <Image
+    <NextImage
       src={src}
       alt={alt}
       width={width}
