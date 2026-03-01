@@ -26,7 +26,7 @@ function UploadZone({
   return (
     <label
       htmlFor={id}
-      className="flex min-h-[100px] cursor-pointer flex-col items-center justify-center gap-2 rounded-md border-2 border-dashed border-gray-300 bg-gray-50/50 px-4 py-5 text-gray-500 transition-colors hover:border-brand-400 hover:bg-brand-50/30"
+      className="flex min-h-25 cursor-pointer flex-col items-center justify-center gap-2 rounded-md border-2 border-dashed border-gray-300 bg-gray-50/50 px-4 py-5 text-gray-500 transition-colors hover:border-brand-400 hover:bg-brand-50/30"
     >
       {icon === "camera" ? (
         <svg

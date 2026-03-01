@@ -1,146 +1,201 @@
-"use client";
+"use client"
 
-import Image from "next/image";
-import Link from "next/link";
-import Input from "@/components/input";
-import { useState } from "react";
-import { OrangeButton } from "@/components/button/button";
+import { useState } from "react"
+import Image from "next/image"
+import Link from "next/link"
+import Input from "@/components/input"
+import { OrangeButton } from "@/components/button/button"
+import { IconImage } from "@/components/icon-image/icon-image"
 
-type FormState = {
-  email: string;
-  password: string;
-};
+export default function LoginPage() {
+  const [email, setEmail] = useState("")
+  const [password, setPassword] = useState("")
+  const [remember, setRemember] = useState(false)
+  const [showPassword, setShowPassword] = useState(false)
 
-type Errors = Partial<FormState>;
+  const [errors, setErrors] = useState<{
+    email?: string
+    password?: string
+  }>({})
 
-export default function Login() {
-  const [form, setForm] = useState<FormState>({
-    email: "",
-    password: "",
-  });
+  /* ================= VALIDATION ================= */
+  const validate = () => {
+    const newErrors: typeof errors = {}
 
-  const [errors, setErrors] = useState<Errors>({});
-
-  function validate(): Errors {
-    const newErrors: Errors = {};
-
-    if (!form.email.includes("@")) newErrors.email = "Valid email is required";
-    if (form.password.length < 6)
-      newErrors.password = "Password must be at least 6 characters";
-
-    return newErrors;
-  }
-
-  function handleSubmit(e: React.FormEvent) {
-    e.preventDefault();
-
-    const validationErrors = validate();
-    setErrors(validationErrors);
-
-    if (Object.keys(validationErrors).length === 0) {
-      console.log("Form submitted:", form);
-      // submit to API here
+    if (!email.trim()) {
+      newErrors.email = "Email is required"
+    } else if (
+      !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(email)
+    ) {
+      newErrors.email = "Enter a valid email"
     }
+
+    if (!password) {
+      newErrors.password = "Password is required"
+    }
+
+    setErrors(newErrors)
+    return Object.keys(newErrors).length === 0
   }
 
-  function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
-    setForm({ ...form, [e.target.name]: e.target.value });
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault()
+
+    if (!validate()) return
+
+    console.log({
+      email,
+      password,
+      remember,
+    })
+
+    // 👉 Connect backend here
   }
 
   return (
-    <div className="min-h-screen flex flex-col md:flex-row">
-      {/* LEFT IMAGE SECTION */}
-      <div className="hidden md:flex w-1/2 bg-brand-50 items-center justify-start pl-16">
-        <Image
-          src="/Hand_holding_house.png"
-          alt="Keys"
-          width={520}
-          height={520}
-          priority
-          className="object-contain"
-        />
+    <div className="min-h-screen flex flex-col lg:flex-row">
+      {/* ================= LEFT IMAGE ================= */}
+      <div className="hidden lg:block lg:w-1/2 relative bg-[#E9CDB8] overflow-hidden">
+        <div className="absolute bottom-0 ">
+          <Image
+            src="/image/hand-and-property.svg" // replace with your image
+            alt="House"
+            width={650}
+            height={640}
+            className="object-contain"
+            priority
+          />
+        </div>
       </div>
 
-      {/* RIGHT FORM SECTION */}
-      <div className="w-full md:w-1/2 flex items-center justify-center px-4 mt-20 md:mt-0 md:px-20">
-        {/* <div className="flex min-h-screen md:min-h-0 items-center"> */}
-        <div className="w-full max-w-md  bg-white px-8 py-10 rounded-2xl">
-          <h1 className="text-4xl font-normal text-[#555555] text-center md:text-left">
+      {/* ================= RIGHT FORM ================= */}
+      <div className="flex-1 flex items-center justify-center px-6 sm:px-10 py-12 bg-white">
+        <div className="w-full max-w-120">
+          {/* Heading */}
+          <h1 className="text-3xl sm:text-4xl font-semibold text-gray-800">
             Welcome back!
           </h1>
-
-          <p className="text-[#8A8A8A] mt-2 mb-8 text-center md:text-left">
+          <p className="text-gray-500 mt-2 mb-8">
             Welcome, Please enter your details.
           </p>
 
-          <form onSubmit={handleSubmit} className="space-y-5">
-            {/* Google */}
-            <button
-              type="button"
-              className="w-full border border-[#A6A6A6] py-3 rounded-xl hover:bg-gray-50 transition"
-            >
-              Login with google
-            </button>
-            {/* Divider */}
-            <div className="flex items-center gap-3 my-4">
-              <div className="flex-1 h-px bg-[#EC6C101C]" />
-              <span className="text-sm text-[#808080]">or</span>
-              <div className="flex-1 h-px bg-[#EC6C101C]" />
-            </div>
+          {/* Google Login */}
+          <button
+            type="button"
+            className="
+              w-full
+              border
+              border-gray-300
+              rounded-lg
+              py-3
+              text-gray-700
+              hover:bg-gray-50
+              transition
+            "
+          >
+            Login with google
+          </button>
 
-            {/* Email */}
+          {/* Divider */}
+          <div className="flex items-center my-8">
+            <div className="flex-1 h-px bg-gray-200" />
+            <span className="px-4 text-sm text-[#e87722]">
+              or
+            </span>
+            <div className="flex-1 h-px bg-gray-200" />
+          </div>
+
+          {/* Form */}
+          <form
+            onSubmit={handleSubmit}
+            className="space-y-6"
+          >
             <Input
               label="Email address"
-              name="email"
               type="email"
-              value={form.email}
-              onChange={handleChange}
+              className="p-4"
+              value={email}
+              onChange={(e) =>
+                setEmail(e.target.value)
+              }
               error={errors.email}
             />
 
-            {/* Password */}
-            <Input
-              label="Password"
-              name="password"
-              type="password"
-              value={form.password}
-              onChange={handleChange}
-              error={errors.password}
-            />
-            {/* Remember me + Forgot password */}
-            <div className="flex items-center justify-between">
-              {/* Remember me */}
-              <label className="flex items-center gap-1 cursor-pointer">
+            {/* Password Field with Toggle */}
+            <div className="relative">
+              <Input
+                label="Password"
+                 className="p-4"
+                type={
+                  showPassword ? "text" : "password"
+                }
+                value={password}
+                onChange={(e) =>
+                  setPassword(e.target.value)
+                }
+                error={errors.password}
+              />
+
+              <button
+                type="button"
+                onClick={() =>
+                  setShowPassword((prev) => !prev)
+                }
+                className="absolute right-4 top-10.5"
+              >
+                <IconImage
+                  src={
+                    showPassword
+                      ? "/icons/eye-off.svg"
+                      : "/icons/eye.svg"
+                  }
+                  alt="toggle password"
+                  width={20}
+                  height={20}
+                />
+              </button>
+            </div>
+
+            {/* Remember + Forgot */}
+            <div className="flex items-center justify-between text-sm">
+              <label className="flex items-center gap-2 cursor-pointer">
                 <input
                   type="checkbox"
-                  className="h-4 w-4 rounded-xl border border-[#36CB4C] 
-                  accent-brand-500 focus:ring-brand-500"
+                  checked={remember}
+                  onChange={() =>
+                    setRemember(!remember)
+                  }
+                  className="w-4 h-4 accent-green-500"
                 />
-                <span className="text-[16px] text-[#555555]">Remember me</span>
+                Remember me
               </label>
 
-              {/* Forgot password */}
               <Link
-                href="/auth/forgotpassword"
-                className="text-[16px] text-[#555555] hover:text-brand-500 transition"
+                href="/forgot-password"
+                className="text-gray-500 hover:text-[#e87722]"
               >
                 Forgot Password?
               </Link>
             </div>
+
+            {/* Login Button */}
             <OrangeButton type="submit" fullWidth>
               Login
             </OrangeButton>
-            {/* Login */}
-            <p className="text-sm text-[#3E3E3E]">
-              Don’t have an account?{" "}
-              <span className="text-brand-500 cursor-pointer font-medium">
-                <Link href="/auth/signup">Sign up for free</Link>
-              </span>
-            </p>
           </form>
+
+          {/* Signup */}
+          <p className="text-sm text-gray-600 mt-8 text-center">
+            Don’t have an account?{" "}
+            <Link
+              href="/register"
+              className="text-[#e87722] font-semibold"
+            >
+              Sign up for free
+            </Link>
+          </p>
         </div>
       </div>
     </div>
-    // </div>
-  );
+  )
 }

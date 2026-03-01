@@ -20,7 +20,7 @@ const TOUR_CARD = {
 function TourCard() {
   return (
     <div
-      className={`${CARD_CLASS} flex min-w-[280px] shrink-0 flex-col snap-center sm:min-w-[320px]`}
+      className={`${CARD_CLASS} flex min-w-70 shrink-0 flex-col snap-center sm:min-w-[320px]`}
     >
       <p className="text-sm text-foreground">
         <span className="font-medium">Property Info:</span>{" "}
@@ -56,7 +56,7 @@ const MESSAGE_CARD = {
 
 function MessageCard() {
   return (
-    <div className="min-w-[280px] shrink-0 snap-center rounded-lg border border-border bg-white p-4 shadow-sm sm:min-w-[320px]">
+    <div className="min-w-70 shrink-0 snap-center rounded-lg border border-border bg-white p-4 shadow-sm sm:min-w-[320px]">
       <div className="flex gap-3">
         <div className="h-10 w-10 shrink-0 rounded-full bg-gray-200" aria-hidden />
         <div className="min-w-0 flex-1">

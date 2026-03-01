@@ -1,148 +1,217 @@
-'use client';
+"use client"
 
-import Image from "next/image";
-import Link from "next/link";
-import Input from "@/components/input";
-import { useState } from "react";
-import { OrangeButton } from "@/components/button/button";
+import { useState } from "react"
+import Image from "next/image"
+import Link from "next/link"
+import Input from "@/components/input"
+import { OrangeButton } from "@/components/button/button"
+import { IconImage } from "@/components/icon-image/icon-image"
 
-type FormState = {
-  name: string;
-  whatsapp: string;
-  email: string;
-  password: string;
-};
+export default function RegisterPage() {
+  const [name, setName] = useState("")
+  const [whatsapp, setWhatsapp] = useState("")
+  const [email, setEmail] = useState("")
+  const [password, setPassword] = useState("")
 
-type Errors = Partial<FormState>;
+  const [showPassword, setShowPassword] = useState(false)
 
-export default function Signup() {
-  const [form, setForm] = useState<FormState>({
-    name: '',
-    whatsapp: '',
-    email: '',
-    password: '',
-  });
+  const [errors, setErrors] = useState<{
+    name?: string
+    whatsapp?: string
+    email?: string
+    password?: string
+  }>({})
 
-  const [errors, setErrors] = useState<Errors>({});
+  /* ================= VALIDATION ================= */
 
-  function validate(): Errors {
-    const newErrors: Errors = {};
+  const validate = () => {
+    const newErrors: typeof errors = {}
 
-    if (!form.name.trim()) newErrors.name = 'Name is required';
-    if (!form.whatsapp.trim()) newErrors.whatsapp = 'WhatsApp number is required';
-    if (!form.email.includes('@')) newErrors.email = 'Valid email is required';
-    if (form.password.length < 6)
-      newErrors.password = 'Password must be at least 6 characters';
-
-    return newErrors;
-  }
-
-  function handleSubmit(e: React.FormEvent) {
-    e.preventDefault();
-
-    const validationErrors = validate();
-    setErrors(validationErrors);
-
-    if (Object.keys(validationErrors).length === 0) {
-      console.log('Form submitted:', form);
-      // submit to API here
+    if (!name.trim()) {
+      newErrors.name = "Name is required"
     }
+
+    if (!whatsapp.trim()) {
+      newErrors.whatsapp = "WhatsApp number is required"
+    } else if (!/^\+?\d{7,15}$/.test(whatsapp)) {
+      newErrors.whatsapp = "Enter a valid phone number"
+    }
+
+    if (!email.trim()) {
+      newErrors.email = "Email is required"
+    } else if (
+      !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(email)
+    ) {
+      newErrors.email = "Enter a valid email address"
+    }
+
+    if (!password) {
+      newErrors.password = "Password is required"
+    } else if (password.length < 6) {
+      newErrors.password =
+        "Password must be at least 6 characters"
+    }
+
+    setErrors(newErrors)
+
+    return Object.keys(newErrors).length === 0
   }
 
-  function handleChange(
-    e: React.ChangeEvent<HTMLInputElement>
-  ) {
-    setForm({ ...form, [e.target.name]: e.target.value });
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault()
+
+    if (!validate()) return
+
+    console.log({
+      name,
+      whatsapp,
+      email,
+      password,
+    })
+
+    // 👉 Connect to backend here
   }
 
   return (
-  <div className="min-h-screen flex flex-col md:flex-row">
-  {/* LEFT IMAGE SECTION */}
-  <div className="hidden md:flex w-1/2 bg-brand-50 items-center justify-start pl-16">
-    <Image
-      src="/hand_image.png"
-      alt="Keys"
-      width={520}
-      height={520}
-      priority
-      className="object-contain"
-    />
-  </div>
+    <div className="min-h-screen flex flex-col lg:flex-row ">
+      {/* LEFT IMAGE */}
+<div className="hidden lg:block lg:w-1/2 relative bg-[#E9CDB8] overflow-hidden">
+  <div className="absolute inset-0 flex justify-center items-end pb-20">
+          <Image
+            src="/image/hand-img.svg"
+            alt="Keys"
+            width={900}
+            height={700}
+            className="object-contain"
+            priority
+          />
+        </div>
+      </div>
 
-  {/* RIGHT FORM SECTION */}
-  <div className="w-full md:w-1/2 flex items-center justify-center px-6 md:px-20">
-  <div className="w-full max-w-md  bg-white px-8 py-10 rounded-2xl">
-    <h1 className="text-4xl font-normal text-[#555555]">Create an account</h1>
-    <p className="text-[#8A8A8A] mt-2 mb-8">Let’s get you started.</p>
+      {/* RIGHT FORM */}
+      <div className="flex-1 flex items-center justify-center px-6 sm:px-10 py-12 bg-white mt-10">
+        <div className="w-full max-w-120">
+          <h1 className="text-3xl sm:text-4xl font-semibold text-gray-800">
+            Create an account
+          </h1>
+          <p className="text-gray-500 mt-2 mb-10">
+            Let’s get you started.
+          </p>
 
-    <form onSubmit={handleSubmit} className="space-y-5">
-        {/* Name */}
-          <Input
+          <form
+            onSubmit={handleSubmit}
+            className="space-y-6"
+          >
+            <Input
               label="Name"
-              name="name"
-              value={form.name}
-              onChange={handleChange}
+              className="p-4"
+              value={name}
+              onChange={(e) =>
+                setName(e.target.value)
+              }
               error={errors.name}
-          />
+            />
 
-        {/* WhatsApp */}
-          <Input
+            <Input
               label="WhatsApp number"
-              name="whatsapp"
-              value={form.whatsapp}
-              onChange={handleChange}
+              className="p-4"
+              value={whatsapp}
+              onChange={(e) =>
+                setWhatsapp(e.target.value)
+              }
               error={errors.whatsapp}
-          />
-        {/* Email */}
+            />
+
             <Input
               label="Email address"
-              name="email"
+              className="p-4"
               type="email"
-              value={form.email}
-              onChange={handleChange}
+              value={email}
+              onChange={(e) =>
+                setEmail(e.target.value)
+              }
               error={errors.email}
             />
 
-            {/* Password */}
-            <Input
-              label="Password"
-              name="password"
-              type="password"
-              value={form.password}
-              onChange={handleChange}
-              error={errors.password}
-            />
+            {/* PASSWORD FIELD WITH TOGGLE */}
+            <div className="relative">
+              <Input
+                label="Password"
+                className="p-4"
+                type={
+                  showPassword ? "text" : "password"
+                }
+                value={password}
+                onChange={(e) =>
+                  setPassword(e.target.value)
+                }
+                error={errors.password}
+              />
 
-      
-        <OrangeButton type="submit" fullWidth>
-             Create an account
-          </OrangeButton>
- {/* Login */}
-            <p className="text-sm text-[#3E3E3E]">
-              I have an account?{' '}
-              <span className="text-brand-500 cursor-pointer font-medium">
-              <Link href={"/auth/login"}>Login </Link>
-              </span>
-            </p>
-
-            {/* Divider */}
-            <div className="flex items-center gap-3 my-4">
-              <div className="flex-1 h-px bg-[#EC6C101C]" />
-              <span className="text-sm text-[#808080]">or</span>
-              <div className="flex-1 h-px bg-[#EC6C101C]" />
+              <button
+                type="button"
+                onClick={() =>
+                  setShowPassword((prev) => !prev)
+                }
+                className="absolute right-4 top-10.5"
+              >
+                <IconImage
+                  src={
+                    showPassword
+                      ? "/icons/eye-off.svg"
+                      : "/icons/eye.svg"
+                  }
+                  alt="toggle password"
+                  width={20}
+                  height={20}
+                />
+              </button>
             </div>
 
-            {/* Google */}
-            <button
-              type="button"
-              className="w-full border border-[#A6A6A6] py-3 rounded-xl hover:bg-gray-50 transition"
+            <OrangeButton
+              type="submit"
+              fullWidth
             >
-              Continue with google
-            </button>
-    </form>
-  </div>
-  </div>
-</div>
+              Create an account
+            </OrangeButton>
+          </form>
 
-  );
+          <p className="text-sm text-gray-600 mt-6 text-center">
+            I have an account?{" "}
+            <Link
+              href="/login"
+              className="text-[#e87722] font-medium"
+            >
+              Login
+            </Link>
+          </p>
+
+          {/* Divider */}
+          <div className="flex items-center my-10">
+            <div className="flex-1 h-px bg-gray-200" />
+            <span className="px-4 text-gray-400 text-sm">
+              or
+            </span>
+            <div className="flex-1 h-px bg-gray-200" />
+          </div>
+
+          <button
+            type="button"
+            className="
+              w-full
+              border
+              border-gray-300
+              rounded-lg
+              py-3
+              text-gray-700
+              hover:bg-gray-50
+              transition
+            "
+          >
+            Continue with google
+          </button>
+        </div>
+      </div>
+    </div>
+  )
 }
