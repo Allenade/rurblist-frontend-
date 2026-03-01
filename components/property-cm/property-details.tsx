@@ -1,5 +1,7 @@
 "use client"
 
+import { IconImage } from "../icon-image/icon-image"
+
 interface PropertyDetailsProps {
   price: string
   location: string
@@ -33,11 +35,27 @@ export default function PropertyDetails({
 
         {/* Quick Meta */}
         <div className="flex flex-wrap items-center gap-x-6 gap-y-3 text-sm sm:text-base text-gray-600 mb-8">
-          <span>2 bedroom</span>
+           
+          <span className="flex items-center gap-1"><IconImage
+                        className="w-4 h-4 sm:w-5 sm:h-5"
+                        
+                        src="/icons/mdi_bedroom-outline (1).svg"
+                        alt="bedroom"
+                      /> 2 bedroom</span>
           <span className="hidden sm:block w-px h-4 bg-gray-300" />
-          <span>2 bath</span>
+          <span className="flex items-center gap-1"><IconImage
+                        className="w-4 h-4 sm:w-5 sm:h-5"
+                        
+                        src="/icons/mingcute_bath-line.svg"
+                        alt="bedroom"
+                      /> 2 bath</span>
           <span className="hidden sm:block w-px h-4 bg-gray-300" />
-          <span>100 sqft</span>
+          <span className="flex items-center gap-1"><IconImage
+                        className="w-4 h-4 sm:w-5 sm:h-5"
+                        
+                        src="/icons/tdesign_measurement-2 (1).svg"
+                        alt="bedroom"
+                      /> 100 sqft</span>
         </div>
 
         <hr className="border-gray-200 mb-8" />

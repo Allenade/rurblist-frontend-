@@ -23,7 +23,7 @@ export default function Home() {
               <h3 className="text-[40px] sm:text-[68px] leading-tight text-white font-bold">
                 Home With Ease
               </h3>
-              <p className="mt-3 text-[12px] text-white/90 sm:mt-4 sm:text-[6px] md:text-lg md:max-w-[550px] md:mx-auto lg:mt-5">
+              <p className="mt-3 text-[12px] text-white/90 sm:mt-4 sm:text-[6px] md:text-lg md:max-w-137.5 md:mx-auto lg:mt-5">
                 Rurblist connects you with trusted agents, verified properties,
                 and <br /> escrow services , so your next deal is clean, clear,
                 and worry-free

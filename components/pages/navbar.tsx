@@ -119,7 +119,7 @@ export default function Navbar() {
 
         {/* Drawer */}
         <aside
-          className={`absolute top-0 left-0 h-full w-[280px] bg-white shadow-xl border-r border-gray-200 transform transition-transform duration-300 ${
+          className={`absolute top-0 left-0 h-full w-70 bg-white shadow-xl border-r border-gray-200 transform transition-transform duration-300 ${
             mobileMenuOpen
               ? "translate-x-0"
               : "-translate-x-full"
