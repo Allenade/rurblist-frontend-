@@ -6,6 +6,7 @@ import Link from "next/link"
 import Input from "@/components/input"
 import { OrangeButton } from "@/components/button/button"
 import { IconImage } from "@/components/icon-image/icon-image"
+import toast from "react-hot-toast"
 
 export default function LoginPage() {
   const [email, setEmail] = useState("")
@@ -179,7 +180,9 @@ export default function LoginPage() {
             </div>
 
             {/* Login Button */}
-            <OrangeButton type="submit" fullWidth>
+            <OrangeButton type="submit" onClick={()=>{
+             
+            }} fullWidth>
               Login
             </OrangeButton>
           </form>

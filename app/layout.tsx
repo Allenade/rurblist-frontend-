@@ -3,6 +3,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { Providers } from "./providers";
 import { ConditionalShell } from "@/components/layout/conditional-shell";
+import ToastProvider from "./apis/toast/toast-provider";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -30,7 +31,10 @@ export default function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
         <Providers>
-          <ConditionalShell>{children}</ConditionalShell>
+          <ConditionalShell>
+             <ToastProvider />
+              {children}
+            </ConditionalShell>
         </Providers>
       </body>
     </html>

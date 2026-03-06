@@ -6,18 +6,22 @@ import Link from "next/link"
 import Input from "@/components/input"
 import { OrangeButton } from "@/components/button/button"
 import { IconImage } from "@/components/icon-image/icon-image"
+import { useRouter } from "next/navigation"
+import { useSignupStore } from "@/app/apis/store/auth-strore"
 
 export default function RegisterPage() {
-  const [name, setName] = useState("")
-  const [whatsapp, setWhatsapp] = useState("")
+  const router = useRouter()
+  const setSignupData = useSignupStore((s) => s.setSignupData)
+  const [fullName, setName] = useState("")
+  const [phoneNumber, setWhatsapp] = useState("")
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
-
+  
   const [showPassword, setShowPassword] = useState(false)
 
   const [errors, setErrors] = useState<{
-    name?: string
-    whatsapp?: string
+    fullName?: string
+    phoneNumber?: string
     email?: string
     password?: string
   }>({})
@@ -27,14 +31,14 @@ export default function RegisterPage() {
   const validate = () => {
     const newErrors: typeof errors = {}
 
-    if (!name.trim()) {
-      newErrors.name = "Name is required"
+    if (!fullName.trim()) {
+      newErrors.fullName = "Name is required"
     }
 
-    if (!whatsapp.trim()) {
-      newErrors.whatsapp = "WhatsApp number is required"
-    } else if (!/^\+?\d{7,15}$/.test(whatsapp)) {
-      newErrors.whatsapp = "Enter a valid phone number"
+    if (!phoneNumber.trim()) {
+      newErrors.phoneNumber = "WhatsApp number is required"
+    } else if (!/^\+?\d{7,15}$/.test(phoneNumber)) {
+      newErrors.phoneNumber = "Enter a valid phone number"
     }
 
     if (!email.trim()) {
@@ -63,13 +67,22 @@ export default function RegisterPage() {
     if (!validate()) return
 
     console.log({
-      name,
-      whatsapp,
+      fullName,
+      phoneNumber,
       email,
       password,
     })
-
-    // 👉 Connect to backend here
+    const formData = {
+      fullName,
+      phoneNumber,
+      password,
+      email,
+    }
+      // store temporarily
+     setSignupData(formData)
+   
+     // go to next step
+    router.push("/onboarding")
   }
 
   return (
@@ -105,21 +118,21 @@ export default function RegisterPage() {
             <Input
               label="Name"
               className="p-4"
-              value={name}
+              value={fullName}
               onChange={(e) =>
                 setName(e.target.value)
               }
-              error={errors.name}
+              error={errors.fullName}
             />
 
             <Input
               label="WhatsApp number"
               className="p-4"
-              value={whatsapp}
+              value={phoneNumber}
               onChange={(e) =>
                 setWhatsapp(e.target.value)
               }
-              error={errors.whatsapp}
+              error={errors.phoneNumber}
             />
 
             <Input
