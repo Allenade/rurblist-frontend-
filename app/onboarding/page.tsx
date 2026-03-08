@@ -5,7 +5,7 @@ import { RoleCard } from "@/components/role-card/role-card"
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useSignupStore } from "@/app/apis/store/auth-strore";
-import { useSignup } from "@/app/apis/mutations/use-signup";
+import { useSignup } from "@/app/apis/mutations/use-auth/use-signup";
 import { OrangeButton } from "@/components/button/button";
 
 const roles = [

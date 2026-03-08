@@ -6,14 +6,40 @@ import { useState } from "react"
 import Link from "next/link"
 import Input from "@/components/input"
 import { OrangeButton } from "@/components/button/button"
+import { useForgotPassword } from "@/app/apis/mutations/use-auth/use-forgot-password"
 
 export default function ForgotPassword() {
-  const [email, setEmail] = useState("")
+  const [email, setEmail] = useState("");
+  const [error, setError] = useState<string | null>(null);
+
+  const { mutate, isPending } = useForgotPassword();
+
+  const validate = () => {
+    if (!email.trim()) {
+      setError("Email is required");
+      return false;
+    }
+
+    const emailRegex =
+      /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i;
+
+    if (!emailRegex.test(email)) {
+      setError("Enter a valid email address");
+      return false;
+    }
+
+    setError(null);
+    return true;
+  };
 
   const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault()
+    e.preventDefault();
+
+    if (!validate()) return;
+
     // Handle password reset logic here
     console.log("Password reset requested for:", email)
+    mutate({ email });
   }
 
   return (
@@ -33,14 +59,21 @@ export default function ForgotPassword() {
           <Input
             label="Email address"
             name="Email address"
-            type="Email address"
+            type="email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             required
+            className="p-4"
+            error={error ?? undefined}
           >
           </Input>
-          <OrangeButton type="submit" fullWidth>
-            Continue
+           <OrangeButton
+            type="submit"
+            fullWidth
+            loading={isPending}
+            disabled={isPending}
+          >
+            {isPending ? "Sending..." : "Continue"}
           </OrangeButton>
         </form>
 

@@ -4,17 +4,27 @@ import { useState, useRef, useEffect } from "react";
 import { OrangeButton } from "@/components/button/button";
 import toast from "react-hot-toast";
 import { useOtpStore } from "@/app/apis/store/otp-store";
-import { useVerifyOtp } from "@/app/apis/mutations/use-auth/use-verify-otp";
-import { useResendOtp } from "@/app/apis/mutations/use-auth/use-resend-otp";
+import { useForgotPassword } from "@/app/apis/mutations/use-auth/use-forgot-password";
+import { useRouter } from "next/navigation";
 
-export default function VerifyOtpPage() {
+export default function ForgotPasswordOtpPage() {
+  const router = useRouter();
+
   const email = useOtpStore((s) => s.email);
+  const setOtp = useOtpStore((s) => s.setOtp);
 
-  const { mutate: verify, isPending } = useVerifyOtp();
   const { mutate: resend, isPending: resendLoading } =
-    useResendOtp();
+    useForgotPassword();
 
-  const [otp, setOtp] = useState(["", "", "", "", "", ""]);
+  const [otp, setOtpState] = useState([
+    "",
+    "",
+    "",
+    "",
+    "",
+    "",
+  ]);
+
   const [timer, setTimer] = useState(60);
 
   const inputsRef = useRef<Array<HTMLInputElement | null>>(
@@ -42,7 +52,7 @@ export default function VerifyOtpPage() {
 
     const newOtp = [...otp];
     newOtp[index] = value;
-    setOtp(newOtp);
+    setOtpState(newOtp);
 
     if (value && index < 5) {
       inputsRef.current[index + 1]?.focus();
@@ -59,11 +69,15 @@ export default function VerifyOtpPage() {
       return;
     }
 
-    verify(code);
+    // Store OTP globally
+    setOtp(code);
+
+    // Navigate to reset password page
+    router.push("/auth/reset-password");
   }
 
   function handleResend() {
-    resend();
+    resend({ email:email! });
     setTimer(60);
   }
 
@@ -105,8 +119,8 @@ export default function VerifyOtpPage() {
             ))}
           </div>
 
-          <OrangeButton fullWidth type="submit" disabled={isPending}>
-            {isPending ? "Verifying..." : "Verify"}
+          <OrangeButton fullWidth type="submit">
+            Proceed
           </OrangeButton>
         </form>
 
@@ -121,7 +135,9 @@ export default function VerifyOtpPage() {
               disabled={resendLoading}
               className="text-[#e87722] font-semibold hover:underline"
             >
-              Resend OTP
+              {resendLoading
+                ? "Sending..."
+                : "Resend OTP"}
             </button>
           )}
         </div>

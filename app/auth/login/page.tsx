@@ -1,14 +1,16 @@
 "use client"
 
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import Image from "next/image"
 import Link from "next/link"
 import Input from "@/components/input"
 import { OrangeButton } from "@/components/button/button"
 import { IconImage } from "@/components/icon-image/icon-image"
-import toast from "react-hot-toast"
+import { useLogin } from "@/app/apis/mutations/use-auth/use-login"
+
 
 export default function LoginPage() {
+  const { mutate, isPending } = useLogin();
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
   const [remember, setRemember] = useState(false)
@@ -51,8 +53,16 @@ export default function LoginPage() {
     })
 
     // 👉 Connect backend here
+      mutate({
+        email,
+        password,
+      });
   }
-
+  useEffect(() => {
+  if (!isPending) {
+    setPassword("");
+  }
+}, [isPending]);
   return (
     <div className="min-h-screen flex flex-col lg:flex-row">
       {/* ================= LEFT IMAGE ================= */}
@@ -172,7 +182,7 @@ export default function LoginPage() {
               </label>
 
               <Link
-                href="/forgot-password"
+                href="/auth/forgotpassword"
                 className="text-gray-500 hover:text-[#e87722]"
               >
                 Forgot Password?
@@ -180,10 +190,12 @@ export default function LoginPage() {
             </div>
 
             {/* Login Button */}
-            <OrangeButton type="submit" onClick={()=>{
-             
-            }} fullWidth>
-              Login
+            <OrangeButton
+              type="submit"
+              fullWidth
+              loading={isPending}
+                >
+             Login
             </OrangeButton>
           </form>
 
