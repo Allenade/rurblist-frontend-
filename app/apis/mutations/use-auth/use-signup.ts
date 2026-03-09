@@ -20,7 +20,7 @@ export function useSignup() {
       toast.success(`${data.message}🎉`);
       useOtpStore.getState().setEmail(variables.email);
       clearSignupData();
-      router.push(`/auth/otp-email`);
+      router.push(`/otp-email`);
     },
 
     onError: (error) => {

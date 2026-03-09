@@ -14,7 +14,7 @@ export function useForgotPassword() {
     onSuccess: (res,variables) => {
       useOtpStore.getState().setEmail(variables.email);
       toast.success(res.message);
-      router.push("/auth/forgot-password-otp");
+      router.push("/forgot-password-otp");
     },
 
     onError: (error: Error) => {

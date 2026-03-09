@@ -11,7 +11,7 @@ export const authenticatedRoutes = [
 ];
 
 
-export type Role = "Agent" | "Landlord" | "Home_Seeker";
+export type Role = "Agent" | "Landlord" | "Home_Seeker" | "Admin";
 
 export type Permission =
   | "VIEW_DASHBOARD"
@@ -32,22 +32,22 @@ export const appRoutes: AppRoute[] = [
   /* ================= PUBLIC ================= */
   { 
     title: "Login",
-    path: "/auth/login",
+    path: "/login",
     public: true 
   },
   { 
     title: "Signup",
-    path: "/auth/signup",
+    path: "/signup",
     public: true 
   },
   { 
     title: "Reset password",
-    path: "/auth/reset-password", 
+    path: "/reset-password", 
     public: true 
   },
   { 
     title: "Otp verfication",
-    path: "/auth/otp-verification",
+    path: "/otp-verification",
     public: true 
   },
   { 
@@ -57,27 +57,32 @@ export const appRoutes: AppRoute[] = [
   },
   { 
     title: "Otp Email",
-    path: "/auth/otp-email",
+    path: "/otp-email",
     public: true 
   },
   { 
     title: "forgotpassword",
-    path: "/auth/forgotpassword",
+    path: "/forgotpassword",
+    public: true 
+  },
+  { 
+    title: "Oauth successpage",
+    path: "/oAuth-success-page",
     public: true 
   },
     { 
     title: "forgot password otp",
-    path: "/auth/forgot-password-otp",
+    path: "/forgot-password-otp",
     public: true 
   },
   { 
     title: "Password recovery",
-    path: "/auth/password-recovery",
+    path: "/password-recovery",
     public: true 
   },
   { 
     title: "Email sent",
-    path: "/auth/email-sent", 
+    path: "/email-sent", 
     public: true 
   },
 
@@ -115,6 +120,11 @@ export const appRoutes: AppRoute[] = [
     roles: ["Agent", "Landlord", "Home_Seeker"],
     permissions: ["VIEW_PROFILE"],
   },
+  {
+  path: "/admin",
+  roles: ["Admin"],
+  permissions: ["MANAGE_USERS"]
+}
 ];
 
 
@@ -130,4 +140,5 @@ export const rolePermissions: Record<Role, Permission[]> = {
   Agent: ["VIEW_DASHBOARD", "MANAGE_PROPERTIES", "VIEW_PROFILE"],
   Landlord: ["VIEW_DASHBOARD", "VIEW_PROFILE"],
   Home_Seeker: ["VIEW_DASHBOARD", "VIEW_PROFILE"],
+  Admin:[]
 };

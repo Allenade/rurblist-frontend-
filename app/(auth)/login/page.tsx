@@ -103,6 +103,9 @@ export default function LoginPage() {
               hover:bg-gray-50
               transition
             "
+           onClick={() => {
+              window.location.href = `http://localhost:6003/api/auth/google-auth`;
+            }}
           >
             Login with google
           </button>

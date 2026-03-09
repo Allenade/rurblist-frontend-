@@ -40,7 +40,7 @@ export function proxy(request: NextRequest) {
 
   if (!token || !role) {
     return NextResponse.redirect(
-      new URL("/auth/login", request.url)
+      new URL("/login", request.url)
     );
   }
 

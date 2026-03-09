@@ -9,7 +9,7 @@ import { useOtpStore } from "../../store/otp-store";
 
 export function useVerifyOtp() {
   const router = useRouter();
-  const clearEmail = useOtpStore((s) => s.clearEmail);
+  const clearEmail = useOtpStore((s) => s.clear);
   const email = useOtpStore((s) => s.email);
 
   return useMutation({
@@ -22,7 +22,7 @@ export function useVerifyOtp() {
     onSuccess: (res) => {
       toast.success(res.message);
       clearEmail();
-      router.push("/auth/login");
+      router.push("/login");
     },
 
     onError: (error: Error) => {

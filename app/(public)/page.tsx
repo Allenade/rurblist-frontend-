@@ -145,7 +145,7 @@ export default function Home() {
             </h2>
           </div>
           <div className="grid gap-8 lg:grid-cols-2 lg:items-center lg:gap-12">
-            <div className="relative aspect-[4/3] overflow-hidden rounded-xl bg-muted">
+            <div className="relative aspect-4/3 overflow-hidden rounded-xl bg-muted">
               {/* Replace src with your house image path, e.g. /how-it-works-house.jpg */}
               <img
                 src="/Rectangle.svg"
@@ -156,7 +156,7 @@ export default function Home() {
             <div className="space-y-8 sm:space-y-10">
               <div className="flex gap-3">
                 <div
-                  className="h-[140px] w-[5px] shrink-0 rounded-full bg-brand-400"
+                  className="h-35 w-1.25 shrink-0 rounded-full bg-brand-400"
                   aria-hidden
                 />
                 <div>
@@ -174,7 +174,7 @@ export default function Home() {
                 </div>
               </div>
               <div className="flex gap-4">
-                <div className="w-[11px] shrink-0" aria-hidden />
+                <div className="w-2.75 shrink-0" aria-hidden />
                 <div>
                   <h1 className="font-semibold text-3xl">Step 2</h1>
                   <div className="mt-6">
@@ -189,7 +189,7 @@ export default function Home() {
                 </div>
               </div>
               <div className="flex gap-4">
-                <div className="w-[11px] shrink-0" aria-hidden />
+                <div className="w-2.75 shrink-0" aria-hidden />
                 <div>
                   <h1 className="font-semibold text-3xl">Step 3</h1>
                   <div className="mt-6">
@@ -220,7 +220,7 @@ export default function Home() {
           <div className="mt-8 grid grid-cols-1 gap-6 lg:grid-cols-2 lg:gap-8">
             {/* Large image – left */}
             <article className="overflow-hidden rounded-lg shadow-sm transition-shadow hover:shadow-md">
-              <div className="relative aspect-[4/3] w-full overflow-hidden rounded-lg bg-muted">
+              <div className="relative aspect-4/3 w-full overflow-hidden rounded-lg bg-muted">
                 <Image
                   src="/Rectangle.svg"
                   alt="Featured listing"
@@ -229,7 +229,7 @@ export default function Home() {
                   sizes="(max-width: 1024px) 100vw, 50vw"
                 />
                 <div
-                  className="absolute inset-x-0 bottom-0 h-1/3 bg-gradient-to-t from-black/70 to-transparent"
+                  className="absolute inset-x-0 bottom-0 h-1/3 bg-linear-to-t from-black/70 to-transparent"
                   aria-hidden
                 />
                 <p className="absolute bottom-4 left-4 text-base font-medium text-white sm:text-lg">
@@ -244,7 +244,7 @@ export default function Home() {
                   key={i}
                   className="overflow-hidden rounded-lg shadow-sm transition-shadow hover:shadow-md"
                 >
-                  <div className="relative aspect-[4/3] w-full overflow-hidden rounded-lg bg-muted">
+                  <div className="relative aspect-4/3 w-full overflow-hidden rounded-lg bg-muted">
                     <Image
                       src="/Rectangle.svg"
                       alt={`Listing ${i}`}
@@ -253,7 +253,7 @@ export default function Home() {
                       sizes="(max-width: 1024px) 50vw, 25vw"
                     />
                     <div
-                      className="absolute inset-x-0 bottom-0 h-1/3 bg-gradient-to-t from-black/70 to-transparent"
+                      className="absolute inset-x-0 bottom-0 h-1/3 bg-linear-to-t from-black/70 to-transparent"
                       aria-hidden
                     />
                     <p className="absolute bottom-3 left-3 text-sm font-medium text-white sm:bottom-4 sm:left-4 sm:text-base">
@@ -271,7 +271,7 @@ export default function Home() {
       <section className="bg-white py-16 sm:py-20 lg:py-24">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 gap-8 lg:grid-cols-[7fr_3fr] lg:items-center lg:gap-12">
-            <div className="relative min-h-[340px] w-full overflow-hidden rounded-xl bg-muted sm:min-h-[400px] lg:min-h-[520px]">
+            <div className="relative min-h-85 w-full overflow-hidden rounded-xl bg-muted sm:min-h-100 lg:min-h-130">
               <Image
                 src="/laptop.svg"
                 alt="Expert help - legal and inspection team"
@@ -374,7 +374,7 @@ export default function Home() {
                 <OrangeButton>See full trust promise</OrangeButton>
               </div>
             </div>
-            <div className="relative aspect-[540/667] overflow-hidden rounded-lg bg-muted">
+            <div className="relative aspect-540/667 overflow-hidden rounded-lg bg-muted">
               <Image
                 src="/house.svg"
                 alt="The Rurblist Promise - trust and verification"
@@ -393,7 +393,7 @@ export default function Home() {
 
       {/* Confused about a property? – homebackground.jpg as background */}
       <section
-        className="relative min-h-[400px] w-full bg-cover bg-center bg-no-repeat py-20 sm:min-h-[500px] sm:py-24 lg:min-h-[560px] lg:py-28"
+        className="relative min-h-100 w-full bg-cover bg-center bg-no-repeat py-20 sm:min-h-125 sm:py-24 lg:min-h-140 lg:py-28"
         style={{ backgroundImage: "url(/background.svg)" }}
         aria-label="Request Property Advisory"
       >
@@ -497,7 +497,7 @@ export default function Home() {
                 </button>
               </div>
             </div>
-            <div className="relative aspect-[458/441] w-full overflow-hidden rounded-lg">
+            <div className="relative aspect-458/441 w-full overflow-hidden rounded-lg">
               <Image
                 src="/human.svg"
                 alt="Happy customer - testimonial"

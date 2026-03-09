@@ -109,6 +109,19 @@ export async function resetPassword(
 
   return res;
 }
+
+export async function verifyGoogleOtp(otp: string): Promise<ApiResponse<RefreshResponse>> {
+  const res = await api.post<RefreshResponse>(
+    "/auth/verify-google-otp",
+    { otp }
+  );
+    const token=res.data?.accessToken;
+  if (res.statusCode >= 400 || !token) {
+    throw new Error(res.message);
+  }
+   await setAuthCookie(token)
+  return res;
+}
 const setAuthCookie = async (token: string) => {
   const cookieStore = await cookies();
 

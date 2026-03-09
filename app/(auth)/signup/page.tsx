@@ -220,6 +220,9 @@ export default function RegisterPage() {
               hover:bg-gray-50
               transition
             "
+             onClick={() => {
+              window.location.href = `http://localhost:6003/api/auth/google-auth`;
+            }}
           >
             Continue with google
           </button>

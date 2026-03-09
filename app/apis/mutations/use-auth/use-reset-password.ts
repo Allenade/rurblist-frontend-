@@ -16,7 +16,7 @@ export function useResetPassword() {
     onSuccess: (res) => {
       toast.success(res.message);
       clearOtpStore()
-      router.push("/auth/login");
+      router.push("/login");
     },
 
     onError: (error: Error) => {
