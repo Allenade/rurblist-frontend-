@@ -1,12 +1,13 @@
+import { ApiResponse } from "../../base-response";
 import { api } from "../../call-apis";
-import { AuthUser } from "../auth-services/auth-services";
+import { UserModel } from "../../models/user-model";
 
-export async function getCurrentUser() {
-  const res = await api.authGet<AuthUser>("/auth/me");
+export async function getCurrentUser():Promise<ApiResponse<UserModel>> {
+  const res = await api.authGet<UserModel>("/user/me");
 
   if (res.error) {
     throw new Error(res.message);
   }
 
-  return res.data;
+  return res;
 }

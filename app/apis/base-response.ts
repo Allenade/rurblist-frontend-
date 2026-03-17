@@ -4,6 +4,7 @@ export type ApiResponse<T> = {
   statusCode: number;
   error?: string;
   success?:boolean;
+  count?: number;
 };
 
 export type HttpMethod = "GET" | "POST" | "PATCH" | "DELETE";

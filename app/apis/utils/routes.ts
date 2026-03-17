@@ -1,16 +1,3 @@
-
-export const authenticatedRoutes = [
-  {
-    title: "Home",
-    path: "/",
-  },
-  {
-    title: "Dashboard",
-    path: "/dashboard",
-  },
-];
-
-
 export type Role = "Agent" | "Landlord" | "Home_Seeker" | "Admin";
 
 export type Permission =
@@ -26,6 +13,7 @@ export type AppRoute = {
   roles?: Role[]; // allowed roles
   permissions?: Permission[]; // advanced permission system
   defaultRedirect?: boolean; // role landing page
+  showInNaBar?:boolean;
 };
 
 export const appRoutes: AppRoute[] = [
@@ -87,17 +75,31 @@ export const appRoutes: AppRoute[] = [
   },
 
   /* ================= DEFAULT LANDING ================= */
+    {
+    path: "/",
+    title:"Home",
+    showInNaBar:true,
+    roles: ["Agent","Home_Seeker","Landlord","Admin"],
+    permissions: ["MANAGE_PROPERTIES"],
+  },
   {
     path: "/property",
     title:"Property",
-    roles: ["Home_Seeker"],
+    roles: ["Home_Seeker", "Agent","Landlord","Admin"],
     defaultRedirect: true,
+    showInNaBar:true
   },
   {
     title:"List your property",
-    path: "/agent/private",
-    roles: ["Agent"],
+    path: "/list-properties",
+    roles: ["Agent","Admin","Landlord"],
     defaultRedirect: true,
+    showInNaBar:true
+  },
+   {
+    title:"Add new Property",
+    path: "/agent/add-property",
+    roles: ["Agent","Admin","Landlord"],
   },
   {
     path: "/landlord/dashboard",
@@ -106,14 +108,100 @@ export const appRoutes: AppRoute[] = [
   },
 
   /* ================= ROLE BASED ================= */
+
   {
-    path: "/agent",
-    roles: ["Agent"],
+    path: "/property-advisory",
+    roles: ["Agent","Admin","Landlord"],
+    title: "Property Advisory",
+    showInNaBar:true,
+    permissions: ["MANAGE_PROPERTIES"],
+  },
+   {
+    path: "/agent/agreement",
+    roles: ["Agent","Admin","Landlord"],
+    title: "Agent Agreement",
+    permissions: ["MANAGE_PROPERTIES"],
+  },
+   {
+    path: "/agent/private",
+    roles: ["Agent","Admin","Landlord"],
+    title: "Agent Private",
+    permissions: ["MANAGE_PROPERTIES"],
+  },
+
+  {
+    path: "/agent/profile",
+    roles: ["Agent","Admin","Landlord","Home_Seeker"],
+    title: "Agent Private",
+    permissions: ["MANAGE_PROPERTIES"],
+  },
+
+  {
+    path: "/agent/request",
+    roles: ["Agent","Admin","Landlord","Home_Seeker"],
+    title: "Agent Private",
     permissions: ["MANAGE_PROPERTIES"],
   },
   {
-    path: "/landlord",
-    roles: ["Landlord"],
+    path: "/house-seeker/profile",
+    roles: ["Agent","Admin","Landlord","Home_Seeker"],
+    title: "House Seeker Profile",
+    permissions: ["MANAGE_PROPERTIES"],
+  },
+  {
+    path: "/kyc/add-property",
+    roles: ["Agent","Admin","Landlord"],
+    title: "Add Property",
+    permissions: ["MANAGE_PROPERTIES"],
+  },
+  {
+    path: "/kyc/add-property-details",
+    roles: ["Agent","Admin","Landlord"],
+    title: "Add Property Details",
+    permissions: ["MANAGE_PROPERTIES"],
+  },
+   {
+    path: "/kyc",
+    roles: ["Agent","Admin","Landlord"],
+    title: "Kyc",
+    permissions: ["MANAGE_PROPERTIES"],
+  },
+   {
+    path: "/payment",
+    roles: ["Agent","Admin","Landlord","Home_Seeker"],
+    title: "Payment",
+    permissions: ["MANAGE_PROPERTIES"],
+  },
+   {
+    path: "/payment/success",
+    roles: ["Agent","Admin","Landlord","Home_Seeker"],
+    title: "Payent success",
+    permissions: ["MANAGE_PROPERTIES"],
+  },
+   {
+    path: "/payment/complete",
+    roles: ["Agent","Admin","Landlord","Home_Seeker"],
+    title: "Payment complete",
+    permissions: ["MANAGE_PROPERTIES"],
+  },
+   {
+    path: "/property/",
+    roles: ["Agent","Admin","Landlord","Home_Seeker"],
+    title: "Property details",
+    permissions: ["MANAGE_PROPERTIES"],
+  },
+   {
+    path: "/property/escrow",
+    roles: ["Home_Seeker"],
+    title: "Property Escrow",
+    permissions: ["MANAGE_PROPERTIES"],
+  },
+
+  {
+    path: "/verification",
+    roles: ["Home_Seeker","Agent"],
+    title: "verification",
+    permissions: ["MANAGE_PROPERTIES"],
   },
   {
     path: "/profile",
@@ -142,3 +230,4 @@ export const rolePermissions: Record<Role, Permission[]> = {
   Home_Seeker: ["VIEW_DASHBOARD", "VIEW_PROFILE"],
   Admin:[]
 };
+

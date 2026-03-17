@@ -3,7 +3,7 @@
 import { jwtDecode } from "jwt-decode";
 import { ApiResponse } from "../../base-response";
 import { api } from "../../call-apis";
-import { LoginPayload, LoginResponse, RefreshResponse } from "../../models/login-model";
+import { RefreshResponse } from "../../models/login-model";
 import { SignupPayload } from "../../models/signup-model";
 import { cookies } from "next/headers";
 import { AUTHENTICATION_COOKIE } from "../../utils/api-links";
@@ -15,23 +15,6 @@ export type AuthUser = {
   name: string;
 };
 
-
-
-export async function login(data: LoginPayload): Promise<ApiResponse<LoginResponse>> {
-  const res = await api.post<LoginResponse>("/auth/login", data);
-  const token = res.data?.token;
-  if (res.statusCode >= 400) {
-    console.log(res.message)
-    throw new Error(res.message);
-  }
-  console.log(token)
-  if (!token) {
-    throw new Error("Token missing from response");
-  }
-
-  await setAuthCookie(token)
-  return res;
-}
 
 export async function signup(data: SignupPayload): Promise<ApiResponse<null>>{
   const res = await api.post<null>("/auth/create-user", data);
@@ -68,7 +51,7 @@ export async function resendOtp(email: string) {
 
 export async function refreshToken(): Promise<ApiResponse<RefreshResponse>> {
   const res = await api.post<RefreshResponse>(
-    "/auth/refresh"
+    "/auth/refresh-token"
   );
    const token=res.data?.accessToken;
   if (res.statusCode >= 400 || !res.data?.accessToken) {
@@ -77,6 +60,7 @@ export async function refreshToken(): Promise<ApiResponse<RefreshResponse>> {
   if (!token) {
     throw new Error("Token missing from response");
   }
+  console.log(res)
    await setAuthCookie(token)
   return res;
 }
@@ -134,6 +118,6 @@ const setAuthCookie = async (token: string) => {
     secure: isProduction,
     sameSite: isProduction ? "none" : "lax",
     path: "/",
-    expires: new Date(decoded.exp * 1000),
+    expires:new Date(Date.now() + 72 * 60 * 60 * 1000) // 3 days
   });
 };

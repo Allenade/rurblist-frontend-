@@ -1,21 +1,33 @@
 "use client"
 
 interface PropertyMapProps {
-  location: string
+  address?: string
+  latitude?: number
+  longitude?: number
   height?: string
 }
 
 export default function PropertyMap({
-  location,
+  address,
+  latitude,
+  longitude,
   height = "h-[400px]",
 }: PropertyMapProps) {
-  const encodedLocation = encodeURIComponent(location)
+
+  let mapSrc = ""
+
+  if (latitude && longitude) {
+    mapSrc = `https://www.google.com/maps?q=${latitude},${longitude}&output=embed`
+  } else if (address) {
+    const encodedLocation = encodeURIComponent(address)
+    mapSrc = `https://www.google.com/maps?q=${encodedLocation}&output=embed`
+  }
 
   return (
     <section className="w-full mt-5">
       <div className="max-w-300 mx-auto px-2">
         <div
-          className={`w-full ${height}  overflow-hidden border border-gray-200`}
+          className={`w-full ${height} overflow-hidden border border-gray-200`}
         >
           <iframe
             title="Property Location"
@@ -24,7 +36,7 @@ export default function PropertyMap({
             loading="lazy"
             allowFullScreen
             referrerPolicy="no-referrer-when-downgrade"
-            src={`https://www.google.com/maps?q=${encodedLocation}&output=embed`}
+            src={mapSrc}
             className="w-full h-full"
           />
         </div>

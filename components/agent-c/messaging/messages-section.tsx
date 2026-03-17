@@ -1,0 +1,56 @@
+"use client"
+
+import MessageCard from "./message-card"
+import { IconImage } from "@/components/icon-image/icon-image"
+
+interface Message {
+  id: string
+  name: string
+  message: string
+  date: string
+  property: string
+  timestamp: string
+  avatar?: string
+}
+
+interface MessagesSectionProps {
+  messages: Message[]
+}
+
+export default function MessagesSection({
+  messages,
+}: MessagesSectionProps) {
+  return (
+    <section className="mt-10">
+      
+      {/* Header */}
+      <div className="flex items-center gap-3 mb-6">
+        <h2 className="text-2xl sm:text-3xl font-semibold font-[Georgia]">
+          Messages
+        </h2>
+
+        <IconImage
+          src="/icons/mail (1).svg"
+          alt="messages"
+          width={26}
+          height={26}
+        />
+      </div>
+
+      {/* Grid */}
+      <div
+        className="
+        grid
+        grid-cols-1
+        sm:grid-cols-2
+        lg:grid-cols-3
+        gap-6
+      "
+      >
+        {messages.map((msg) => (
+          <MessageCard key={msg.id} {...msg} />
+        ))}
+      </div>
+    </section>
+  )
+}

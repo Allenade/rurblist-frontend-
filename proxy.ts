@@ -17,8 +17,17 @@ export function proxy(request: NextRequest) {
   const { pathname } = request.nextUrl;
 
   const token = request.cookies.get(AUTHENTICATION_COOKIE)?.value;
-  const decodedToken=decodeToken(token!)
-  const role = decodedToken?.role as Role | undefined;
+  console.log(token)
+ let role: Role | undefined;
+
+if (token) {
+  try {
+    const decoded = decodeToken(token);
+    role = decoded?.role as Role | undefined;
+  } catch {
+    role = undefined;
+  }
+}
 
   const route = matchRoute(pathname);
   
@@ -38,7 +47,7 @@ export function proxy(request: NextRequest) {
 
   /* ================= REQUIRE AUTH ================= */
 
-  if (!token || !role) {
+  if (!token) {
     return NextResponse.redirect(
       new URL("/login", request.url)
     );
@@ -46,14 +55,14 @@ export function proxy(request: NextRequest) {
 
    /* ================= ROLE CHECK ================= */
 
-  if (route?.roles && !route.roles.includes(role)) {
+  if (route?.roles && role && !route.roles.includes(role)) {
     return NextResponse.redirect(
       new URL("/unauthorized", request.url)
     );
   }
   /* ================= PERMISSION CHECK ================= */
 
-  if (route?.permissions) {
+  if (route?.permissions && role) {
     const permissions = rolePermissions[role] ?? [];
 
     const hasPermission = route.permissions.every((p) =>

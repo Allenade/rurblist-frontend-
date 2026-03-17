@@ -25,4 +25,5 @@ export const api = {
 
   authDelete: <T>(path: string): Promise<ApiResponse<T>> =>
     request<T>("DELETE", path, { protected: true }),
-};
+
+  };

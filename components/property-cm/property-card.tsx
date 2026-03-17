@@ -2,28 +2,39 @@
 
 import Image from "next/image"
 import { IconImage } from "../icon-image/icon-image"
+import { useRouter } from "next/navigation";
 
 interface PropertyCardProps {
-  image: string
-  title: string
-  price: string
-  badge?: string
-  bedrooms: number
-  bathrooms: number
-  size: number
+  id?: string;
+  title: string;
+  price: number;
+  status: "For_Rent" | "For_Sale" | "Sold";
+  bedrooms: number;
+  bathrooms: number;
+  sqft: number;
+  image: string;
+  showControls?: boolean
+  onEdit?: (id?: string) => void
+  onDelete?: (id?: string) => void
 }
 
 export default function PropertyCard({
+  id,
   image,
   title,
   price,
-  badge = "For rent",
+  status ,
   bedrooms,
   bathrooms,
-  size,
+  sqft,
+  showControls = false,
+  onEdit,
+  onDelete,
 }: PropertyCardProps) {
+  const router = useRouter();
   return (
     <div
+      onClick={() => router.push(`/property/${id}`)}
       className="
         group
         bg-white
@@ -34,6 +45,7 @@ export default function PropertyCard({
         duration-300
         hover:-translate-y-2
         hover:shadow-xl
+        cursor-pointer
       "
     >
       {/* Image */}
@@ -56,7 +68,7 @@ export default function PropertyCard({
 
         {/* Badge */}
         <div className="absolute top-4 left-4 sm:top-5 sm:left-5 bg-[#FFDDC5] text-black text-xs sm:text-sm px-3 sm:px-4 py-1.5 sm:py-2 rounded-lg shadow-sm font-medium">
-          {badge}
+          {status === "For_Rent" ? "For rent" : "For sale"}
         </div>
       </div>
 
@@ -70,11 +82,13 @@ export default function PropertyCard({
         {/* Price */}
         <div className="mt-4 flex items-end gap-2 sm:gap-3 flex-wrap">
           <span className="text-2xl sm:text-3xl lg:text-[34px] font-bold tracking-tight text-black">
-            {price}
+            ₦{price.toLocaleString()}
           </span>
+           {status === "For_Rent" && (
           <span className="text-sm sm:text-base text-gray-600 mb-1">
             yearly
           </span>
+           )}
         </div>
 
         {/* Meta */}
@@ -107,10 +121,45 @@ export default function PropertyCard({
               src="/icons/tdesign_measurement-2.svg"
               alt="size"
             />
-            <span>{size} sqft</span>
+            <span>{sqft} sqft</span>
           </div>
         </div>
+         {/* Controls */}
+        {showControls && (
+          <div
+            className="flex items-center gap-5 mt-5 text-sm"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <button
+              onClick={() => onEdit?.(id)}
+              className="flex items-center gap-2 text-gray-700 hover:text-black"
+            >
+              <IconImage
+                src="/icons/edit-2.svg"
+                alt="edit"
+                width={16}
+                height={16}
+              />
+              Edit
+            </button>
+
+            <button
+              onClick={() => onDelete?.(id)}
+              className="flex items-center gap-2 text-red-600 hover:text-red-700"
+            >
+              <IconImage
+                src="/icons/trash-2.svg"
+                alt="delete"
+                width={16}
+                height={16}
+              />
+              Delete
+            </button>
+          </div>
+        )}
       </div>
+      
+
     </div>
   )
 }
