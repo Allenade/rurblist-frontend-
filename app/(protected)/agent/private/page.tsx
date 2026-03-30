@@ -1,125 +1,99 @@
-"use client";
+'use client';
 
-import { useEffect, useState } from "react";
-import { AddNewPropertyPopup, PropertyAddedSuccessPopup } from "@/components/popUp";
-import { useLayoutStore } from "@/store/layout-store";
-import BackNavbar from "@/components/agent-c/back-navbar";
-import { AgentInfoSection } from "@/components/agent-c/agent-info-section";
-import CurrentListingsSection from "@/components/agent-c/current-listings-section";
-import MessagesSection from "@/components/agent-c/messaging/messages-section";
-
-
+import { useEffect } from 'react';
+import { useRouter } from 'next/navigation';
+import BackNavbar from '@/components/agent-c/back-navbar';
+import { AgentInfoSection } from '@/components/agent-c/agent-info-section';
+import AgentInfoSectionSkeleton from '@/components/agent-c/agent-info-section-skeleton';
+import CurrentListingsSection from '@/components/agent-c/current-listings-section';
+import CurrentListingsSectionSkeleton from '@/components/agent-c/current-listings-section-skeleton';
+import MessagesSection from '@/components/agent-c/messaging/messages-section';
+import MessagesSectionSkeleton from '@/components/agent-c/messaging/messages-section-skeleton';
+import { useGetCurrentAgent } from '@/app/apis/mutations/use-agent/get-current-agent';
+import { useGetMyProperties } from '@/app/apis/mutations/use-property/use-get-my-properties';
+import { useAuth } from '@/components/layout/auth-provider';
+import { useLayoutStore } from '@/store/layout-store';
 
 export default function AgentPrivateProfilePage() {
   const setHideNavbar = useLayoutStore((state) => state.setHideNavbar);
-  const [showAddListingModal, setShowAddListingModal] = useState(false);
-  const [showSuccessPopup, setShowSuccessPopup] = useState(false);
+  const router = useRouter();
+  const { user } = useAuth();
 
+  const { data, isLoading } = useGetCurrentAgent();
+  const { data: propertiesData, isLoading: isPropertiesLoading } = useGetMyProperties();
+  const isAgent = data?.data;
   useEffect(() => {
     setHideNavbar(true);
     return () => setHideNavbar(false);
   }, [setHideNavbar]);
 
+  const agentData = data?.data;
+  const currentAgent = agentData?.agent;
+  const properties = propertiesData?.data ?? [];
+
+  const agent = {
+    name:
+      currentAgent?.fullName ||
+      user?.fullName ||
+      [agentData?.firstName, agentData?.lastName].filter(Boolean).join(' ') ||
+      'Agent',
+    agency: agentData?.companyName || currentAgent?.role || 'Real estate agency',
+    experience: `${agentData?.yearsOfExperience ?? 0} years of experience`,
+    location:
+      [agentData?.city, agentData?.address].filter(Boolean).join(', ') || 'No location added',
+    image:
+      currentAgent?.profileImage?.url || user?.profileImage?.url || '/image/profile-image2.jpg',
+    phone: currentAgent?.phoneNumber || user?.phoneNumber || 'No phone number added',
+    email: currentAgent?.email || user?.email || 'No email added',
+    about:
+      agentData?.description || 'Create your agent profile to add your agency details and bio.',
+  };
+
+  const listings = properties.map((property) => ({
+    id: property._id,
+    title: property.title,
+    price: property.price,
+    status: property.status as 'For_Rent' | 'For_Sale' | 'Sold',
+    bedrooms: property.bedrooms,
+    bathrooms: property.bathrooms,
+    sqft: property.size,
+    image: property.images?.[0]?.url || '/image/image1.jpg',
+  }));
+
+  const messages: Array<{
+    id: string;
+    name: string;
+    message: string;
+    date: string;
+    property: string;
+    timestamp: string;
+    avatar?: string;
+  }> = [];
+
   return (
     <div>
       <BackNavbar logoSrc="/Rublist.svg" />
-       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <AgentInfoSection
-          agent={{
-            name: "Jane Austen",
-            agency: "ABC real estate agency",
-            experience: "10 years of experience",
-            location: "Warri, Ughelli",
-            image: "/image/profile-image2.jpg",
-            phone: "(+234) 220 022 002",
-            email: "Jane@Rubrlist.com",
-            about:
-              "This modern 2-bedroom apartment is located in the heart of Ikeja, offering convenience and comfort for urban living. Featuring spacious bedrooms, a fully equipped kitchen, and a balcony with panoramic views, this apartment is perfect for professionals or small families. Enjoy access to on-site amenities including a swimming pool, gym, and 24/7 security.",
-          }}
-        />
-        <CurrentListingsSection
-          properties={[
-            {
-              id: "1",
-              title: "Modern 2-Bedroom Apartment in Prime Location",
-              price: 2000000,
-              status: "For_Rent",
-              bedrooms: 2,
-              bathrooms: 2,
-              sqft: 800,
-              image: "/image/image3.jpg",
-            },
-            {
-              id: "2",
-              title: "Modern 2-Bedroom Apartment in Prime Location",
-              price: 3000000,
-              status: "For_Rent",
-              bedrooms: 2,
-              bathrooms: 2,
-              sqft: 800,
-              image: "/image/image1.jpg",
-            },
-            {
-              id: "3",
-              title: "Modern 2-Bedroom Apartment in Prime Location",
-              price: 4000000,
-              status: "For_Rent",
-              bedrooms: 2,
-              bathrooms: 2,
-              sqft: 800,
-              image: "/image/image2.jpg",
-            },
-            {
-              id: "4",
-              title: "Modern 2-Bedroom Apartment in Prime Location",
-              price: 5000000,
-              status: "For_Rent",
-              bedrooms: 2,
-              bathrooms: 2,
-              sqft: 800,
-              image: "/image/image4.jpg",
-            },
-          ]}
-        />
-
-        <MessagesSection
-          messages={[
-            {
-              id: "1",
-              name: "John D",
-              message: "Requested Tour: In-person",
-              date: "Date & Time: Thursday, October 12th, 3:00 PM",
-              property: "Greenwich Village Apartment",
-              timestamp: "October 2nd, 2024. 10am",
-            },
-            {
-              id: "2",
-              name: "Tolu D",
-              message: "Requested Tour: In-person",
-              date: "Date & Time: Thursday, October 12th, 3:00 PM",
-              property: "Greenwich Village Apartment",
-              timestamp: "October 2nd, 2024. 10am",
-            },
-            {
-              id: "3",
-              name: "Joshua Omozua",
-              message: "Requested Tour: In-person",
-              date: "Date & Time: Thursday, October 12th, 3:00 PM",
-              property: "Greenwich Village Apartment",
-              timestamp: "October 2nd, 2024. 10am",
-            },
-            {
-              id: "4",
-              name: "pater D",
-              message: "Requested Tour: In-person",
-              date: "Date & Time: Thursday, October 12th, 3:00 PM",
-              property: "Greenwich Village Apartment",
-              timestamp: "October 2nd, 2024. 10am",
-            },
-        ]}
-/>
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        {isLoading ? (
+          <AgentInfoSectionSkeleton />
+        ) : (
+          <AgentInfoSection
+            agent={agent}
+            isCreateAgent={!isAgent}
+            onActionClick={() => {
+              if (!isAgent) {
+                router.push('/agent/request');
+              }
+            }}
+          />
+        )}
+        {isPropertiesLoading ? (
+          <CurrentListingsSectionSkeleton />
+        ) : (
+          <CurrentListingsSection properties={listings} />
+        )}
+        {isLoading ? <MessagesSectionSkeleton /> : <MessagesSection messages={messages} />}
       </div>
     </div>
-  
   );
 }

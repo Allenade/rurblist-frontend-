@@ -51,6 +51,12 @@ export default function MessagesSection({
           <MessageCard key={msg.id} {...msg} />
         ))}
       </div>
+
+      {messages.length === 0 && (
+        <div className="bg-white border border-gray-200 rounded-xl p-6 text-sm text-gray-500">
+          No messages yet.
+        </div>
+      )}
     </section>
   )
 }

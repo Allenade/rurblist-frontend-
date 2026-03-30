@@ -7,7 +7,7 @@ import { getPropertyById } from "../../services/property-service/property-servic
 export function useGetPropertyById(id: string) {
 
   return useQuery({
-    queryKey: ["property", id],
+    queryKey: ["propertyId", id],
     queryFn: () => getPropertyById(id),
     enabled: !!id,
     refetchOnWindowFocus: true

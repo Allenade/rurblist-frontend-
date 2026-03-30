@@ -1,54 +1,55 @@
-'use client'
+'use client';
 
-import React, { useState } from 'react'
-import Comment from './comment'
-import { OrangeButton } from '../button/button'
+import { useState, useMemo } from 'react';
+import Comment from './comment';
+import CommentModalSkeleton from './comment-modal-skeleton';
+import { usePropertyComments } from '@/app/apis/mutations/use-comments/use-get-comments';
+import { CommentModel } from '@/app/apis/models/comment-model';
+import { useAuth } from '../layout/auth-provider';
 
-export interface CommentType {
-  id: string
-  profileImage: string
-  name: string
-  date: string
-  text: string
-  role?: string
-  replies?: CommentType[]
-}
 interface CommentModalProps {
-  isOpen: boolean
-  onClose: () => void
-  comments: CommentType[]
+  isOpen: boolean;
+  onClose: () => void;
+  id: string; // propertyId
 }
 
-export default function CommentModal({
-  isOpen,
-  onClose,
-  comments
-}: CommentModalProps) {
-  const [sortBy, setSortBy] = useState('newest')
+export default function CommentModal({ isOpen, onClose, id }: CommentModalProps) {
+  const [sortBy, setSortBy] = useState<'newest' | 'oldest'>('newest');
+  const user = useAuth();
+  const { data, fetchNextPage, hasNextPage, isFetchingNextPage, isLoading } =
+    usePropertyComments(id);
 
-  if (!isOpen) return null
+  // ✅ flatten pages
+  const comments = useMemo(() => {
+    const flat =
+      data?.pages.flatMap((page) => page.data).filter((c): c is CommentModel => !!c) ?? [];
+
+    return sortBy === 'oldest' ? [...flat].reverse() : flat;
+  }, [data, sortBy]);
+
+  if (!isOpen) return null;
 
   return (
-<div className="fixed inset-0 z-50 flex items-center justify-center p-4 backdrop-blur-sm">
-      <div className="bg-white rounded-lg w-full max-w-2xl max-h-96 flex flex-col">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 backdrop-blur-sm">
+      <div className="bg-white rounded-lg w-full max-w-2xl max-h-[80vh] flex flex-col">
         {/* Header */}
         <div className="flex items-center justify-between p-4 border-b border-gray-200">
-          <button
-            onClick={onClose}
-            className="text-xl font-bold text-gray-900"
-          >
+          <button onClick={onClose} className="text-xl font-bold text-gray-900">
             ✕
           </button>
+
           <h2 className="text-xl font-bold text-gray-900">Comments</h2>
+
           <div className="w-6" />
         </div>
 
         {/* Sort */}
         <div className="px-4 pt-4 flex items-center gap-2">
           <span className="text-sm text-gray-700">≡ ↑</span>
+
           <select
             value={sortBy}
-            onChange={(e) => setSortBy(e.target.value)}
+            onChange={(e) => setSortBy(e.target.value as 'newest' | 'oldest')}
             className="text-sm font-medium text-gray-700 bg-transparent cursor-pointer hover:underline"
           >
             <option value="newest">Newest</option>
@@ -57,15 +58,38 @@ export default function CommentModal({
         </div>
 
         {/* Comments List */}
-        <div className="overflow-y-auto flex-1 px-4">
-          {comments.map(comment => (
-             <Comment
-      key={comment.id}
-      comment={comment}
-    />
-          ))}
+        <div className="overflow-y-auto flex-1 px-4 py-4 space-y-4">
+          {/* Loading */}
+          {isLoading && <CommentModalSkeleton />}
+
+          {/* Comments */}
+          {!isLoading &&
+            comments.map((comment) => (
+            <Comment
+              key={comment?._id}
+              comment={comment}
+              currentUser={user.user}
+              propertyId={id}
+            />
+            ))}
+
+          {/* Load More */}
+          {hasNextPage && (
+            <button
+              onClick={() => fetchNextPage()}
+              disabled={isFetchingNextPage}
+              className="w-full text-sm text-[#e87722] py-2"
+            >
+              {isFetchingNextPage ? 'Loading...' : 'Load more'}
+            </button>
+          )}
+
+          {/* Empty */}
+          {!isLoading && comments.length === 0 && (
+            <p className="text-sm text-gray-500 text-center">No comments yet</p>
+          )}
         </div>
       </div>
     </div>
-  )
+  );
 }

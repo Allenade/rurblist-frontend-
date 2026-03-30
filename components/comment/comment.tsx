@@ -1,68 +1,87 @@
-'use client'
+'use client';
 
-import React, { useState } from 'react'
-import ProfileImage from '../profile-image/profile-image'
-import { IconImage } from '../icon-image/icon-image'
+import React, { useState } from 'react';
+import ProfileImage from '../profile-image/profile-image';
+import { IconImage } from '../icon-image/icon-image';
+import { CommentModel } from '@/app/apis/models/comment-model';
+import { UserModel } from '@/app/apis/models/user-model';
+import { useCommentMutation } from '@/app/apis/mutations/use-comments/use-post-comment-reply';
+import { OrangeButton } from '../button/button';
 
 interface CommentProps {
-  comment: any
+  comment: CommentModel;
+  currentUser: UserModel | null;
+  propertyId: string;
+  showReplyAction?: boolean;
 }
 
-export default function Comment({ comment }: CommentProps) {
-  const [showReplies, setShowReplies] = useState(false)
-  const [showReplyInput, setShowReplyInput] = useState(false)
-  const [replyText, setReplyText] = useState('')
-
-  const hasReplies = comment.replies && comment.replies.length > 0
+export default function Comment({
+  comment,
+  currentUser,
+  propertyId,
+  showReplyAction = true,
+}: CommentProps) {
+  const [showReplies, setShowReplies] = useState(false);
+  const [showReplyInput, setShowReplyInput] = useState(false);
+  const [replyText, setReplyText] = useState('');
+  const { replyComment, isReplying } = useCommentMutation(propertyId);
+  const hasReplies = comment.replies && comment.replies.length > 0;
+  const formattedDate = new Date(comment.createdAt).toLocaleDateString('en-GB', {
+    day: '2-digit',
+    month: '2-digit',
+    year: 'numeric',
+  });
 
   const handleSendReply = () => {
-    if (!replyText.trim()) return
-    console.log('Reply:', replyText)
-    setReplyText('')
-    setShowReplyInput(false)
-  }
+    if (!replyText.trim()) return;
+
+    replyComment({
+      parentCommentId: comment._id,
+      text: replyText,
+    });
+
+    setReplyText('');
+    setShowReplyInput(false);
+    setShowReplies(true);
+  };
 
   return (
     <div className="py-5 border-b border-gray-200 last:border-b-0">
       <div className="flex gap-3">
         <ProfileImage
-          src={comment.profileImage}
-          alt={comment.name}
+          src={comment.user.profileImage?.url || '/image/profile-img.png'}
+          alt={comment.user.fullName || 'user'}
           size="sm"
         />
 
         <div className="flex-1">
           <div className="flex items-center gap-2">
-            <h4 className="font-semibold text-gray-900">
-              {comment.name}
-            </h4>
-            {comment.role && (
-              <span className="text-xs text-[#e87722]">
-                {comment.role}
-              </span>
+            <h4 className="font-semibold text-gray-900">{comment.user.fullName}</h4>
+            {comment.user.role && (
+              <span className="text-xs text-[#e87722]">{comment.user.role}</span>
             )}
           </div>
 
-          <p className="text-xs text-gray-500 mb-2">
-            {comment.date}
-          </p>
+          <p className="text-xs text-gray-500 mb-2">{formattedDate}</p>
 
-          <p className="text-gray-700 mb-3">
-            {comment.text}
-          </p>
+          <p className="text-gray-700 mb-3">{comment.text}</p>
 
           {/* Reply + Toggle */}
           <div className="flex items-center justify-between text-sm">
-            <button
-              onClick={() => setShowReplyInput(prev => !prev)}
-              className="text-[#e87722] font-medium"
-            >
-              Reply
-            </button>
+            {showReplyAction ? (
+              <button
+                onClick={() => setShowReplyInput((prev) => !prev)}
+                className="text-[#e87722] font-medium"
+              >
+                Reply
+              </button>
+            ) : (
+              <div />
+            )}
 
             {hasReplies && (
               <button
-                onClick={() => setShowReplies(prev => !prev)}
+                onClick={() => setShowReplies((prev) => !prev)}
                 className="flex items-center gap-1 text-[#e87722]"
               >
                 {comment.replies.length} response
@@ -71,9 +90,7 @@ export default function Comment({ comment }: CommentProps) {
                   alt="toggle"
                   width={14}
                   height={14}
-                  className={`transition-transform ${
-                    showReplies ? 'rotate-180' : ''
-                  }`}
+                  className={`transition-transform ${showReplies ? 'rotate-180' : ''}`}
                 />
               </button>
             )}
@@ -83,8 +100,8 @@ export default function Comment({ comment }: CommentProps) {
           {showReplyInput && (
             <div className="mt-4 flex gap-3">
               <ProfileImage
-                src="/image/profile-img.png"
-                alt="you"
+                src={currentUser?.profileImage?.url || '/image/profile-img.png'}
+                alt={currentUser?.fullName || 'user'}
                 size="sm"
               />
               <div className="flex-1">
@@ -94,12 +111,13 @@ export default function Comment({ comment }: CommentProps) {
                   placeholder="Write a reply..."
                   className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#e87722]"
                 />
-                <button
+                <OrangeButton
+                  loading={isReplying}
                   onClick={handleSendReply}
                   className="mt-2 bg-[#e87722] text-white px-4 py-1.5 rounded-lg text-sm"
                 >
                   Send
-                </button>
+                </OrangeButton>
               </div>
             </div>
           )}
@@ -108,12 +126,18 @@ export default function Comment({ comment }: CommentProps) {
           {showReplies && hasReplies && (
             <div className="mt-5 ml-8 border-l border-gray-200 pl-6 space-y-5">
               {comment.replies.map((reply: any) => (
-                <Comment key={reply.id} comment={reply} />
+                <Comment
+                  key={reply._id}
+                  comment={reply}
+                  currentUser={currentUser}
+                  propertyId={propertyId}
+                  showReplyAction={reply._id === comment.replies[comment.replies.length - 1]?._id}
+                />
               ))}
             </div>
           )}
         </div>
       </div>
     </div>
-  )
+  );
 }

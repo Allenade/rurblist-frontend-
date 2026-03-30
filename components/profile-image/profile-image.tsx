@@ -37,6 +37,7 @@ export default function ProfileImage({
           src={src}
           alt={alt}
           fill
+          // unoptimized={src.includes("googleusercontent.com")} // ✅ KEY FIX
           className="object-cover"
           sizes={`${sizeValue}px`}
         />

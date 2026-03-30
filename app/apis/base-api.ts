@@ -1,20 +1,19 @@
-"use server";
+'use server';
 
-import { cookies } from "next/headers";
-import { ApiResponse, HttpMethod } from "./base-response";
-import { getErrorMessage } from "./errors";
-import { API_URL, AUTHENTICATION_COOKIE } from "./utils/api-links";
-import { clearAuthAndRedirect } from "./services/auth-services/logout-service";
-import { refreshToken } from "./services/auth-services/auth-services";
+import { cookies } from 'next/headers';
+import { ApiResponse, HttpMethod } from './base-response';
+import { getErrorMessage } from './errors';
+import { API_URL, AUTHENTICATION_COOKIE } from './utils/api-links';
+import { clearAuthAndRedirect } from './services/auth-services/logout-service';
+import { refreshToken } from './services/auth-services/auth-services';
 import {
   subscribeTokenRefresh,
   onRefreshed,
   getRefreshing,
   setRefreshing,
-} from "./utils/token-manager";
+} from './utils/token-manager';
 
-
-const DEFAULT_TIMEOUT = 120000; // 2 minutes
+const DEFAULT_TIMEOUT = 140000; // 2 minutes
 
 export async function request<T = unknown>(
   method: HttpMethod,
@@ -23,15 +22,9 @@ export async function request<T = unknown>(
     payload?: unknown;
     protected?: boolean;
     retries?: number;
-  }
+  },
 ): Promise<ApiResponse<T>> {
-
-  const { 
-    payload, 
-    protected: protectedRoute, 
-    retries = 1,
-   
-  } = options || {};
+  const { payload, protected: protectedRoute, retries = 1 } = options || {};
 
   const controller = new AbortController();
   const timeout = setTimeout(() => controller.abort(), DEFAULT_TIMEOUT);
@@ -45,62 +38,59 @@ export async function request<T = unknown>(
     const isFormData = payload instanceof FormData;
 
     if (!isFormData) {
-      headers["Content-Type"] = "application/json";
+      headers['Content-Type'] = 'application/json';
     }
-    
+
     if (protectedRoute && token) {
-      headers["Authorization"] = `Bearer ${token}`;
+      headers['Authorization'] = `Bearer ${token}`;
     }
     /* forward cookies to backend */
     const cookieHeader = cookieStore.toString();
     if (cookieHeader) {
-      headers["Cookie"] = cookieHeader;
+      headers['Cookie'] = cookieHeader;
     }
-    
+
     const url = new URL(`/api${path}`, API_URL);
 
     const response = await fetch(url, {
       method,
       headers,
       body:
-        method !== "GET" && payload
+        method !== 'GET' && payload
           ? payload instanceof FormData
             ? payload
             : JSON.stringify(payload)
           : undefined,
-      cache: "no-store",
+      cache: 'no-store',
       signal: controller.signal,
-      credentials: "include",
+      credentials: 'include',
     });
 
     clearTimeout(timeout);
-   
-    const contentType = response.headers.get("content-type");
 
-    
+    const contentType = response.headers.get('content-type');
+
     let parsed: any = null;
 
-    if (contentType?.includes("application/json")) {
+    if (contentType?.includes('application/json')) {
       parsed = await response.json();
     }
-     
-     /* ======================
+
+    /* ======================
       🔄 AUTO REFRESH LOGIC
     ====================== */
 
-    if (( response.status === 401|| response.status === 403) && protectedRoute) {
-
+    if ((response.status === 401 || response.status === 403) && protectedRoute) {
       if (!getRefreshing()) {
         setRefreshing(true);
 
         try {
-
           const refreshRes = await refreshToken();
 
           const newToken = refreshRes?.data?.accessToken;
 
           if (!newToken) {
-            throw new Error("Refresh failed");
+            throw new Error('Refresh failed');
           }
 
           // notify waiting requests
@@ -108,87 +98,77 @@ export async function request<T = unknown>(
 
           setRefreshing(false);
 
-          headers["Authorization"] = `Bearer ${newToken}`;
-          
+          headers['Authorization'] = `Bearer ${newToken}`;
+
           const retryResponse = await fetch(url, {
             method,
             headers,
             body:
-              method !== "GET" && payload
+              method !== 'GET' && payload
                 ? payload instanceof FormData
                   ? payload
                   : JSON.stringify(payload)
                 : undefined,
-            cache: "no-store",
+            cache: 'no-store',
             signal: controller.signal,
-            credentials: "include",
+            credentials: 'include',
           });
           const retryParsed = await retryResponse.json();
 
           return {
             data: retryParsed.data,
-            message: retryParsed.message ?? "Success",
+            message: retryParsed.message ?? 'Success',
             statusCode: retryResponse.status,
           };
-
         } catch (error) {
-
           setRefreshing(false);
           clearAuthAndRedirect();
 
-          throw new Error("Session expired. Please login again.");
+          throw new Error('Session expired. Please login again.');
         }
       }
 
       /* ===== WAIT FOR TOKEN REFRESH ===== */
 
       return new Promise((resolve) => {
-
         subscribeTokenRefresh(async (newToken: string) => {
-
-          headers["Authorization"] = `Bearer ${newToken}`;
+          headers['Authorization'] = `Bearer ${newToken}`;
 
           const retryResponse = await fetch(url, {
             method,
             headers,
             body:
-              method !== "GET" && payload
+              method !== 'GET' && payload
                 ? payload instanceof FormData
                   ? payload
                   : JSON.stringify(payload)
                 : undefined,
-            cache: "no-store",
+            cache: 'no-store',
             signal: controller.signal,
-            credentials: "include",
+            credentials: 'include',
           });
 
           const retryParsed = await retryResponse.json();
 
           resolve({
             data: retryParsed.data,
-            message: retryParsed.message ?? "Success",
+            message: retryParsed.message ?? 'Success',
             statusCode: retryResponse.status,
           });
         });
-
       });
-
     }
 
     if (!response.ok || parsed?.error || parsed?.statusCode >= 400) {
       return {
-        error: parsed?.error ?? "Request failed",
-        message:
-          getErrorMessage(parsed) ??
-          parsed?.message ??
-          "Something went wrong",
+        error: parsed?.error ?? 'Request failed',
+        message: getErrorMessage(parsed) ?? parsed?.message ?? 'Something went wrong',
         statusCode: parsed?.statusCode ?? response.status,
       };
-      
     }
     return {
       data: parsed.data,
-      message: parsed?.message ?? "Success",
+      message: parsed?.message ?? 'Success',
       statusCode: response.status,
     };
   } catch (error) {
@@ -199,10 +179,10 @@ export async function request<T = unknown>(
         retries: retries - 1,
       });
     }
-  console.error("REQUEST ERROR:", error);
+    console.error('REQUEST ERROR:', error);
     return {
-      error: "Network Error",
-      message: "Unable to connect to server",
+      error: 'Network Error',
+      message: 'Unable to connect to server',
       statusCode: 500,
     };
   }

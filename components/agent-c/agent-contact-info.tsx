@@ -3,15 +3,18 @@
 import { OrangeButton } from "../button/button";
 import { IconImage } from "../icon-image/icon-image";
 
-
 interface AgentContactInfoProps {
   phone: string;
   email: string;
+  isCreateAgent?: boolean;
+  onActionClick?: () => void;
 }
 
 export function AgentContactInfo({
   phone,
   email,
+  isCreateAgent = false,
+  onActionClick,
 }: AgentContactInfoProps) {
   return (
     <div className="space-y-5">
@@ -32,12 +35,17 @@ export function AgentContactInfo({
       </div>
 
       <OrangeButton
-        variant="white"
-        iconSrc="/icons/edit-2.svg"
-        iconAlt="edit"
-        className="border border-[#A5A5A5] text-black font-medium font-[Nunito]"
+        variant={isCreateAgent ? "orange" : "white"}
+        iconSrc={isCreateAgent ? undefined : "/icons/edit-2.svg"}
+        iconAlt={isCreateAgent ? "create agent" : "edit"}
+        onClick={onActionClick}
+        className={
+          isCreateAgent
+            ? "font-medium font-[Nunito]"
+            : "border border-[#A5A5A5] text-black font-medium font-[Nunito]"
+        }
       >
-        Edit profile information
+        {isCreateAgent ? "Create agent" : "Edit profile information"}
       </OrangeButton>
     </div>
   );

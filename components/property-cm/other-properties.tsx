@@ -2,7 +2,7 @@
 
 import toast from "react-hot-toast"
 import PropertyCard from "./property-card"
-import PropertySkeletonGrid from "./property-loder-grid"
+import OtherPropertiesSkeleton from "./other-properties-skeleton"
 import { useGetAgentPropertiesById } from "@/app/apis/mutations/use-property/use-get-agents-propeties-byId"
 
 export interface PropertyCardDetails {
@@ -25,53 +25,11 @@ export default function OtherProperties({
   agentName,
   id
 }: OtherPropertiesProps) {
-  const properties1: PropertyCardDetails[] = [
-    {
-      id: "1",
-      image: "/image/image1.jpg",
-      title: "Modern 2-Bedroom Apartment in Prime Location",
-      price: 3000000,
-      bedrooms: 2,
-      bathrooms: 2,
-      size: 800,
-      status: "For_Rent",
-    },
-    {
-      id: "2",
-      image: "/image/image2.jpg",
-      title: "Luxury 3-Bedroom Duplex with Balcony",
-      price: 4500000,
-      bedrooms: 3,
-      bathrooms: 3,
-      size: 1200,
-      status: "For_Rent",
-    },
-    {
-      id: "3",
-      image: "/image/image3.jpg",
-      title: "Contemporary Apartment Near City Center",
-      price: 2800000,
-      bedrooms: 2,
-      bathrooms: 2,
-      size: 750,
-      status: "For_Rent",
-    },
-    {
-      id: "4",
-      image: "/image/image4.jpg",
-      title: "Modern Studio Apartment",
-      price: 1800000,
-      bedrooms: 1,
-      bathrooms: 1,
-      size: 500,
-      status: "For_Rent",
-    },
-  ]
   const { data, error, isLoading } = useGetAgentPropertiesById(id);
    const properties = data?.data??[];
   
     if (isLoading) {
-      return <PropertySkeletonGrid />;
+      return <OtherPropertiesSkeleton />;
     }
     if (error) {
     toast.error((error as Error).message);

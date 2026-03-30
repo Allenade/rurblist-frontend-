@@ -15,9 +15,15 @@ interface AgentInfoSectionProps {
     email: string;
     about: string;
   };
+  isCreateAgent?: boolean;
+  onActionClick?: () => void;
 }
 
-export function AgentInfoSection({ agent }: AgentInfoSectionProps) {
+export function AgentInfoSection({
+  agent,
+  isCreateAgent = false,
+  onActionClick,
+}: AgentInfoSectionProps) {
   return (
     <section className="w-full bg-white rounded-xl border border-[#D6D6D6] p-4 sm:p-6 md:p-8 space-y-6 md:space-y-8">
       <h2 className="text-xl sm:text-2xl font-bold text-[#833700] font-[Georgia]">
@@ -33,7 +39,12 @@ export function AgentInfoSection({ agent }: AgentInfoSectionProps) {
       />
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-10">
-        <AgentContactInfo phone={agent.phone} email={agent.email} />
+        <AgentContactInfo
+          phone={agent.phone}
+          email={agent.email}
+          isCreateAgent={isCreateAgent}
+          onActionClick={onActionClick}
+        />
         <AgentAbout about={agent.about} />
       </div>
     </section>
