@@ -8,7 +8,7 @@ export type Permission =
 
 export type AppRoute = {
   path: string;
-  title?:String;
+  title?: string;
   public?: boolean; // no auth required
   roles?: Role[]; // allowed roles
   permissions?: Permission[]; // advanced permission system
@@ -16,7 +16,7 @@ export type AppRoute = {
   showInNaBar?:boolean;
 };
 
-export const appRoutes: AppRoute[] = [
+export const publicRoutes: AppRoute[] = [
   /* ================= PUBLIC ================= */
   { 
     title: "Login",
@@ -73,9 +73,11 @@ export const appRoutes: AppRoute[] = [
     path: "/email-sent", 
     public: true 
   },
+];
 
+export const sharedRoutes: AppRoute[] = [
   /* ================= DEFAULT LANDING ================= */
-    {
+  {
     path: "/",
     title:"Home",
     showInNaBar:true,
@@ -106,9 +108,24 @@ export const appRoutes: AppRoute[] = [
     roles: ["Landlord"],
     defaultRedirect: true,
   },
+];
 
+export const commonProtectedRoutes: AppRoute[] = [
+  {
+    path: "/verification",
+    roles: ["Home_Seeker","Agent"],
+    title: "verification",
+    permissions: ["MANAGE_PROPERTIES"],
+  },
+  {
+    path: "/profile",
+    roles: ["Agent", "Landlord", "Home_Seeker"],
+    permissions: ["VIEW_PROFILE"],
+  },
+];
+
+export const agentRoutes: AppRoute[] = [
   /* ================= ROLE BASED ================= */
-
   {
     path: "/property-advisory",
     roles: ["Agent","Admin","Landlord"],
@@ -116,7 +133,7 @@ export const appRoutes: AppRoute[] = [
     showInNaBar:true,
     permissions: ["MANAGE_PROPERTIES"],
   },
-   {
+  {
     path: "/agent/agreement",
     roles: ["Agent","Admin","Landlord"],
     title: "Agent Agreement",
@@ -142,12 +159,48 @@ export const appRoutes: AppRoute[] = [
     title: "Agent Private",
     permissions: ["MANAGE_PROPERTIES"],
   },
+];
+
+export const homeSeekerRoutes: AppRoute[] = [
   {
     path: "/house-seeker/profile",
     roles: ["Agent","Admin","Landlord","Home_Seeker"],
     title: "House Seeker Profile",
     permissions: ["MANAGE_PROPERTIES"],
   },
+  {
+    path: "/payment",
+    roles: ["Agent","Admin","Landlord","Home_Seeker"],
+    title: "Payment",
+    permissions: ["MANAGE_PROPERTIES"],
+  },
+  {
+    path: "/payment/success",
+    roles: ["Agent","Admin","Landlord","Home_Seeker"],
+    title: "Payent success",
+    permissions: ["MANAGE_PROPERTIES"],
+  },
+  {
+    path: "/payment/complete",
+    roles: ["Agent","Admin","Landlord","Home_Seeker"],
+    title: "Payment complete",
+    permissions: ["MANAGE_PROPERTIES"],
+  },
+  {
+    path: "/property/",
+    roles: ["Agent","Admin","Landlord","Home_Seeker"],
+    title: "Property details",
+    permissions: ["MANAGE_PROPERTIES"],
+  },
+  {
+    path: "/property/escrow",
+    roles: ["Home_Seeker"],
+    title: "Property Escrow",
+    permissions: ["MANAGE_PROPERTIES"],
+  },
+];
+
+export const landlordRoutes: AppRoute[] = [
   {
     path: "/kyc/add-property",
     roles: ["Agent","Admin","Landlord"],
@@ -160,59 +213,30 @@ export const appRoutes: AppRoute[] = [
     title: "Add Property Details",
     permissions: ["MANAGE_PROPERTIES"],
   },
-   {
+  {
     path: "/kyc",
     roles: ["Agent","Admin","Landlord"],
     title: "Kyc",
     permissions: ["MANAGE_PROPERTIES"],
   },
-   {
-    path: "/payment",
-    roles: ["Agent","Admin","Landlord","Home_Seeker"],
-    title: "Payment",
-    permissions: ["MANAGE_PROPERTIES"],
-  },
-   {
-    path: "/payment/success",
-    roles: ["Agent","Admin","Landlord","Home_Seeker"],
-    title: "Payent success",
-    permissions: ["MANAGE_PROPERTIES"],
-  },
-   {
-    path: "/payment/complete",
-    roles: ["Agent","Admin","Landlord","Home_Seeker"],
-    title: "Payment complete",
-    permissions: ["MANAGE_PROPERTIES"],
-  },
-   {
-    path: "/property/",
-    roles: ["Agent","Admin","Landlord","Home_Seeker"],
-    title: "Property details",
-    permissions: ["MANAGE_PROPERTIES"],
-  },
-   {
-    path: "/property/escrow",
-    roles: ["Home_Seeker"],
-    title: "Property Escrow",
-    permissions: ["MANAGE_PROPERTIES"],
-  },
+];
 
+export const adminRoutes: AppRoute[] = [
   {
-    path: "/verification",
-    roles: ["Home_Seeker","Agent"],
-    title: "verification",
-    permissions: ["MANAGE_PROPERTIES"],
-  },
-  {
-    path: "/profile",
-    roles: ["Agent", "Landlord", "Home_Seeker"],
-    permissions: ["VIEW_PROFILE"],
-  },
-  {
-  path: "/admin",
-  roles: ["Admin"],
-  permissions: ["MANAGE_USERS"]
-}
+    path: "/admin",
+    roles: ["Admin"],
+    permissions: ["MANAGE_USERS"]
+  }
+];
+
+export const appRoutes: AppRoute[] = [
+  ...publicRoutes,
+  ...sharedRoutes,
+  ...commonProtectedRoutes,
+  ...agentRoutes,
+  ...homeSeekerRoutes,
+  ...landlordRoutes,
+  ...adminRoutes,
 ];
 
 

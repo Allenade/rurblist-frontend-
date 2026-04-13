@@ -13,6 +13,10 @@ import { useGetCurrentAgent } from '@/app/apis/mutations/use-agent/get-current-a
 import { useGetMyProperties } from '@/app/apis/mutations/use-property/use-get-my-properties';
 import { useAuth } from '@/components/layout/auth-provider';
 import { useLayoutStore } from '@/store/layout-store';
+import { useGetSavedProperties } from '@/app/apis/mutations/use-user/use-get-saved-property';
+import { useSaveProperty } from '@/app/apis/mutations/use-property/use-save-unsave-property';
+import SavedPropertiesSkeleton from '@/components/homeseeker-c/loader-skelenton/save-property-skelenton';
+import SavedPropertiesSection from '@/components/homeseeker-c/save-properties';
 
 export default function AgentPrivateProfilePage() {
   const setHideNavbar = useLayoutStore((state) => state.setHideNavbar);
@@ -21,6 +25,9 @@ export default function AgentPrivateProfilePage() {
 
   const { data, isLoading } = useGetCurrentAgent();
   const { data: propertiesData, isLoading: isPropertiesLoading } = useGetMyProperties();
+  const { data: savedPropertiesData, isLoading: isSavedPropertiesLoading } =
+    useGetSavedProperties();
+  const { unsave, isUnSaving } = useSaveProperty();
   const isAgent = data?.data;
   useEffect(() => {
     setHideNavbar(true);
@@ -59,7 +66,26 @@ export default function AgentPrivateProfilePage() {
     sqft: property.size,
     image: property.images?.[0]?.url || '/image/image1.jpg',
   }));
+  const saveListings = (savedPropertiesData?.data ?? []).map((property) => ({
+    id: property._id,
+    title: property.title,
+    price: property.price,
+    status: property.status as 'For_Rent' | 'For_Sale' | 'Sold',
+    bedrooms: property.bedrooms,
+    bathrooms: property.bathrooms,
+    sqft: property.size,
+    image: property.images?.[0]?.url || '/image/image1.jpg',
+  }));
 
+  const handleRemove = async (id?: string) => {
+    if (!id) return;
+
+    try {
+      unsave(id); // ✅ call backend
+    } catch (error) {
+      console.error(error);
+    }
+  };
   const messages: Array<{
     id: string;
     name: string;
@@ -93,6 +119,11 @@ export default function AgentPrivateProfilePage() {
           <CurrentListingsSection properties={listings} />
         )}
         {isLoading ? <MessagesSectionSkeleton /> : <MessagesSection messages={messages} />}
+        {isSavedPropertiesLoading ? (
+          <SavedPropertiesSkeleton />
+        ) : (
+          <SavedPropertiesSection properties={saveListings} onRemove={handleRemove} />
+        )}
       </div>
     </div>
   );

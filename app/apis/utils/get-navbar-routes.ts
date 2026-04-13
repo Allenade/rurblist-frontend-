@@ -1,14 +1,47 @@
-import { appRoutes, Role } from "@/app/apis/utils/routes";
+import { AppRoute, appRoutes, Role } from '@/app/apis/utils/routes';
 
-export function getNavbarRoutes(role?: Role) {
-  return appRoutes.filter((route) => {
-    if (!route.title) return false;
+const navbarPathsByRole: Partial<Record<Role, Array<{ path: string; title?: string }>>> = {
+  Home_Seeker: [
+    { path: '/', title: 'Home' },
+    { path: '/property', title: 'Property' },
+    { path: '/agent/agreement', title: 'Become an Agent' },
+    { path: '/property-advisory', title: 'Property Advisory' },
+  ],
+  Agent: [
+    { path: '/', title: 'Home' },
+    { path: '/property', title: 'Property' },
+    { path: '/list-properties', title: 'List Property' },
+    { path: '/property-advisory', title: 'Property Advisory' },
+  ],
+  Landlord: [
+    { path: '/', title: 'Home' },
+    { path: '/property', title: 'Property' },
+    { path: '/list-properties', title: 'List Property' },
+    { path: '/property-advisory', title: 'Property Advisory' },
+  ],
+  Admin: [
+    { path: '/', title: 'Home' },
+    { path: '/property', title: 'Property' },
+  ],
+};
 
-    // hide auth pages
-    if (route.public) return false;
+export function getNavbarRoutes(role?: Role): AppRoute[] {
+  if (!role) return [];
 
-    if (!role) return false;
+  const roleNavItems = navbarPathsByRole[role] ?? [];
 
-    return route.showInNaBar&& route.roles?.includes(role);
-  });
+  return roleNavItems.reduce<AppRoute[]>((routes, { path, title }) => {
+    const route = appRoutes.find((item) => item.path === path);
+
+    if (!route || route.public || !route.roles?.includes(role)) {
+      return routes;
+    }
+
+    routes.push({
+      ...route,
+      title: title ?? route.title,
+    });
+
+    return routes;
+  }, []);
 }
