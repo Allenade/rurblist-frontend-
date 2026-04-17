@@ -1,14 +1,19 @@
 'use client';
 
+import { useGetTourById } from '@/app/apis/mutations/use-tour/use-get-tourby-id';
 import { OrangeButton } from '@/components/button/button';
 import PageHeader from '@/components/page-header';
 import PaymentMethodSelector from '@/components/payment-ui/payment-method-selector';
 import PaymentSummary from '@/components/payment-ui/payment-summary';
+import { useParams } from 'next/navigation';
 import { useState } from 'react';
 
 export default function MakePaymentTourPage() {
   const propertyPrice = 5000000;
+  const params = useParams();
+  const id = params.id as string;
   const [method, setMethod] = useState<string>('bank');
+  const { data, isLoading } = useGetTourById(id);
 
   const methods = [
     {

@@ -26,7 +26,7 @@ export const useBookInspection = () => {
       queryClient.invalidateQueries({ queryKey: ['property'] });
 
       // 👉 redirect to payment
-      router.push(`/payment-tour?tourId=${tourId}`);
+      router.push(`/payment-tour/${tourId}`);
     },
     onError: (error: Error) => {
       toast.error(error.message);
