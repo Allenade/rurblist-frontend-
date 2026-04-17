@@ -1,5 +1,5 @@
-@import "tailwindcss";
-@import "tw-animate-css";
+@import 'tailwindcss';
+@import 'tw-animate-css';
 
 @custom-variant dark (&:is(.dark *));
 
@@ -46,17 +46,17 @@
   --radius-4xl: calc(var(--radius) + 16px);
 
   /* Brand color scale (Rurblist Orange) */
-  --color-brand-50: #FBE2CF;  /* 10% */
-  --color-brand-100: #F9CEAF; /* 20% */
-  --color-brand-200: #F6B888; /* 30% */
-  --color-brand-300: #F29D60; /* 40% */
-  --color-brand-400: #EF8538; /* 50% */
-  --color-brand-500: #EC6C10; /* BASE */
-  --color-brand-600: #C55A0D; /* 60% */
-  --color-brand-700: #9D4B0B; /* 70% */
+  --color-brand-50: #fbe2cf; /* 10% */
+  --color-brand-100: #f9ceaf; /* 20% */
+  --color-brand-200: #f6b888; /* 30% */
+  --color-brand-300: #f29d60; /* 40% */
+  --color-brand-400: #ef8538; /* 50% */
+  --color-brand-500: #ec6c10; /* BASE */
+  --color-brand-600: #c55a0d; /* 60% */
+  --color-brand-700: #9d4b0b; /* 70% */
   --color-brand-800: #763608; /* 80% */
-  --color-brand-900: #4F2405; /* 90% */
-  --color-brand-950: #2F1603; /* 100% */
+  --color-brand-900: #4f2405; /* 90% */
+  --color-brand-950: #2f1603; /* 100% */
 }
 
 :root {
@@ -137,4 +137,15 @@
   body {
     @apply bg-background text-foreground;
   }
+}
+
+/* Hide scrollbar (Chrome, Safari) */
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+
+/* Hide scrollbar (Firefox) */
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
 }

@@ -1,16 +1,19 @@
-"use client"
+'use client';
 
-import { OrangeButton } from "@/components/button/button"
-import ProfileImage from "@/components/profile-image/profile-image"
-import { useState } from "react"
-import BookTourModal from "./book-tour/book-tour-model"
-import InspectionFeeModal from "./book-tour/inspection-fee-model"
+import { OrangeButton } from '@/components/button/button';
+import ProfileImage from '@/components/profile-image/profile-image';
+import { useState } from 'react';
+import BookTourModal from './book-tour/book-tour-model';
+import InspectionFeeModal from './book-tour/inspection-fee-model';
 
 interface ContactCardProps {
-  agentImage: string
-  agentName: string
-  agency: string
-  phone: string
+  agentImage: string;
+  agentName: string;
+  agency: string;
+  phone: string;
+  propertyId?: string;
+  agentId?: string;
+  inspectionFee?: number;
 }
 
 export default function ContactCard({
@@ -18,9 +21,12 @@ export default function ContactCard({
   agentName,
   agency,
   phone,
+  propertyId,
+  agentId,
+  inspectionFee,
 }: ContactCardProps) {
-  const [isTourOpen, setIsTourOpen] = useState(false)
-  const [isInspectionOpen, setIsInspectionOpen] = useState(false)
+  const [isTourOpen, setIsTourOpen] = useState(false);
+  const [isInspectionOpen, setIsInspectionOpen] = useState(false);
   return (
     <div className="w-full max-w-full lg:max-w-105">
       {/* Heading */}
@@ -29,9 +35,8 @@ export default function ContactCard({
       </h2>
 
       <p className="text-sm sm:text-base text-gray-600 mb-6">
-        Explore your dream home today! Schedule a personalized
-        tour with an expert agent. Contact agent to organize
-        an inspection time!
+        Explore your dream home today! Schedule a personalized tour with an expert agent. Contact
+        agent to organize an inspection time!
       </p>
 
       {/* Tour Buttons */}
@@ -41,7 +46,7 @@ export default function ContactCard({
           iconSize={18}
           variant="white"
           className="w-full border border-[#e87722] text-[#e87722] text-sm py-2"
-          onClick={()=>setIsTourOpen(true)}
+          onClick={() => setIsTourOpen(true)}
         >
           Tour in person
         </OrangeButton>
@@ -57,19 +62,17 @@ export default function ContactCard({
       </div>
 
       {/* Main CTA */}
-      <OrangeButton fullWidth className="mb-6 text-sm sm:text-base" onClick={() => setIsInspectionOpen(true)}>
+      <OrangeButton
+        fullWidth
+        className="mb-6 text-sm sm:text-base"
+        onClick={() => setIsInspectionOpen(true)}
+      >
         Request Inspection
       </OrangeButton>
 
       {/* Agent Card */}
       <div className="bg-white mt-6 sm:mt-7 p-2 sm:p-5">
-        <ProfileImage
-          src={agentImage}
-          alt={agentName}
-          size="lg"
-          name={agentName}
-          role={agency}
-        />
+        <ProfileImage src={agentImage} alt={agentName} size="lg" name={agentName} role={agency} />
 
         {/* Message */}
         <textarea
@@ -101,36 +104,25 @@ export default function ContactCard({
 
         {/* Bottom Buttons */}
         <div className="flex flex-col sm:flex-row gap-3">
-          <OrangeButton
-            iconSize={18}
-            iconSrc="/icons/mail.svg"
-            className=" py-2 text-sm"
-          >
+          <OrangeButton iconSize={18} iconSrc="/icons/mail.svg" className=" py-2 text-sm">
             Send a message
           </OrangeButton>
 
-          <OrangeButton
-            variant="gray"
-            className=" sm:w-auto py-2 px-4 text-sm truncate"
-          >
-            <span className="truncate block">
-              Call {phone}
-            </span>
+          <OrangeButton variant="gray" className=" sm:w-auto py-2 px-4 text-sm truncate">
+            <span className="truncate block">Call {phone}</span>
           </OrangeButton>
         </div>
       </div>
-      <BookTourModal
-  isOpen={isTourOpen}
-  onClose={() => setIsTourOpen(false)}
-/> 
-<InspectionFeeModal
-  isOpen={isInspectionOpen}
-  onClose={() => setIsInspectionOpen(false)}
-  onContinue={() => {
-    console.log("Proceed to payment")
-    setIsInspectionOpen(false)
-  }}
-/>
+      <BookTourModal isOpen={isTourOpen} onClose={() => setIsTourOpen(false)} />
+      <InspectionFeeModal
+        inspectionFee={inspectionFee}
+        isOpen={isInspectionOpen}
+        onClose={() => setIsInspectionOpen(false)}
+        onContinue={() => {
+          console.log('Proceed to payment');
+          setIsInspectionOpen(false);
+        }}
+      />
     </div>
-  )
+  );
 }

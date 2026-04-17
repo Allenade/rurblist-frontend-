@@ -3,6 +3,8 @@
 import { useLayoutStore } from "@/store/layout-store";
 import Navbar from "@/components/pages/navbar";
 import Footer from "@/components/footer/footer";
+import { AuthProvider } from "./auth-provider";
+import AuthListener from "@/app/auth-listener";
 
 export function ConditionalShell({
   children,
@@ -12,14 +14,20 @@ export function ConditionalShell({
   const hideNavbar = useLayoutStore((state) => state.hideNavbar);
 
   if (hideNavbar) {
-    return <>{children}</>;
+    return <>
+    {children}
+     <Footer />
+    </>;
   }
-
+  
   return (
     <>
-      <Navbar />
-      {children}
-      <Footer />
+      <AuthProvider>
+        <AuthListener/>
+          <Navbar />
+            {children}
+          <Footer />
+      </AuthProvider>  
     </>
   );
 }

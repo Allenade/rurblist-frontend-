@@ -1,4 +1,4 @@
-"use client";
+'use client';
 
 type SearchBarProps = {
   placeholder?: string;
@@ -8,9 +8,9 @@ type SearchBarProps = {
 };
 
 export function SearchBar({
-  placeholder = "Enter an address, neighborhood, city or zip code",
-  buttonLabel = "Search...",
-  ariaLabel = "Search by address or location",
+  placeholder = 'Enter an address, neighborhood, city or zip code',
+  buttonLabel = 'Search...',
+  ariaLabel = 'Search by address or location',
   onSearch,
 }: SearchBarProps) {
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
@@ -22,16 +22,19 @@ export function SearchBar({
 
   return (
     <div className="mt-6 w-full md:max-w-xl md:mx-auto">
-      <form onSubmit={handleSubmit} className="relative flex w-full items-stretch overflow-hidden rounded-xl border border-white/30 bg-white/95 p-2 shadow-lg sm:p-2.5">
+      <form
+        onSubmit={handleSubmit}
+        className="relative flex w-full items-stretch overflow-hidden rounded-xl border border-white/30 bg-white/95 p-2 shadow-lg sm:p-2.5"
+      >
         <input
           type="text"
           placeholder={placeholder}
-          className="w-full min-w-0 flex-1 bg-transparent py-3 pl-3 pr-[130px] text-[10px] placeholder:text-muted-foreground focus:outline-none focus:ring-0 sm:pl-4 sm:pr-[140px]"
+          className="w-full min-w-0 flex-1 bg-transparent py-3 pl-3 pr-32.5 text-[10px] placeholder:text-muted-foreground focus:outline-none focus:ring-0 sm:pl-4 sm:pr-35"
           aria-label={ariaLabel}
         />
         <button
           type="submit"
-          className="absolute right-2 top-2 bottom-2 flex min-w-[110px] items-center justify-center gap-2 rounded-lg bg-brand-400 px-4 text-sm font-medium text-white transition-colors hover:bg-brand-500 focus:outline-none focus:ring-2 focus:ring-brand-400 focus:ring-offset-2 sm:right-2.5 sm:top-2.5 sm:min-w-[120px] sm:bottom-2.5 sm:px-5 sm:text-base"
+          className="absolute right-2 top-2 bottom-2 flex min-w-27.5 items-center justify-center gap-2 rounded-lg bg-brand-400 px-4 text-sm font-medium text-white transition-colors hover:bg-brand-500 focus:outline-none focus:ring-2 focus:ring-brand-400 focus:ring-offset-2 sm:right-2.5 sm:top-2.5 sm:min-w-30 sm:bottom-2.5 sm:px-5 sm:text-base"
         >
           <span>{buttonLabel}</span>
           <svg
