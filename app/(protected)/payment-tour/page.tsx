@@ -6,7 +6,7 @@ import PaymentMethodSelector from '@/components/payment-ui/payment-method-select
 import PaymentSummary from '@/components/payment-ui/payment-summary';
 import { useState } from 'react';
 
-export default function MakePaymentPage() {
+export default function MakePaymentTourPage() {
   const propertyPrice = 5000000;
   const [method, setMethod] = useState<string>('bank');
 

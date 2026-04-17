@@ -70,8 +70,9 @@ export default function PropertyDetail() {
                 'ABX real estate agency'
               }
               propertyId={property?._id ?? ''}
-              agentId={property?.owner.user._id ?? ''}
+              agentId={property?.owner._id ?? ''}
               inspectionFee={property?.inspectionFee}
+              location={property?.location.address}
               phone={`${property?.owner.user.phoneNumber ?? '+234 902 002 000'}`}
             />
           </div>

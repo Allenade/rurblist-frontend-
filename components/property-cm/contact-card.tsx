@@ -14,6 +14,7 @@ interface ContactCardProps {
   propertyId?: string;
   agentId?: string;
   inspectionFee?: number;
+  location?: string;
 }
 
 export default function ContactCard({
@@ -22,11 +23,14 @@ export default function ContactCard({
   agency,
   phone,
   propertyId,
+  location,
   agentId,
   inspectionFee,
 }: ContactCardProps) {
   const [isTourOpen, setIsTourOpen] = useState(false);
+  const [isCallOpen, setIsCallOpen] = useState(false);
   const [isInspectionOpen, setIsInspectionOpen] = useState(false);
+  const [iscontinueTourOpen, setIscontinueTourOpen] = useState(false);
   return (
     <div className="w-full max-w-full lg:max-w-105">
       {/* Heading */}
@@ -55,6 +59,7 @@ export default function ContactCard({
           variant="white"
           iconSrc="/icons/smartphone.svg"
           iconSize={18}
+          onClick={() => setIsCallOpen(true)}
           className="w-full border border-[#e87722] text-[#e87722] text-sm py-2"
         >
           Tour via call
@@ -113,15 +118,32 @@ export default function ContactCard({
           </OrangeButton>
         </div>
       </div>
-      <BookTourModal isOpen={isTourOpen} onClose={() => setIsTourOpen(false)} />
-      <InspectionFeeModal
+      <BookTourModal
+        isOpen={isTourOpen}
+        propertyId={propertyId}
+        agentId={agentId}
         inspectionFee={inspectionFee}
+        onClose={() => setIsTourOpen(false)}
+        tourType="in-person"
+        location={location}
+      />
+      <BookTourModal
+        isOpen={isCallOpen}
+        location={'Phone Call'}
+        propertyId={propertyId}
+        agentId={agentId}
+        inspectionFee={inspectionFee}
+        onClose={() => setIsCallOpen(false)}
+        tourType="call"
+      />
+      <BookTourModal
+        inspectionFee={inspectionFee}
+        propertyId={propertyId}
+        agentId={agentId}
         isOpen={isInspectionOpen}
         onClose={() => setIsInspectionOpen(false)}
-        onContinue={() => {
-          console.log('Proceed to payment');
-          setIsInspectionOpen(false);
-        }}
+        tourType="inspection"
+        location={location}
       />
     </div>
   );

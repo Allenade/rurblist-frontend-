@@ -181,6 +181,24 @@ export const homeSeekerRoutes: AppRoute[] = [
     permissions: ['MANAGE_PROPERTIES', 'VIEW_PROFILE'],
   },
   {
+    path: '/payment-tour',
+    roles: ['Agent', 'Admin', 'Landlord', 'Home_Seeker'],
+    title: 'Payment',
+    permissions: ['VIEW_PROFILE'],
+  },
+  {
+    path: '/payment-tour/success',
+    roles: ['Agent', 'Admin', 'Landlord', 'Home_Seeker'],
+    title: 'Payent success',
+    permissions: ['MANAGE_PROPERTIES', 'VIEW_PROFILE'],
+  },
+  {
+    path: '/payment-tour/complete',
+    roles: ['Agent', 'Admin', 'Landlord', 'Home_Seeker'],
+    title: 'Payment complete',
+    permissions: ['MANAGE_PROPERTIES', 'VIEW_PROFILE'],
+  },
+  {
     path: '/property/',
     roles: ['Agent', 'Admin', 'Landlord', 'Home_Seeker'],
     title: 'Property details',
