@@ -1,11 +1,11 @@
-"use client";
+'use client';
 
-import { useState, useRef, useEffect } from "react";
-import { OrangeButton } from "@/components/button/button";
-import toast from "react-hot-toast";
-import { useOtpStore } from "@/app/apis/store/otp-store";
-import { useForgotPassword } from "@/app/apis/mutations/use-auth/use-forgot-password";
-import { useRouter } from "next/navigation";
+import { useState, useRef, useEffect } from 'react';
+import { OrangeButton } from '@/components/button/button';
+import toast from 'react-hot-toast';
+import { useOtpStore } from '@/app/apis/store/otp-store';
+import { useForgotPassword } from '@/app/apis/mutations/use-auth/use-forgot-password';
+import { useRouter } from 'next/navigation';
 
 export default function ForgotPasswordOtpPage() {
   const router = useRouter();
@@ -13,23 +13,13 @@ export default function ForgotPasswordOtpPage() {
   const email = useOtpStore((s) => s.email);
   const setOtp = useOtpStore((s) => s.setOtp);
 
-  const { mutate: resend, isPending: resendLoading } =
-    useForgotPassword();
+  const { mutate: resend, isPending: resendLoading } = useForgotPassword();
 
-  const [otp, setOtpState] = useState([
-    "",
-    "",
-    "",
-    "",
-    "",
-    "",
-  ]);
+  const [otp, setOtpState] = useState(['', '', '', '', '', '']);
 
   const [timer, setTimer] = useState(60);
 
-  const inputsRef = useRef<Array<HTMLInputElement | null>>(
-    []
-  );
+  const inputsRef = useRef<Array<HTMLInputElement | null>>([]);
 
   useEffect(() => {
     inputsRef.current[0]?.focus();
@@ -62,10 +52,10 @@ export default function ForgotPasswordOtpPage() {
   function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
 
-    const code = otp.join("");
+    const code = otp.join('');
 
     if (code.length !== 6) {
-      toast.error("Enter full OTP");
+      toast.error('Enter full OTP');
       return;
     }
 
@@ -73,20 +63,18 @@ export default function ForgotPasswordOtpPage() {
     setOtp(code);
 
     // Navigate to reset password page
-    router.push("/auth/reset-password");
+    router.push('/reset-password');
   }
 
   function handleResend() {
-    resend({ email:email! });
+    resend({ email: email! });
     setTimer(60);
   }
 
   return (
     <main className="min-h-screen flex items-center justify-center bg-white px-4">
       <div className="w-full max-w-md">
-        <h1 className="text-[40px] font-serif text-[#05400D] mb-6 text-center">
-          Verify OTP
-        </h1>
+        <h1 className="text-[40px] font-serif text-[#05400D] mb-6 text-center">Verify OTP</h1>
 
         <p className="text-center mb-8">
           Code sent to <strong>{email}</strong>
@@ -104,9 +92,7 @@ export default function ForgotPasswordOtpPage() {
                 inputMode="numeric"
                 maxLength={1}
                 value={digit}
-                onChange={(e) =>
-                  handleChange(e.target.value, index)
-                }
+                onChange={(e) => handleChange(e.target.value, index)}
                 className="
                   w-12 h-14 text-center text-xl rounded-lg
                   border border-gray-300
@@ -126,18 +112,14 @@ export default function ForgotPasswordOtpPage() {
 
         <div className="text-center mt-6">
           {timer > 0 ? (
-            <p className="text-gray-500">
-              Resend OTP in {timer}s
-            </p>
+            <p className="text-gray-500">Resend OTP in {timer}s</p>
           ) : (
             <button
               onClick={handleResend}
               disabled={resendLoading}
               className="text-[#e87722] font-semibold hover:underline"
             >
-              {resendLoading
-                ? "Sending..."
-                : "Resend OTP"}
+              {resendLoading ? 'Sending...' : 'Resend OTP'}
             </button>
           )}
         </div>

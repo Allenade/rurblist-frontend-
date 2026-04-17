@@ -10,6 +10,7 @@ import { useRouter } from 'next/navigation';
 import { useLikeProperty } from '@/app/apis/mutations/use-property/use-like-unlike';
 import { useSaveProperty } from '@/app/apis/mutations/use-property/use-save-unsave-property';
 import { useCommentMutation } from '@/app/apis/mutations/use-comments/use-post-comment-reply';
+import ReadMoreText from '../read-more';
 
 interface GalleryImage {
   id: string;
@@ -37,6 +38,7 @@ interface PropertyCardProps {
   createdAt: string; // ✅ NEW
   agentFee: string;
   commentCount: number;
+  type?: string;
   paymentFrequency?: string;
   verificationStatus?: string;
   onChatClick?: () => void;
@@ -63,6 +65,7 @@ export default function PropertyCard({
   profileImage,
   profileName,
   // comments,
+  type,
   createdAt,
   onChatClick,
 }: PropertyCardProps) {
@@ -213,10 +216,16 @@ export default function PropertyCard({
       <div className="grid md:grid-cols-3 gap-10 mt-8">
         {/* LEFT CONTENT */}
         <div className="md:col-span-2">
-          <p className="text-gray-700 leading-relaxed text-sm mb-6">{description}</p>
-
-          <p className="text-sm text-gray-700 mb-1">{bedrooms} bedroom Duplex</p>
-
+          <ReadMoreText
+            text={description ?? 'No description available.'}
+            className="text-gray-700 leading-relaxed text-sm mb-6"
+            maxLength={300}
+          />
+          {bedrooms > 0 && (
+            <p className="text-sm text-gray-700 mb-1">
+              {bedrooms} bedroom{bedrooms > 1 ? 's' : ''} {type}
+            </p>
+          )}
           <div className="mb-6">
             <h3 className="text-2xl md:text-3xl  font-bold text-black">{price}</h3>
             <p className="text-sm text-gray-600">Agent fee: {agentFee}</p>

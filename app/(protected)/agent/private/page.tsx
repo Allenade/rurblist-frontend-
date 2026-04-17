@@ -21,37 +21,34 @@ import SavedPropertiesSection from '@/components/homeseeker-c/save-properties';
 export default function AgentPrivateProfilePage() {
   const setHideNavbar = useLayoutStore((state) => state.setHideNavbar);
   const router = useRouter();
-  const { user } = useAuth();
-
   const { data, isLoading } = useGetCurrentAgent();
   const { data: propertiesData, isLoading: isPropertiesLoading } = useGetMyProperties();
   const { data: savedPropertiesData, isLoading: isSavedPropertiesLoading } =
     useGetSavedProperties();
   const { unsave, isUnSaving } = useSaveProperty();
-  const isAgent = data?.data;
+
   useEffect(() => {
     setHideNavbar(true);
     return () => setHideNavbar(false);
   }, [setHideNavbar]);
 
   const agentData = data?.data;
-  const currentAgent = agentData?.agent;
+  const currentAgent = agentData?.user;
+  const isAgent = agentData?.isAgreement;
   const properties = propertiesData?.data ?? [];
 
   const agent = {
     name:
       currentAgent?.fullName ||
-      user?.fullName ||
       [agentData?.firstName, agentData?.lastName].filter(Boolean).join(' ') ||
       'Agent',
-    agency: agentData?.companyName || currentAgent?.role || 'Real estate agency',
+    agency: agentData?.companyName || currentAgent?.roles?.[0] || 'Real estate agency',
     experience: `${agentData?.yearsOfExperience ?? 0} years of experience`,
     location:
       [agentData?.city, agentData?.address].filter(Boolean).join(', ') || 'No location added',
-    image:
-      currentAgent?.profileImage?.url || user?.profileImage?.url || '/image/profile-image2.jpg',
-    phone: currentAgent?.phoneNumber || user?.phoneNumber || 'No phone number added',
-    email: currentAgent?.email || user?.email || 'No email added',
+    image: currentAgent?.profileImage?.url || '/image/profile-image2.jpg',
+    phone: currentAgent?.phoneNumber || 'No phone number added',
+    email: currentAgent?.email || 'No email added',
     about:
       agentData?.description || 'Create your agent profile to add your agency details and bio.',
   };

@@ -10,12 +10,14 @@ import { useCreateAgent } from '@/app/apis/mutations/use-agent/post-agent';
 import { buildAgentPayload } from '@/app/apis/utils/build-agent-payload';
 import toast from 'react-hot-toast';
 import SuccessModal from '@/components/agent-c/modal/create-success-modal';
+import { useGetCurrentUser } from '@/app/apis/mutations/use-user/use-get-current-user';
 
 export default function AgentAgreementPage() {
   const setHideNavbar = useLayoutStore((s) => s.setHideNavbar);
   const router = useRouter();
   const { form, reset } = useAgentForm();
-  const { mutate, isPending } = useCreateAgent();
+  const { data, isLoading } = useGetCurrentUser();
+  const { mutate, isPending } = useCreateAgent(!!data?.data?.agent);
   const [showSuccess, setShowSuccess] = useState(false);
   const today = new Date().toLocaleDateString('en-GB');
   const [isAgreement, setIsAgreement] = useState(false);
@@ -30,7 +32,8 @@ export default function AgentAgreementPage() {
 
     try {
       const payload = buildAgentPayload(form);
-
+      if (data?.data?.agent != null) {
+      }
       mutate(payload, {
         onSuccess: () => {
           toast.success('Agent request submitted successfully!');

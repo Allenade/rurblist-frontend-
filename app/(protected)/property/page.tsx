@@ -122,8 +122,11 @@ export default function PropertiesPage() {
   if (isLoading && properties.length === 0) {
     return <PropertiesPageSkeleton />;
   }
+  const currentUser = user.user;
 
-  console.log(properties);
+  const savedList =
+    currentUser?.agent?.savedProperties ?? currentUser?.homeSeeker?.savedProperties ?? [];
+
   return (
     <div className="min-h-screen bg-white">
       {/* Search and Filters */}
@@ -194,23 +197,31 @@ export default function PropertiesPage() {
                 commentCount={idx.commentsCount}
                 unlikeCount={idx.unlikesCount}
                 agentFee={`₦${idx.agentFee.toLocaleString()}`}
-                savedList={user.user?.savedProperties ?? []}
+                savedList={savedList}
                 verificationStatus={idx.verificationStatus}
                 title={`${statusLabel} - ${idx.title}, ${city} ${state} state.`}
                 mainImage={mainImage}
-                currentUserId={user.user?._id ?? ''}
+                currentUserId={user.user?.user._id ?? ''}
                 galleryImages={galleryImages}
                 description={idx.description}
                 price={`₦${idx.price.toLocaleString()}`}
                 bedrooms={idx.bedrooms}
                 bathrooms={idx.bathrooms}
-                profileImage={idx.owner?.profileImage?.url || '/image/profile-img.png'}
-                profileName={idx.owner?.fullName || 'Unknown'}
+                profileImage={
+                  idx.owner?.selfieUrl?.url ||
+                  idx.owner?.user?.profileImage.url ||
+                  '/image/profile-img.png'
+                }
+                profileName={
+                  `${idx.owner?.firstName ?? ''} ${idx.owner?.lastName ?? ''}`.trim() ||
+                  `${idx.owner?.user.fullName}` ||
+                  'Unknown'
+                }
                 // comments={mockComments}
 
                 createdAt={idx.createdAt}
                 onChatClick={() => {
-                  redirect.push(`/agent/profile/${idx.owner?._id}`);
+                  redirect.push(`/agent/profile/${idx.owner?.user._id}`);
                 }}
               />
             );

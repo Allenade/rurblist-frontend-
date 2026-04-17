@@ -1,28 +1,27 @@
-"use server";
+// app/apis/services/auth-services/logout-service.ts
+'use server';
 
-import { broadcastLogout } from "../../utils/auth-channel";
-import { AUTHENTICATION_COOKIE, REFRESH_TOKEN, ROLE_COOKIE } from "../../utils/api-links";
-import { cookies } from "next/headers";
-import { api } from "../../call-apis";
-import { ApiResponse } from "../../base-response";
+import { AUTHENTICATION_COOKIE, REFRESH_TOKEN, ROLE_COOKIE } from '../../utils/api-links';
+import { cookies } from 'next/headers';
+import { api } from '../../call-apis';
+import { ApiResponse } from '../../base-response';
 
-
-export async function clearAuthAndRedirect() {
+export async function clearAuthCookies() {
   const cookieStore = await cookies();
 
   cookieStore.delete(AUTHENTICATION_COOKIE);
   cookieStore.delete(REFRESH_TOKEN);
   cookieStore.delete(ROLE_COOKIE);
-  broadcastLogout();
 }
 
-
 export async function logout(): Promise<ApiResponse<null>> {
-  const res = await api.authPost<null>("/auth/logout");
+  const res = await api.authPost<null>('/auth/logout');
 
   if (res.statusCode >= 400) {
     throw new Error(res.message);
   }
+
+  await clearAuthCookies();
 
   return res;
 }

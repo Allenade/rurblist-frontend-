@@ -1,3 +1,4 @@
+import { AgentModel } from './agent-model';
 import { CommentModel } from './comment-model';
 import { ImageModel } from './image-model';
 import { LocationModel } from './location-model';
@@ -30,7 +31,7 @@ export interface Property1 {
   paymentFrequency: string;
   images: ImageModel[];
   location: LocationModel;
-  owner: UserModel;
+  owner: AgentModel;
   likes: any[];
   amenities: string[];
   furnishingStatus: string;
@@ -39,6 +40,7 @@ export interface Property1 {
   views: number;
   verificationStatus: string;
   isAvailable: boolean;
+  isSold: boolean;
   priorityLevel: number;
   slug: string;
   trendingScore: number;
@@ -47,6 +49,7 @@ export interface Property1 {
   unlikes: any[];
   unlikesCount: number;
   commentsCount: number;
+  inspectionFee: number;
 }
 
 export type PropertySearchParams = {

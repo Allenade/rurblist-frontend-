@@ -1,6 +1,7 @@
 'use client';
 
 import { IconImage } from '../icon-image/icon-image';
+import ReadMoreText from '../read-more';
 
 interface PropertyDetailsProps {
   price: number;
@@ -13,6 +14,7 @@ interface PropertyDetailsProps {
   verificationStatus?: string;
   amenities?: string[];
   furnishingStatus?: string;
+  description?: string;
 }
 
 export default function PropertyDetails({
@@ -26,6 +28,7 @@ export default function PropertyDetails({
   verificationStatus,
   amenities = [],
   furnishingStatus,
+  description,
 }: PropertyDetailsProps) {
   const isVerified = verificationStatus?.toLowerCase() === 'verified';
   const isLand = type.toLowerCase() === 'land';
@@ -98,14 +101,11 @@ export default function PropertyDetails({
         {/* About */}
         <h2 className="text-base sm:text-lg lg:text-xl font-semibold text-[#e87722] mb-3">About</h2>
 
-        <p className="text-sm sm:text-base text-gray-600 leading-relaxed mb-8 max-w-[65ch]">
-          This modern 2-bedroom apartment is located in the heart of Ikeja, offering convenience and
-          comfort for urban living. Featuring spacious bedrooms, a fully equipped kitchen, and a
-          balcony with panoramic views, this apartment is perfect for professionals or small
-          families. Enjoy access to on-site amenities including a swimming pool, gym, and 24/7
-          security.
-        </p>
-
+        <ReadMoreText
+          maxLength={250}
+          className="text-sm sm:text-base text-gray-600 leading-relaxed mb-8 max-w-[65ch]"
+          text={description ?? 'No description available.'}
+        />
         <hr className="border-gray-200 mb-8" />
 
         {/* Features */}

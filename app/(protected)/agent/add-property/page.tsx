@@ -418,25 +418,26 @@ console.log(data)
               value={formData.status}
               onChange={(value) => handleDropdownChange('status', value)}
             />
-
-            <Input
-              label="Bedrooms"
-              name="bedrooms"
-              type="number"
-              className="p-4"
-              value={formData.bedrooms}
-              onChange={handleInputChange}
-            />
-
-            <Input
-              label="Bathrooms"
-              name="bathrooms"
-              type="number"
-              className="p-4"
-              value={formData.bathrooms}
-              onChange={handleInputChange}
-            />
-
+            {formData.type !== 'Land' && (
+              <Input
+                label="Bedrooms"
+                name="bedrooms"
+                type="number"
+                className="p-4"
+                value={formData.bedrooms}
+                onChange={handleInputChange}
+              />
+            )}
+            {formData.type !== 'Land' && (
+              <Input
+                label="Bathrooms"
+                name="bathrooms"
+                type="number"
+                className="p-4"
+                value={formData.bathrooms}
+                onChange={handleInputChange}
+              />
+            )}
             <Input
               label="Price"
               name="price"
@@ -475,42 +476,44 @@ console.log(data)
         </div>
 
         {/* Amenities */}
-        <div className="mb-12">
-          <h2 className="text-2xl font-bold text-[#833700] mb-6">Amenities</h2>
+        {formData.type !== 'Land' && (
+          <div className="mb-12">
+            <h2 className="text-2xl font-bold text-[#833700] mb-6">Amenities</h2>
 
-          <div className="relative">
-            <div
-              onClick={() => setShowAmenities(!showAmenities)}
-              className="border border-[#808080] rounded-lg p-4 cursor-pointer flex flex-wrap gap-2"
-            >
-              {amenities.length === 0 && <span className="text-gray-400">Select amenities</span>}
+            <div className="relative">
+              <div
+                onClick={() => setShowAmenities(!showAmenities)}
+                className="border border-[#808080] rounded-lg p-4 cursor-pointer flex flex-wrap gap-2"
+              >
+                {amenities.length === 0 && <span className="text-gray-400">Select amenities</span>}
 
-              {amenities.map((item) => (
-                <span
-                  key={item}
-                  className="bg-orange-100 text-[#e87722] px-3 py-1 rounded-full text-sm"
-                >
-                  {item}
-                </span>
-              ))}
-            </div>
-
-            {showAmenities && (
-              <div className="absolute z-20 bg-white border mt-2 rounded-lg shadow w-full p-4 grid grid-cols-2 gap-3">
-                {AMENITIES.map((item) => (
-                  <label key={item} className="flex items-center gap-2">
-                    <input
-                      type="checkbox"
-                      checked={amenities.includes(item)}
-                      onChange={() => toggleAmenity(item)}
-                    />
+                {amenities.map((item) => (
+                  <span
+                    key={item}
+                    className="bg-orange-100 text-[#e87722] px-3 py-1 rounded-full text-sm"
+                  >
                     {item}
-                  </label>
+                  </span>
                 ))}
               </div>
-            )}
+
+              {showAmenities && (
+                <div className="absolute z-20 bg-white border mt-2 rounded-lg shadow w-full p-4 grid grid-cols-2 gap-3">
+                  {AMENITIES.map((item) => (
+                    <label key={item} className="flex items-center gap-2">
+                      <input
+                        type="checkbox"
+                        checked={amenities.includes(item)}
+                        onChange={() => toggleAmenity(item)}
+                      />
+                      {item}
+                    </label>
+                  ))}
+                </div>
+              )}
+            </div>
           </div>
-        </div>
+        )}
 
         {/* Media Upload */}
         <div className="mb-12">

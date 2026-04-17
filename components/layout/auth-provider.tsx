@@ -1,13 +1,12 @@
 // components/auth-provider.tsx
-"use client";
+'use client';
 
-import { UserModel } from "@/app/apis/models/user-model";
-import { useGetCurrentUser } from "@/app/apis/mutations/use-user/use-get-current-user";
-import { createContext, useContext } from "react";
-
+import { currentUserModel } from '@/app/apis/models/user-model';
+import { useGetCurrentUser } from '@/app/apis/mutations/use-user/use-get-current-user';
+import { createContext, useContext } from 'react';
 
 type AuthContextType = {
-  user: UserModel | null;
+  user: currentUserModel | null;
   isLoading: boolean;
 };
 
@@ -18,7 +17,7 @@ const AuthContext = createContext<AuthContextType>({
 
 export function AuthProvider({ children }: { children: React.ReactNode }) {
   const { data, isLoading } = useGetCurrentUser();
-  
+
   return (
     <AuthContext.Provider
       value={{

@@ -4,7 +4,6 @@ import { cookies } from 'next/headers';
 import { ApiResponse, HttpMethod } from './base-response';
 import { getErrorMessage } from './errors';
 import { API_URL, AUTHENTICATION_COOKIE } from './utils/api-links';
-import { clearAuthAndRedirect } from './services/auth-services/logout-service';
 import { refreshToken } from './services/auth-services/auth-services';
 import {
   subscribeTokenRefresh,
@@ -12,8 +11,17 @@ import {
   getRefreshing,
   setRefreshing,
 } from './utils/token-manager';
+import { clearAuthCookies } from './services/auth-services/logout-service';
 
 const DEFAULT_TIMEOUT = 140000; // 2 minutes
+
+function buildErrorResponse(message: string, statusCode: number, error = 'Request failed') {
+  return {
+    error,
+    message,
+    statusCode,
+  };
+}
 
 export async function request<T = unknown>(
   method: HttpMethod,
@@ -98,11 +106,14 @@ export async function request<T = unknown>(
 
           setRefreshing(false);
 
-          headers['Authorization'] = `Bearer ${newToken}`;
+          const retryHeaders: HeadersInit = {
+            ...headers,
+            Authorization: `Bearer ${newToken}`,
+          };
 
           const retryResponse = await fetch(url, {
             method,
-            headers,
+            headers: retryHeaders,
             body:
               method !== 'GET' && payload
                 ? payload instanceof FormData
@@ -113,7 +124,21 @@ export async function request<T = unknown>(
             signal: controller.signal,
             credentials: 'include',
           });
-          const retryParsed = await retryResponse.json();
+
+          const retryContentType = retryResponse.headers.get('content-type');
+          let retryParsed: any = null;
+
+          if (retryContentType?.includes('application/json')) {
+            retryParsed = await retryResponse.json();
+          }
+
+          if (!retryResponse.ok || retryParsed?.error || retryParsed?.statusCode >= 400) {
+            return buildErrorResponse(
+              getErrorMessage(retryParsed) ?? retryParsed?.message ?? 'Something went wrong',
+              retryParsed?.statusCode ?? retryResponse.status,
+              retryParsed?.error ?? 'Request failed',
+            );
+          }
 
           return {
             data: retryParsed.data,
@@ -122,9 +147,9 @@ export async function request<T = unknown>(
           };
         } catch (error) {
           setRefreshing(false);
-          clearAuthAndRedirect();
+          await clearAuthCookies();
 
-          throw new Error('Session expired. Please login again.');
+          return buildErrorResponse('Session expired. Please login again.', 401, 'SESSION_EXPIRED');
         }
       }
 
@@ -132,11 +157,14 @@ export async function request<T = unknown>(
 
       return new Promise((resolve) => {
         subscribeTokenRefresh(async (newToken: string) => {
-          headers['Authorization'] = `Bearer ${newToken}`;
+          const retryHeaders: HeadersInit = {
+            ...headers,
+            Authorization: `Bearer ${newToken}`,
+          };
 
           const retryResponse = await fetch(url, {
             method,
-            headers,
+            headers: retryHeaders,
             body:
               method !== 'GET' && payload
                 ? payload instanceof FormData
@@ -148,7 +176,23 @@ export async function request<T = unknown>(
             credentials: 'include',
           });
 
-          const retryParsed = await retryResponse.json();
+          const retryContentType = retryResponse.headers.get('content-type');
+          let retryParsed: any = null;
+
+          if (retryContentType?.includes('application/json')) {
+            retryParsed = await retryResponse.json();
+          }
+
+          if (!retryResponse.ok || retryParsed?.error || retryParsed?.statusCode >= 400) {
+            resolve(
+              buildErrorResponse(
+                getErrorMessage(retryParsed) ?? retryParsed?.message ?? 'Something went wrong',
+                retryParsed?.statusCode ?? retryResponse.status,
+                retryParsed?.error ?? 'Request failed',
+              ),
+            );
+            return;
+          }
 
           resolve({
             data: retryParsed.data,
@@ -160,12 +204,13 @@ export async function request<T = unknown>(
     }
 
     if (!response.ok || parsed?.error || parsed?.statusCode >= 400) {
-      return {
-        error: parsed?.error ?? 'Request failed',
-        message: getErrorMessage(parsed) ?? parsed?.message ?? 'Something went wrong',
-        statusCode: parsed?.statusCode ?? response.status,
-      };
+      return buildErrorResponse(
+        getErrorMessage(parsed) ?? parsed?.message ?? 'Something went wrong',
+        parsed?.statusCode ?? response.status,
+        parsed?.error ?? 'Request failed',
+      );
     }
+
     return {
       data: parsed.data,
       message: parsed?.message ?? 'Success',

@@ -1,32 +1,28 @@
-"use client";
+'use server';
 
-import { ApiResponse } from "../../base-response";
-import { getErrorMessage } from "../../errors";
-import { LoginPayload, LoginResponse } from "../../models/login-model";
-import { API_URL } from "../../utils/api-links";
+import { ApiResponse } from '../../base-response';
+import { getErrorMessage } from '../../errors';
+import { LoginPayload, LoginResponse } from '../../models/login-model';
+import { setAuthAccessToken, setRefreshTokenCookie } from '../../utils/auth-cookies';
 
 const DEFAULT_TIMEOUT = 10000;
 
-export async function Login(
-  options?: { payload?: unknown }
-): Promise<ApiResponse<LoginResponse>> {
-
+export async function Login(options?: { payload?: unknown }): Promise<ApiResponse<LoginResponse>> {
   const { payload } = options || {};
 
   const controller = new AbortController();
   const timeout = setTimeout(() => controller.abort(), DEFAULT_TIMEOUT);
 
   try {
-
-    const response = await fetch("http://localhost:6003/api/auth/login", {
-      method: "POST",
+    const response = await fetch('http://localhost:6003/api/auth/login', {
+      method: 'POST',
       headers: {
-        "Content-Type": "application/json"
+        'Content-Type': 'application/json',
       },
       body: JSON.stringify(payload),
-      credentials: "include", // VERY IMPORTANT
-      cache: "no-store",
-      signal: controller.signal
+      credentials: 'include',
+      cache: 'no-store',
+      signal: controller.signal,
     });
 
     clearTimeout(timeout);
@@ -35,45 +31,48 @@ export async function Login(
 
     if (!response.ok) {
       return {
-        error: parsed?.error ?? "Request failed",
-        message:
-          getErrorMessage(parsed) ??
-          parsed?.message ??
-          "Something went wrong",
-        statusCode: response.status
+        error: parsed?.error ?? 'Request failed',
+        message: getErrorMessage(parsed) ?? parsed?.message ?? 'Something went wrong',
+        statusCode: response.status,
       };
     }
 
     return {
       data: parsed.data,
-      message: parsed?.message ?? "Success",
-      statusCode: response.status
+      message: parsed?.message ?? 'Success',
+      statusCode: response.status,
     };
-
   } catch (error) {
-
-    console.error("REQUEST ERROR:", error);
+    console.error('REQUEST ERROR:', error);
 
     return {
-      error: "Network Error",
-      message: "Unable to connect to server",
-      statusCode: 500
+      error: 'Network Error',
+      message: 'Unable to connect to server',
+      statusCode: 500,
     };
   }
 }
 
-
 export async function login(data: LoginPayload): Promise<ApiResponse<LoginResponse>> {
-  const res = await Login({payload: data});
-  const token = res.data?.token;
+  const res = await Login({ payload: data });
+  console.log(res);
   if (res.statusCode >= 400) {
-    console.log(res.message)
     throw new Error(res.message);
   }
-  console.log(token)
-  if (!token) {
-    throw new Error("Token missing from response");
+
+  const accessToken = res.data?.token;
+  const refreshToken = res.data?.refreshToken;
+
+  if (!accessToken) {
+    throw new Error('Access token missing from response');
   }
+
+  if (!refreshToken) {
+    throw new Error('Refresh token missing from response');
+  }
+
+  await setAuthAccessToken(accessToken);
+  await setRefreshTokenCookie(refreshToken);
 
   return res;
 }

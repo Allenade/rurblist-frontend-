@@ -1,10 +1,10 @@
 import { ApiResponse } from '../../base-response';
 import { api } from '../../call-apis';
 import { Property1 } from '../../models/property-model';
-import { UserModel } from '../../models/user-model';
+import { currentUserModel } from '../../models/user-model';
 
-export async function getCurrentUser(): Promise<ApiResponse<UserModel>> {
-  const res = await api.authGet<UserModel>('/user/me');
+export async function getCurrentUser(): Promise<ApiResponse<currentUserModel>> {
+  const res = await api.authGet<currentUserModel>('/user/me');
 
   if (res.error) {
     throw new Error(res.message);

@@ -4,7 +4,7 @@ const navbarPathsByRole: Partial<Record<Role, Array<{ path: string; title?: stri
   Home_Seeker: [
     { path: '/', title: 'Home' },
     { path: '/property', title: 'Property' },
-    { path: '/agent/agreement', title: 'Become an Agent' },
+    { path: '/agent/request', title: 'Become an Agent' },
     { path: '/property-advisory', title: 'Property Advisory' },
   ],
   Agent: [
@@ -25,21 +25,31 @@ const navbarPathsByRole: Partial<Record<Role, Array<{ path: string; title?: stri
   ],
 };
 
-export function getNavbarRoutes(role?: Role): AppRoute[] {
-  if (!role) return [];
+export function getNavbarRoutes(roleOrRoles?: Role | Role[]): AppRoute[] {
+  if (!roleOrRoles) return [];
 
-  const roleNavItems = navbarPathsByRole[role] ?? [];
+  const roles = Array.isArray(roleOrRoles) ? roleOrRoles : [roleOrRoles];
+  const seenPaths = new Set<string>();
 
-  return roleNavItems.reduce<AppRoute[]>((routes, { path, title }) => {
-    const route = appRoutes.find((item) => item.path === path);
+  return roles.reduce<AppRoute[]>((routes, role) => {
+    const roleNavItems = navbarPathsByRole[role] ?? [];
 
-    if (!route || route.public || !route.roles?.includes(role)) {
-      return routes;
-    }
+    roleNavItems.forEach(({ path, title }) => {
+      if (seenPaths.has(path)) {
+        return;
+      }
 
-    routes.push({
-      ...route,
-      title: title ?? route.title,
+      const route = appRoutes.find((item) => item.path === path);
+
+      if (!route || route.public || !route.roles?.includes(role)) {
+        return;
+      }
+
+      seenPaths.add(path);
+      routes.push({
+        ...route,
+        title: title ?? route.title,
+      });
     });
 
     return routes;

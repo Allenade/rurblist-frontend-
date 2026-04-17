@@ -25,7 +25,7 @@ export async function getPropertyById(id: string): Promise<ApiResponse<Property1
 }
 
 export async function getAgentPropertiesById(id: string): Promise<ApiResponse<Property1[]>> {
-  const res = await api.authGet<Property1[]>(`/property/agentProperties/${id}`);
+  const res = await api.authGet<Property1[]>(`/property/agent-properties/${id}`);
 
   if (res.statusCode >= 400) {
     throw new Error(res.message);

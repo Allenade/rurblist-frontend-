@@ -26,7 +26,7 @@ export interface AgentModel {
   city: string;
   address: string;
   nationality: string;
-  agent: UserModel;
+  user: UserModel;
   nin: string;
   ninSlipUrl: NinSlipUrl;
   selfieUrl: SelfieUrl;

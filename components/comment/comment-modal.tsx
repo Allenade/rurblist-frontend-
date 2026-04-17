@@ -28,6 +28,7 @@ export default function CommentModal({ isOpen, onClose, id }: CommentModalProps)
   }, [data, sortBy]);
 
   if (!isOpen) return null;
+  const currentUser = user.user;
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 backdrop-blur-sm">
@@ -65,12 +66,12 @@ export default function CommentModal({ isOpen, onClose, id }: CommentModalProps)
           {/* Comments */}
           {!isLoading &&
             comments.map((comment) => (
-            <Comment
-              key={comment?._id}
-              comment={comment}
-              currentUser={user.user}
-              propertyId={id}
-            />
+              <Comment
+                key={comment?._id}
+                comment={comment}
+                currentUser={currentUser}
+                propertyId={id}
+              />
             ))}
 
           {/* Load More */}

@@ -9,15 +9,6 @@ import PropertyMap from '@/components/property-cm/property-map';
 import { useParams } from 'next/navigation';
 import toast from 'react-hot-toast';
 
-// const images: GalleryImage[] = [
-//   { id: "1", src: "/image/image1.jpg", alt: "Building" },
-//   { id: "2", src: "/image/image2.jpg", alt: "Room 1" },
-//   { id: "3", src: "/image/image3.jpg", alt: "Room 2" },
-//   { id: "4", src: "/image/image4.jpg", alt: "Room 3" },
-//   { id: "5", src: "/image/image5.jpg", alt: "Room 4" },
-//   { id: "6", src: "/image/image6.jpg", alt: "Room 5" },
-// ]
-
 export default function PropertyDetail() {
   const params = useParams();
   const id = params.id as string;
@@ -57,16 +48,31 @@ export default function PropertyDetail() {
               sqft={property?.size ?? 0}
               type={property?.type ?? ''}
               amenities={property?.amenities}
+              description={property?.description ?? ''}
             />
           </div>
 
           {/* RIGHT — Smaller */}
           <div className="lg:col-span-4">
             <ContactCard
-              agentImage={property?.owner.profileImage.url ?? '/image/profile-image2.jpg'}
-              agentName={property?.owner.fullName ?? 'June Austen'}
-              agency={property?.owner.role ?? 'ABX real estate agency'}
-              phone={`${property?.owner.phoneNumber ?? '+234 902 002 000'}`}
+              agentImage={
+                property?.owner.selfieUrl.url ??
+                property?.owner.user.profileImage.url ??
+                '/image/profile-image2.jpg'
+              }
+              agentName={
+                `${property?.owner.firstName ?? ''} ${property?.owner.lastName ?? ''}`.trim() ||
+                'June Austen'
+              }
+              agency={
+                property?.owner.companyName ??
+                property?.owner.user.roles[0] ??
+                'ABX real estate agency'
+              }
+              propertyId={property?._id ?? ''}
+              agentId={property?.owner.user._id ?? ''}
+              inspectionFee={property?.inspectionFee}
+              phone={`${property?.owner.user.phoneNumber ?? '+234 902 002 000'}`}
             />
           </div>
         </div>
@@ -77,7 +83,13 @@ export default function PropertyDetail() {
         longitude={property?.location.coordinates.coordinates[0]}
         height="h-[400px]"
       />
-      <OtherProperties agentName={property?.owner.fullName ?? ''} id={property?.owner._id ?? ''} />
+      <OtherProperties
+        agentName={
+          `${property?.owner.firstName ?? ''} ${property?.owner.lastName ?? ''}`.trim() ||
+          'June Austen'
+        }
+        id={property?.owner.user._id ?? ''}
+      />
     </div>
   );
 }

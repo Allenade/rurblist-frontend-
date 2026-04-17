@@ -1,84 +1,105 @@
-import { NextResponse } from "next/server";
-import type { NextRequest } from "next/server";
-import { AUTHENTICATION_COOKIE, ROLE_COOKIE } from "./app/apis/utils/api-links";
-import { appRoutes, getDefaultRouteForRole, Role, rolePermissions } from "./app/apis/utils/routes";
-import { decodeToken } from "./app/apis/utils/decode-token";
-
-
+import { NextResponse } from 'next/server';
+import type { NextRequest } from 'next/server';
+import { AUTHENTICATION_COOKIE, REFRESH_TOKEN } from './app/apis/utils/api-links';
+import {
+  appRoutes,
+  getDefaultRouteForRole,
+  Permission,
+  Role,
+  rolePermissions,
+} from './app/apis/utils/routes';
+import { decodeToken } from './app/apis/utils/decode-token';
 
 function matchRoute(pathname: string) {
   return appRoutes.find(
-    (route) =>
-      pathname === route.path ||
-      pathname.startsWith(`${route.path}/`)
+    (route) => pathname === route.path || pathname.startsWith(`${route.path}/`),
   );
 }
+
+function getUserRolesFromToken(token: string): Role[] {
+  const decoded = decodeToken(token) as {
+    role?: Role;
+    roles?: Role[];
+  } | null;
+
+  if (!decoded) {
+    return [];
+  }
+
+  if (decoded.roles?.length) {
+    return decoded.roles;
+  }
+
+  if (decoded.role) {
+    return [decoded.role];
+  }
+
+  return [];
+}
+
+function hasRouteAccess(userRoles: Role[], routeRoles?: Role[]) {
+  if (!routeRoles?.length) {
+    return true;
+  }
+
+  return userRoles.some((role) => routeRoles.includes(role));
+}
+
+function hasRoutePermissions(userRoles: Role[], requiredPermissions?: Permission[]) {
+  if (!requiredPermissions?.length) {
+    return true;
+  }
+
+  return userRoles.some((role) => {
+    const permissions = rolePermissions[role] ?? [];
+    return requiredPermissions.every((permission) => permissions.includes(permission));
+  });
+}
+
 export function proxy(request: NextRequest) {
   const { pathname } = request.nextUrl;
 
   const token = request.cookies.get(AUTHENTICATION_COOKIE)?.value;
-  console.log(token)
- let role: Role | undefined;
+  const refreshToken = request.cookies.get(REFRESH_TOKEN)?.value;
+  console.log('Authentication token:', token);
 
-if (token) {
-  try {
-    const decoded = decodeToken(token);
-    role = decoded?.role as Role | undefined;
-  } catch {
-    role = undefined;
-  }
-}
+  const userRoles = token ? getUserRolesFromToken(token) : [];
+  const primaryRole = userRoles[0];
+  console.log('User roles:', userRoles[0]);
 
   const route = matchRoute(pathname);
-  
-   
-  /* ================= PUBLIC ROUTES ================= */
 
   if (route?.public) {
-    // If logged in, prevent visiting login pages
-    if (token && role) {
-      return NextResponse.redirect(
-        new URL(getDefaultRouteForRole(role), request.url)
-      );
+    if (token && primaryRole) {
+      return NextResponse.redirect(new URL(getDefaultRouteForRole(primaryRole), request.url));
     }
 
     return NextResponse.next();
   }
 
-  /* ================= REQUIRE AUTH ================= */
-
-  if (!token) {
-    return NextResponse.redirect(
-      new URL("/login", request.url)
-    );
+  if (!token && !refreshToken) {
+    return NextResponse.redirect(new URL('/login', request.url));
   }
 
-   /* ================= ROLE CHECK ================= */
-
-  if (route?.roles && role && !route.roles.includes(role)) {
-    return NextResponse.redirect(
-      new URL("/unauthorized", request.url)
-    );
+  if (!token && refreshToken) {
+    return NextResponse.next();
   }
-  /* ================= PERMISSION CHECK ================= */
 
-  if (route?.permissions && role) {
-    const permissions = rolePermissions[role] ?? [];
+  if (userRoles.length === 0) {
+    return NextResponse.next();
+  }
 
-    const hasPermission = route.permissions.every((p) =>
-      permissions.includes(p)
-    );
+  if (route?.roles && !hasRouteAccess(userRoles, route.roles)) {
+    return NextResponse.redirect(new URL('/unauthorized', request.url));
+  }
 
-    if (!hasPermission) {
-      return NextResponse.redirect(
-        new URL("/unauthorized", request.url)
-      );
-    }
+  if (route?.permissions && !hasRoutePermissions(userRoles, route.permissions)) {
+    return NextResponse.redirect(new URL('/unauthorized', request.url));
   }
 
   return NextResponse.next();
 }
 
 export const config = {
-  matcher: ["/((?!api|_next|.*\\..*).*)"],
+  matcher: ['/((?!api|_next|.*\\..*).*)'],
 };

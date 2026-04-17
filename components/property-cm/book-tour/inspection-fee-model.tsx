@@ -1,24 +1,26 @@
-"use client"
+'use client';
 
-import { useEffect } from "react"
-import { motion, AnimatePresence } from "framer-motion"
-import { OrangeButton } from "@/components/button/button"
-import { IconImage } from "@/components/icon-image/icon-image"
+import { useEffect } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { OrangeButton } from '@/components/button/button';
+import { IconImage } from '@/components/icon-image/icon-image';
 
 interface InspectionFeeModalProps {
-  isOpen: boolean
-  onClose: () => void
-  onContinue?: () => void
+  isOpen: boolean;
+  inspectionFee?: number;
+  onClose: () => void;
+  onContinue?: () => void;
 }
 
 export default function InspectionFeeModal({
   isOpen,
+  inspectionFee,
   onClose,
   onContinue,
 }: InspectionFeeModalProps) {
   useEffect(() => {
-    document.body.style.overflow = isOpen ? "hidden" : "auto"
-  }, [isOpen])
+    document.body.style.overflow = isOpen ? 'hidden' : 'auto';
+  }, [isOpen]);
 
   return (
     <AnimatePresence>
@@ -49,9 +51,7 @@ export default function InspectionFeeModal({
           >
             {/* Header */}
             <div className="flex items-center justify-center px-6 py-5 border-b relative">
-              <h2 className="text-lg sm:text-xl font-semibold">
-                Book a tour
-              </h2>
+              <h2 className="text-lg sm:text-xl font-semibold">Book a tour</h2>
             </div>
 
             {/* Content */}
@@ -67,36 +67,27 @@ export default function InspectionFeeModal({
               </h3>
 
               <p className="text-sm sm:text-base text-gray-600 max-w-112.5 mx-auto">
-                An Inspection fee of{" "}
+                An Inspection fee of{' '}
                 <span className="font-semibold text-[#454444]">
-                  ₦20,000
-                </span>{" "}
+                  ₦{inspectionFee?.toLocaleString() ?? '20,000'}
+                </span>{' '}
                 will be charged. Do you want to continue?
               </p>
 
               <div className="text-xs sm:text-sm text-gray-500 space-y-1">
                 <p>
-                  <span className="font-semibold text-[#454444]">
-                    Refund Policy:
-                  </span>{" "}
-                  Full refund within 24 hours if you decide
-                  not to rent
+                  <span className="font-semibold text-[#454444]">Refund Policy:</span> Full refund
+                  within 24 hours if you decide not to rent
                 </p>
                 <p>
-                  <span className="font-semibold text-[#454444]">
-                    Security:
-                  </span>{" "}
-                  Payment processed securely via encrypted
-                  gateway
+                  <span className="font-semibold text-[#454444]">Security:</span> Payment processed
+                  securely via encrypted gateway
                 </p>
               </div>
 
               {/* Buttons */}
               <div className="flex flex-col sm:flex-row gap-4 pt-6">
-                <OrangeButton
-                  fullWidth
-                  onClick={onContinue}
-                >
+                <OrangeButton fullWidth onClick={onContinue}>
                   Continue
                 </OrangeButton>
 
@@ -114,5 +105,5 @@ export default function InspectionFeeModal({
         </motion.div>
       )}
     </AnimatePresence>
-  )
+  );
 }

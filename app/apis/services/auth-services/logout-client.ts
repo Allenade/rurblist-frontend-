@@ -1,12 +1,9 @@
-"use client";
+// app/apis/services/auth-services/logout-client.ts
+'use client';
 
-import { broadcastLogout } from "../../utils/auth-channel";
-import { clearAuthAndRedirect } from "./logout-service";
+import { broadcastLogout } from '../../utils/auth-channel';
 
-export async function logoutClient() {
-  await clearAuthAndRedirect();
-
+export function logoutClient() {
   broadcastLogout();
-
-  window.location.href = "/login";
+  window.location.href = '/login';
 }

@@ -4,13 +4,13 @@ import React, { useState } from 'react';
 import ProfileImage from '../profile-image/profile-image';
 import { IconImage } from '../icon-image/icon-image';
 import { CommentModel } from '@/app/apis/models/comment-model';
-import { UserModel } from '@/app/apis/models/user-model';
+import { currentUserModel, UserModel } from '@/app/apis/models/user-model';
 import { useCommentMutation } from '@/app/apis/mutations/use-comments/use-post-comment-reply';
 import { OrangeButton } from '../button/button';
 
 interface CommentProps {
   comment: CommentModel;
-  currentUser: UserModel | null;
+  currentUser: currentUserModel | null;
   propertyId: string;
   showReplyAction?: boolean;
 }
@@ -49,16 +49,17 @@ export default function Comment({
     <div className="py-5 border-b border-gray-200 last:border-b-0">
       <div className="flex gap-3">
         <ProfileImage
-          src={comment.user.profileImage?.url || '/image/profile-img.png'}
+          src={comment.user.profileImage?.url}
           alt={comment.user.fullName || 'user'}
+          name={comment.user.fullName || 'user'}
           size="sm"
         />
 
         <div className="flex-1">
           <div className="flex items-center gap-2">
             <h4 className="font-semibold text-gray-900">{comment.user.fullName}</h4>
-            {comment.user.role && (
-              <span className="text-xs text-[#e87722]">{comment.user.role}</span>
+            {comment.user.roles[0] && (
+              <span className="text-xs text-[#e87722]">{comment.user.roles[0]}</span>
             )}
           </div>
 
@@ -100,8 +101,16 @@ export default function Comment({
           {showReplyInput && (
             <div className="mt-4 flex gap-3">
               <ProfileImage
-                src={currentUser?.profileImage?.url || '/image/profile-img.png'}
-                alt={currentUser?.fullName || 'user'}
+                src={
+                  currentUser?.agent.selfieUrl?.url ||
+                  currentUser?.user.profileImage?.url ||
+                  '/image/profile-img.png'
+                }
+                alt={
+                  `${currentUser?.agent.firstName ?? ''} ${currentUser?.agent.lastName ?? ''}`.trim() ||
+                  currentUser?.user.fullName ||
+                  'user'
+                }
                 size="sm"
               />
               <div className="flex-1">
@@ -125,15 +134,23 @@ export default function Comment({
           {/* Nested Replies */}
           {showReplies && hasReplies && (
             <div className="mt-5 ml-8 border-l border-gray-200 pl-6 space-y-5">
-              {comment.replies.map((reply: any) => (
-                <Comment
-                  key={reply._id}
-                  comment={reply}
-                  currentUser={currentUser}
-                  propertyId={propertyId}
-                  showReplyAction={reply._id === comment.replies[comment.replies.length - 1]?._id}
-                />
-              ))}
+              {(() => {
+                const latestReplyIndex = comment.replies.length - 1;
+
+                return comment.replies.map((reply: any, index: number) => {
+                  const isLastReply = index === latestReplyIndex;
+
+                  return (
+                    <Comment
+                      key={reply._id}
+                      comment={reply}
+                      currentUser={currentUser}
+                      propertyId={propertyId}
+                      showReplyAction={isLastReply}
+                    />
+                  );
+                });
+              })()}
             </div>
           )}
         </div>

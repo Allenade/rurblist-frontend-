@@ -20,7 +20,8 @@ export default function Navbar() {
   const { mutate: logoutUser, isPending } = useLogout();
 
   const navRoutes = useMemo(() => {
-    return getNavbarRoutes(user?.role as Role);
+    console.log('Calculating navbar routes for user:', user);
+    return getNavbarRoutes(user?.user.roles as Role[]);
   }, [user]);
 
   useEffect(() => {
@@ -94,7 +95,7 @@ export default function Navbar() {
                     onClick={() => setProfileOpen((prev) => !prev)}
                     className="flex items-center justify-center"
                   >
-                    <UserAvatar name={user.fullName} image={user.profileImage.url} />
+                    <UserAvatar name={user.user.fullName} image={user.user.profileImage.url} />
                   </button>
                   {/* Dropdown */}
                   {profileOpen && (
@@ -117,7 +118,9 @@ export default function Navbar() {
                     >
                       <Link
                         href={
-                          user.role == 'Home_Seeker' ? '/house-seeker/profile' : '/agent/private'
+                          user.user.roles.includes('Home_Seeker')
+                            ? '/house-seeker/profile'
+                            : '/agent/private'
                         }
                         className="block px-4 py-3 text-sm hover:bg-gray-50"
                         onClick={() => setProfileOpen(false)}
@@ -237,7 +240,7 @@ export default function Navbar() {
                     onClick={() => setProfileOpen((prev) => !prev)}
                     className="flex items-center justify-center"
                   >
-                    <UserAvatar name={user.fullName} image={user.profileImage.url} />
+                    <UserAvatar name={user.user.fullName} image={user.user.profileImage.url} />
                   </button>
                   {/* Dropdown */}
                   {profileOpen && (
@@ -260,7 +263,9 @@ export default function Navbar() {
                     >
                       <Link
                         href={
-                          user.role == 'Home_Seeker' ? '/house-seeker/profile' : '/agent/private'
+                          user.user.roles.includes('Home_Seeker')
+                            ? '/house-seeker/profile'
+                            : '/agent/private'
                         }
                         className="block px-4 py-3 text-sm hover:bg-gray-50"
                         onClick={() => setProfileOpen(false)}

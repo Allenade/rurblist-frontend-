@@ -26,24 +26,21 @@ export default function AgentProfilePage() {
   }, [setHideNavbar]);
 
   const agentData = data?.data;
-  const currentAgent = agentData?.agent;
+  const currentAgent = agentData?.user;
   const properties = propertiesData?.data ?? [];
   const agent = {
     name:
-      currentAgent?.fullName ||
-      agentData?.agent?.fullName ||
       [agentData?.firstName, agentData?.lastName].filter(Boolean).join(' ') ||
+      currentAgent?.fullName ||
       'Agent',
-    agency: agentData?.companyName || currentAgent?.role || 'Real estate agency',
+    agency: agentData?.companyName || currentAgent?.roles[0] || 'Real estate agency',
     experience: `${agentData?.yearsOfExperience ?? 0} years of experience`,
     location:
       [agentData?.city, agentData?.address].filter(Boolean).join(', ') || 'No location added',
     image:
-      currentAgent?.profileImage?.url ||
-      agentData?.agent?.profileImage?.url ||
-      '/image/profile-image2.jpg',
-    phone: currentAgent?.phoneNumber || agentData?.agent?.phoneNumber || 'No phone number added',
-    email: currentAgent?.email || agentData?.agent?.email || 'No email added',
+      agentData?.selfieUrl?.url || currentAgent?.profileImage?.url || '/image/profile-image2.jpg',
+    phone: currentAgent?.phoneNumber || 'No phone number added',
+    email: currentAgent?.email || 'No email added',
     about:
       agentData?.description || 'Create your agent profile to add your agency details and bio.',
   };
