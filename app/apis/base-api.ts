@@ -58,7 +58,7 @@ export async function request<T = unknown>(
       headers['Cookie'] = cookieHeader;
     }
 
-    const url = new URL(`/api${path}`, API_URL);
+    const url = new URL(`${path}`, API_URL);
 
     const response = await fetch(url, {
       method,
