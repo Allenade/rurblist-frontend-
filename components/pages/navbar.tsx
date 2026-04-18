@@ -18,10 +18,14 @@ export default function Navbar() {
   const desktopProfileRef = useRef<HTMLDivElement>(null);
   const mobileProfileRef = useRef<HTMLDivElement>(null);
   const { mutate: logoutUser, isPending } = useLogout();
+  const safeUser = user?.user;
 
+  const avatarName = safeUser?.fullName ?? 'User';
+  const avatarImage = safeUser?.profileImage?.url;
+  const roles = safeUser?.roles ?? [];
   const navRoutes = useMemo(() => {
     console.log('Calculating navbar routes for user:', user);
-    return getNavbarRoutes(user?.user.roles as Role[]);
+    return getNavbarRoutes(roles as Role[]);
   }, [user]);
 
   useEffect(() => {
@@ -95,7 +99,7 @@ export default function Navbar() {
                     onClick={() => setProfileOpen((prev) => !prev)}
                     className="flex items-center justify-center"
                   >
-                    <UserAvatar name={user.user.fullName} image={user.user.profileImage.url} />
+                    <UserAvatar name={avatarName} image={avatarImage} />
                   </button>
                   {/* Dropdown */}
                   {profileOpen && (
@@ -118,7 +122,7 @@ export default function Navbar() {
                     >
                       <Link
                         href={
-                          user.user.roles.includes('Home_Seeker')
+                          user?.user?.roles?.includes('Home_Seeker')
                             ? '/house-seeker/profile'
                             : '/agent/private'
                         }
@@ -240,7 +244,7 @@ export default function Navbar() {
                     onClick={() => setProfileOpen((prev) => !prev)}
                     className="flex items-center justify-center"
                   >
-                    <UserAvatar name={user.user.fullName} image={user.user.profileImage.url} />
+                    <UserAvatar name={avatarName} image={avatarImage} />
                   </button>
                   {/* Dropdown */}
                   {profileOpen && (
@@ -263,7 +267,7 @@ export default function Navbar() {
                     >
                       <Link
                         href={
-                          user.user.roles.includes('Home_Seeker')
+                          user?.user?.roles?.includes('Home_Seeker')
                             ? '/house-seeker/profile'
                             : '/agent/private'
                         }
