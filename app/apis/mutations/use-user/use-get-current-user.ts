@@ -3,11 +3,12 @@
 import { useQuery } from '@tanstack/react-query';
 import { getCurrentUser } from '../../services/user-service/user-services';
 
-export function useGetCurrentUser() {
+export function useGetCurrentUser(options?: { enabled?: boolean }) {
   return useQuery({
     queryKey: ['current-user'],
     queryFn: getCurrentUser,
     staleTime: 1000 * 60 * 10, //10min,
     retry: false,
+    enabled: options?.enabled ?? true,
   });
 }

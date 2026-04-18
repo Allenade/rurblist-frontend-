@@ -69,6 +69,11 @@ export const publicRoutes: AppRoute[] = [
     path: '/email-sent',
     public: true,
   },
+  {
+    path: '/',
+    title: 'Home',
+    public: true,
+  },
 ];
 
 export const sharedRoutes: AppRoute[] = [
@@ -77,8 +82,7 @@ export const sharedRoutes: AppRoute[] = [
     path: '/',
     title: 'Home',
     showInNaBar: true,
-    roles: ['Agent', 'Home_Seeker', 'Landlord', 'Admin'],
-    permissions: ['VIEW_DASHBOARD'],
+    public: true,
   },
   {
     path: '/property',

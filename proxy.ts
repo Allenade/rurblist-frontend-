@@ -69,8 +69,12 @@ export function proxy(request: NextRequest) {
 
   const route = matchRoute(pathname);
 
+  if (pathname === '/') {
+    return NextResponse.next();
+  }
+
   if (route?.public) {
-    if (token && primaryRole) {
+    if (token && primaryRole && (pathname === '/login' || pathname === '/signup')) {
       return NextResponse.redirect(new URL(getDefaultRouteForRole(primaryRole), request.url));
     }
 
