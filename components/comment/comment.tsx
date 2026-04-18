@@ -51,7 +51,7 @@ export default function Comment({
         <ProfileImage
           src={comment.user.profileImage?.url}
           alt={comment.user.fullName || 'user'}
-          name={comment.user.fullName || 'user'}
+          // name={comment.user.fullName || 'user'}
           size="sm"
         />
 

@@ -1,5 +1,5 @@
 import { AgentModel } from './agent-model';
-import { Property1 } from './property-model';
+import { PropertyModel } from './property-model';
 import { UserModel } from './user-model';
 
 export interface BookInspectionPayload {
@@ -32,7 +32,7 @@ export interface TourModel2 {
   _id: string;
   user: UserModel;
   agent: AgentModel;
-  property: Property1;
+  property: PropertyModel;
   tourType: string;
   date: string;
   price: number;

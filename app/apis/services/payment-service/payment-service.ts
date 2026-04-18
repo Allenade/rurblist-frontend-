@@ -1,6 +1,6 @@
 import { ApiResponse } from '../../base-response';
 import { api } from '../../call-apis';
-import { PaymentModel } from '../../models/payment-model';
+import { PaymentDetailModel, PaymentModel } from '../../models/payment-model';
 
 export async function payForTour(
   tourId: string,
@@ -9,6 +9,17 @@ export async function payForTour(
   const response = await api.authPost<PaymentModel>(`/payments/tour/${tourId}`, {
     paymentMethod,
   });
+
+  if (response.statusCode >= 400) {
+    throw new Error(response.message);
+  }
+  return response;
+}
+
+export async function getPaymentDeails(
+  reference: string,
+): Promise<ApiResponse<PaymentDetailModel>> {
+  const response = await api.authGet<PaymentDetailModel>(`/payments/reference/${reference}`);
 
   if (response.statusCode >= 400) {
     throw new Error(response.message);
