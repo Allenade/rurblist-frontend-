@@ -84,6 +84,7 @@ export async function verifyGoogleOtp(otp: string): Promise<ApiResponse<RefreshR
   const res = await api.post<RefreshResponse>('/auth/verify-google-otp', { otp });
   const token = res.data?.accessToken;
   const refreshToken = res.data?.refreshToken;
+  console.log(token);
   if (res.statusCode >= 400 || !token || !refreshToken) {
     throw new Error(res.message);
   }

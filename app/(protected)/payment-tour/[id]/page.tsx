@@ -1,5 +1,6 @@
 'use client';
 
+import { usePayForTour } from '@/app/apis/mutations/use-payment/use-payment-tour';
 import { useGetTourById } from '@/app/apis/mutations/use-tour/use-get-tourby-id';
 import { OrangeButton } from '@/components/button/button';
 import PageHeader from '@/components/page-header';
@@ -9,15 +10,15 @@ import { useParams } from 'next/navigation';
 import { useState } from 'react';
 
 export default function MakePaymentTourPage() {
-  const propertyPrice = 5000000;
   const params = useParams();
   const id = params.id as string;
   const [method, setMethod] = useState<string>('bank');
   const { data, isLoading } = useGetTourById(id);
-
+  const { mutate, isPending } = usePayForTour();
+  const tourData = data?.data;
   const methods = [
     {
-      id: 'bank',
+      id: 'bank_transfer',
       title: 'Bank Transfer',
       description: 'Transfer directly from your bank account',
       icon: '/icons/bank-icon.svg',
@@ -35,18 +36,24 @@ export default function MakePaymentTourPage() {
       icon: '/icons/credit-card.svg',
     },
     {
-      id: 'wallet',
+      id: 'bank',
       title: 'Digital Wallet',
       description: 'Pay from your digital wallet',
       icon: '/icons/token-branded_binance.svg',
     },
   ];
   const items = [
-    { label: 'Property Price', value: propertyPrice },
-    { label: 'Agency Fee (4%)', value: propertyPrice * 0.04 },
-    { label: 'Escrow Fee (2%)', value: propertyPrice * 0.02 },
-    { label: 'Verification Fee', value: 200000 },
+    { label: 'inspection Fee', value: tourData?.price ?? 0 },
+    // { label: 'Agency Fee (4%)', value: propertyPrice * 0.04 },
+    // { label: 'Escrow Fee (2%)', value: propertyPrice * 0.02 },
+    // { label: 'Verification Fee', value: 200000 },
   ];
+  const handlePayment = () => {
+    mutate({
+      tourId: id,
+      paymentMethod: method, // from your selector
+    });
+  };
 
   const totalAmount = items.reduce((sum, item) => sum + item.value, 0);
   return (
@@ -68,7 +75,11 @@ export default function MakePaymentTourPage() {
 
         {/* Button */}
         <div className="pt-4 flex justify-center">
-          <OrangeButton className="w-full sm:w-auto sm:min-w-[320px]">
+          <OrangeButton
+            className="w-full sm:w-auto sm:min-w-[320px]"
+            onClick={handlePayment}
+            loading={isPending}
+          >
             Complete Payment - ₦{totalAmount.toLocaleString()}
           </OrangeButton>
         </div>

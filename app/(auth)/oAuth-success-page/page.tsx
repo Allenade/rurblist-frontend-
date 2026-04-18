@@ -1,26 +1,16 @@
-"use client";
+import OAuthHandler from '@/components/oauth-h/OAuthHandler';
 
-import { useEffect } from "react";
-import { useSearchParams } from "next/navigation";
-import { useVerifyGoogleOtp } from "@/app/apis/mutations/use-auth/use-verify-google-otp";
-import AuthLoadingScreen from "@/components/loader/auth-loading-screen";
+export default async function OAuthSuccessPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ otp?: string }>;
+}) {
+  const params = await searchParams;
+  const otp = params?.otp;
 
-export default function OAuthSuccessPage() {
-  const searchParams = useSearchParams();
-  const { mutate } = useVerifyGoogleOtp();
+  if (!otp) {
+    return <div className="p-6">Invalid authentication link</div>;
+  }
 
-  useEffect(() => {
-    const otp = searchParams.get("otp");
-    if (!otp) return;
-
-    mutate(otp);
-  }, []);
-
-  return (
-    <AuthLoadingScreen
-      title="Signing you in..."
-      showProgress={false}
-      subtitle="Securing your account with Google."
-    />
-  );
+  return <OAuthHandler otp={otp} />;
 }
