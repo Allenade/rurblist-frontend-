@@ -97,7 +97,7 @@ export default function LoginPage() {
               transition
             "
             onClick={() => {
-              window.location.href = `http://localhost:6003/api/auth/google-auth`;
+              window.location.href = `http://localhost:6003/api/auth/google`;
             }}
           >
             Login with google

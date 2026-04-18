@@ -60,21 +60,32 @@ export default function ProfileImage({ src, alt, size = 'md', name, role }: Prof
   const bgColor = getColorFromName(name || alt);
 
   return (
-    <div
-      className={`relative rounded-full overflow-hidden flex items-center justify-center text-white font-semibold ${bgColor}`}
-      style={{ width: sizeValue, height: sizeValue }}
-    >
-      {!showFallback ? (
-        <Image
-          src={src as string}
-          alt={alt}
-          fill
-          className="object-cover"
-          sizes={`${sizeValue}px`}
-          onError={() => setImgError(true)}
-        />
-      ) : (
-        <span className="text-sm sm:text-base">{initials}</span>
+    <div className="flex items-center gap-3">
+      {/* Avatar */}
+      <div
+        className={`relative rounded-full overflow-hidden flex items-center justify-center text-white font-semibold ${bgColor}`}
+        style={{ width: sizeValue, height: sizeValue }}
+      >
+        {!showFallback ? (
+          <Image
+            src={src as string}
+            alt={alt}
+            fill
+            className="object-cover"
+            sizes={`${sizeValue}px`}
+            onError={() => setImgError(true)}
+          />
+        ) : (
+          <span className="text-sm sm:text-base">{initials}</span>
+        )}
+      </div>
+
+      {/* Name + Role */}
+      {(name || role) && (
+        <div>
+          {name && <p className="font-semibold text-gray-900">{name}</p>}
+          {role && <p className="text-xs text-[#e87722]">{role}</p>}
+        </div>
       )}
     </div>
   );

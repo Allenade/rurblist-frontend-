@@ -187,7 +187,7 @@ export default function RegisterPage() {
               transition
             "
             onClick={() => {
-              window.location.href = `http://localhost:6003/api/auth/google-auth`;
+              window.location.href = `http://localhost:6003/api/auth/google`;
             }}
           >
             Continue with google

@@ -51,7 +51,7 @@ export default function Comment({
         <ProfileImage
           src={comment.user.profileImage?.url}
           alt={comment.user.fullName || 'user'}
-          name={comment.user.fullName || 'user'}
+          // name={comment.user.fullName || 'user'}
           size="sm"
         />
 
@@ -102,13 +102,13 @@ export default function Comment({
             <div className="mt-4 flex gap-3">
               <ProfileImage
                 src={
-                  currentUser?.agent.selfieUrl?.url ||
-                  currentUser?.user.profileImage?.url ||
+                  currentUser?.agent?.selfieUrl?.url ||
+                  currentUser?.user?.profileImage?.url ||
                   '/image/profile-img.png'
                 }
                 alt={
-                  `${currentUser?.agent.firstName ?? ''} ${currentUser?.agent.lastName ?? ''}`.trim() ||
-                  currentUser?.user.fullName ||
+                  `${currentUser?.agent?.firstName ?? ''} ${currentUser?.agent?.lastName ?? ''}`.trim() ||
+                  currentUser?.user?.fullName ||
                   'user'
                 }
                 size="sm"

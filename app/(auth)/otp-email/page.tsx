@@ -1,12 +1,11 @@
 'use client';
 
-import { useSearchParams, useRouter } from 'next/navigation';
+import { useRouter } from 'next/navigation';
 import Image from 'next/image';
 import { OrangeButton } from '@/components/button/button';
 import { useOtpStore } from '@/app/apis/store/otp-store';
 
 export default function OtpSent() {
-  const searchParams = useSearchParams();
   const router = useRouter();
 
   const email = useOtpStore((s) => s.email);

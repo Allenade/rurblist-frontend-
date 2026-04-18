@@ -17,7 +17,7 @@ export type Property = {
   image: string;
 };
 
-export interface Property1 {
+export interface PropertyModel {
   _id: string;
   title: string;
   description: string;
