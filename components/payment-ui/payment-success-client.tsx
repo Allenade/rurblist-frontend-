@@ -8,7 +8,24 @@ export default function PaymentSuccessClient({ reference }: { reference: string 
   const router = useRouter();
 
   const { data, isLoading, isError } = useGetPaymentDeails(reference);
+
   const info = data?.data;
+
+  const formatDate = (dateString: string) => {
+    const date = new Date(dateString);
+
+    return date.toLocaleDateString('en-GB', {
+      day: 'numeric',
+      month: 'long',
+      year: 'numeric',
+    });
+  };
+
+  const formatTransactionId = (paidAt: string, transactionId: string) => {
+    const year = new Date(paidAt).getFullYear();
+    return `TNX-${year}-${transactionId}`;
+  };
+
   if (isLoading) {
     return <div className="p-6">Verifying payment...</div>;
   }
@@ -18,10 +35,13 @@ export default function PaymentSuccessClient({ reference }: { reference: string 
   }
 
   const payment = {
-    transactionId: info?.transactionId ?? '',
+    transactionId: formatTransactionId(
+      info?.paidAt ?? '',
+      info?.transactionId ?? '', // or data.id if you have it
+    ),
     paymentMethod: info?.paymentMethod || 'Payment',
     amount: info?.amount ?? 0,
-    date: info?.paidAt ? new Date(info.paidAt).toLocaleDateString() : 'Unknown date',
+    date: formatDate(info?.paidAt ?? ''),
   };
 
   return (

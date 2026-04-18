@@ -187,7 +187,7 @@ export default function RegisterPage() {
               transition
             "
             onClick={() => {
-              window.location.href = `http://localhost:6003/api/auth/google`;
+              window.location.href = `https://rurblist-backend.onrender.com/api/auth/google`;
             }}
           >
             Continue with google

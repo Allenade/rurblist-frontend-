@@ -12,16 +12,17 @@ type AuthContextType = {
 
 const AuthContext = createContext<AuthContextType>({
   user: null,
-  isLoading: true,
+  isLoading: false,
 });
 
 export function AuthProvider({ children }: { children: React.ReactNode }) {
   const { data, isLoading } = useGetCurrentUser();
+  const user = data?.statusCode === 401 ? null : (data?.data ?? null);
 
   return (
     <AuthContext.Provider
       value={{
-        user: data?.data ?? null,
+        user: user,
         isLoading,
       }}
     >

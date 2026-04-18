@@ -1,12 +1,14 @@
-import { ConditionalShell } from "@/components/layout/conditional-shell";
-export default function PublicLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
-  return <>
-    <ConditionalShell>
+import Footer from '@/components/footer/footer';
+import { AuthProvider } from '@/components/layout/auth-provider';
+import Navbar from '@/components/pages/navbar';
+export default function PublicLayout({ children }: { children: React.ReactNode }) {
+  return (
+    <>
+      <AuthProvider>
+        <Navbar />
         {children}
-    </ConditionalShell>
-  </>;
+        <Footer />
+      </AuthProvider>
+    </>
+  );
 }
