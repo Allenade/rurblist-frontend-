@@ -15,20 +15,15 @@ const AuthContext = createContext<AuthContextType>({
   isLoading: false,
 });
 
-type AuthProviderProps = {
-  children: React.ReactNode;
-  shouldFetchUser?: boolean;
-};
-export function AuthProvider({ children, shouldFetchUser = true }: AuthProviderProps) {
-  const { data, isLoading } = useGetCurrentUser({
-    enabled: shouldFetchUser,
-  });
+export function AuthProvider({ children }: { children: React.ReactNode }) {
+  const { data, isLoading } = useGetCurrentUser();
+  const user = data?.statusCode === 401 ? null : (data?.data ?? null);
 
   return (
     <AuthContext.Provider
       value={{
-        user: data?.data ?? null,
-        isLoading: shouldFetchUser ? isLoading : false,
+        user: user,
+        isLoading,
       }}
     >
       {children}

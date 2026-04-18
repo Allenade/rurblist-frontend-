@@ -5,7 +5,13 @@ import { currentUserModel } from '../../models/user-model';
 
 export async function getCurrentUser(): Promise<ApiResponse<currentUserModel>> {
   const res = await api.authGet<currentUserModel>('/user/me');
-
+  if (res.statusCode === 401) {
+    return {
+      data: null as never,
+      message: 'Unauthenticated',
+      statusCode: 401,
+    };
+  }
   if (res.error) {
     throw new Error(res.message);
   }

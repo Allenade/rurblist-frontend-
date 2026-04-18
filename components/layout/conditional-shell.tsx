@@ -20,7 +20,7 @@ export function ConditionalShell({ children }: { children: React.ReactNode }) {
 
   return (
     <>
-      <AuthProvider shouldFetchUser={true}>
+      <AuthProvider>
         <AuthListener />
         <Navbar />
         {children}

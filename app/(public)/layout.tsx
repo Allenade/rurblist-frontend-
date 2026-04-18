@@ -4,7 +4,7 @@ import Navbar from '@/components/pages/navbar';
 export default function PublicLayout({ children }: { children: React.ReactNode }) {
   return (
     <>
-      <AuthProvider shouldFetchUser={false}>
+      <AuthProvider>
         <Navbar />
         {children}
         <Footer />
