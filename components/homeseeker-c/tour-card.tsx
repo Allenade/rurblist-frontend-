@@ -7,6 +7,7 @@ interface TourCardProps {
   agentName: string;
   dateTime: string;
   tourType: string;
+  status: String;
   onCancel?: () => void;
   loading?: boolean;
 }
@@ -17,6 +18,7 @@ export default function TourCard({
   dateTime,
   tourType,
   onCancel,
+  status,
   loading = false,
 }: TourCardProps) {
   return (
@@ -37,11 +39,13 @@ export default function TourCard({
         Tour Type: <span className="font-medium text-gray-900">{tourType}</span>
       </p>
 
-      <div className="pt-2">
-        <OrangeButton variant="gray" fullWidth onClick={onCancel} loading={loading}>
-          Cancel tour
-        </OrangeButton>
-      </div>
+      {status !== 'cancelled' && (
+        <div className="pt-2">
+          <OrangeButton variant="gray" fullWidth onClick={onCancel} loading={loading}>
+            Cancel tour
+          </OrangeButton>
+        </div>
+      )}
     </div>
   );
 }

@@ -13,99 +13,49 @@ import HomeSeekerBasicInfoSkeleton from '@/components/homeseeker-c/loader-skelen
 import { useGetSavedProperties } from '@/app/apis/mutations/use-user/use-get-saved-property';
 import { useSaveProperty } from '@/app/apis/mutations/use-property/use-save-unsave-property';
 import SavedPropertiesSkeleton from '@/components/homeseeker-c/loader-skelenton/save-property-skelenton';
-
-const SECTION_HEADING_CLASS = 'font-serif text-xl font-bold text-brand-900 sm:text-2xl';
-
-const CARD_CLASS = 'rounded-xl border border-border bg-white p-6 shadow-sm';
-
-const TOUR_CARD = {
-  property: '2-Bedroom Apartment in Greenwich Village',
-  agent: 'John D.',
-  dateTime: 'Thursday, October 12, 3:00 PM',
-  tourType: 'In-Person Tour',
-};
-
-function TourCard() {
-  return (
-    <div className={`${CARD_CLASS} flex min-w-70 shrink-0 flex-col snap-center sm:min-w-[320px]`}>
-      <p className="text-sm text-foreground">
-        <span className="font-medium">Property Info:</span> {TOUR_CARD.property}
-      </p>
-      <p className="mt-1 text-sm text-foreground">
-        <span className="font-medium">Agent:</span> {TOUR_CARD.agent}
-      </p>
-      <p className="mt-1 text-sm text-foreground">
-        <span className="font-medium">Requested Date & Time:</span> {TOUR_CARD.dateTime}
-      </p>
-      <p className="mt-1 text-sm text-foreground">
-        <span className="font-medium">Tour Type:</span> {TOUR_CARD.tourType}
-      </p>
-      <button
-        type="button"
-        className="mt-4 w-full rounded-lg border border-border bg-gray-100 py-2.5 text-sm font-medium text-foreground hover:bg-gray-200"
-      >
-        Cancel tour
-      </button>
-    </div>
-  );
-}
-
-const MESSAGE_CARD = {
-  name: 'John D',
-  type: 'Requested Tour: In-person',
-  dateTime: 'Date & Time: Thursday, October 12th, 3:00 PM',
-  property: 'Property: Greenwich Village Apartment',
-  sentAt: 'October 2nd, 2024. 10am',
-};
+import { useGetTourUsers } from '@/app/apis/mutations/use-tour/use-get-tour-user';
+import TourCardSkeleton from '@/components/homeseeker-c/loader-skelenton/tour-card-skeleton';
+import { formatTourDate } from '@/app/apis/utils/format-tour-date';
+import { useCancelTour } from '@/app/apis/mutations/use-tour/use-cancel-tour';
 
 export default function HouseSeekerProfilePage() {
   const setHideNavbar = useLayoutStore((s) => s.setHideNavbar);
   const [loadingId, setLoadingId] = useState<string | null>(null);
   const { data, isLoading } = useGetCurrentUser();
+  const { data: tour, isLoading: isFetching } = useGetTourUsers();
   const { data: savedPropertiesData, isLoading: isSavedPropertiesLoading } =
     useGetSavedProperties();
   const { unsave, isUnSaving } = useSaveProperty();
-  const tours = [
-    {
-      id: '1',
-      propertyTitle: '2-Bedroom Apartment in Greenwich Village',
-      agentName: 'John D.',
-      dateTime: 'Thursday, October 12, 3:00 PM',
-      tourType: 'In-Person Tour',
-    },
-    {
-      id: '2',
-      propertyTitle: '2-Bedroom Apartment in Greenwich Village',
-      agentName: 'John D.',
-      dateTime: 'Thursday, October 12, 3:00 PM',
-      tourType: 'In-Person Tour',
-    },
-    {
-      id: '3',
-      propertyTitle: '2-Bedroom Apartment in Greenwich Village',
-      agentName: 'John D.',
-      dateTime: 'Thursday, October 12, 3:00 PM',
-      tourType: 'In-Person Tour',
-    },
-    {
-      id: '4',
-      propertyTitle: '2-Bedroom Apartment in Greenwich Village',
-      agentName: 'John D.',
-      dateTime: 'Thursday, October 12, 3:00 PM',
-      tourType: 'In-Person Tour',
-    },
-  ];
+  const { mutate: cancelTour, isPending } = useCancelTour();
+
+  const tours =
+    tour?.data?.map((t) => ({
+      id: t._id,
+      propertyTitle: t.property?.title || 'No property',
+      agentName: t.agent?.user?.fullName || 'No agent',
+      dateTime: formatTourDate(t.date),
+      status: t.status,
+      tourType:
+        t.tourType === 'call'
+          ? 'Virtual Tour'
+          : t.tourType === 'inspection'
+            ? 'Inspection'
+            : 'In-Person Tour',
+    })) ?? [];
   useEffect(() => {
     setHideNavbar(true);
     return () => setHideNavbar(false);
   }, [setHideNavbar]);
-  const handleCancel = async (id: string) => {
+
+  const handleCancel = (id: string) => {
+    if (loadingId === id) return;
     setLoadingId(id);
 
-    // simulate API
-    await new Promise((res) => setTimeout(res, 1500));
-
-    setLoadingId(null);
+    cancelTour(id, {
+      onSettled: () => {
+        setLoadingId(null);
+      },
+    });
   };
   const listings = (savedPropertiesData?.data ?? []).map((property) => ({
     id: property._id,
@@ -151,11 +101,15 @@ export default function HouseSeekerProfilePage() {
           )}
         </div>
         {/* Tours */}
-        <UpcomingToursSection
-          tours={tours}
-          onCancelTour={handleCancel}
-          loadingId={loadingId ?? undefined}
-        />
+        {isFetching ? (
+          <TourCardSkeleton />
+        ) : (
+          <UpcomingToursSection
+            tours={tours}
+            onCancelTour={handleCancel}
+            loadingId={loadingId ?? undefined}
+          />
+        )}
         {isSavedPropertiesLoading ? (
           <SavedPropertiesSkeleton />
         ) : (
