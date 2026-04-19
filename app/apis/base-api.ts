@@ -4,7 +4,6 @@ import { cookies } from 'next/headers';
 import { ApiResponse, HttpMethod } from './base-response';
 import { getErrorMessage } from './errors';
 import { API_URL, AUTHENTICATION_COOKIE } from './utils/api-links';
-import { refreshToken } from './services/auth-services/auth-services';
 import {
   subscribeTokenRefresh,
   onRefreshed,
@@ -12,6 +11,7 @@ import {
   setRefreshing,
 } from './utils/token-manager';
 import { clearAuthCookies } from './services/auth-services/logout-service';
+import { refreshToken } from './services/auth-services/auth-service-client';
 
 const DEFAULT_TIMEOUT = 140000; // 2 minutes
 
