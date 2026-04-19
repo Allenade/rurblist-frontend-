@@ -1,8 +1,7 @@
 'use server';
-
 import { ApiResponse } from '../../base-response';
 import { api } from '../../call-apis';
-import { RefreshResponse } from '../../models/login-model';
+import { LoginPayload, LoginResponse, RefreshResponse } from '../../models/login-model';
 import { SignupPayload } from '../../models/signup-model';
 import { setAuthAccessToken, setRefreshTokenCookie } from '../../utils/auth-cookies';
 import { ForgotPasswordPayload, ResetPasswordPayload } from '../../models/password-model';
@@ -91,4 +90,62 @@ export async function verifyGoogleOtp(otp: string): Promise<ApiResponse<RefreshR
   await setAuthAccessToken(token);
   await setRefreshTokenCookie(refreshToken);
   return res;
+}
+
+/*
+export async function login(data: LoginPayload): Promise<ApiResponse<LoginResponse>> {
+  const res = await api.post<LoginResponse>('/auth/login', data);
+  console.log(res);
+  if (res.statusCode >= 400) {
+    throw new Error(res.message);
+  }
+
+  const accessToken = res.data?.token;
+  const refreshToken = res.data?.refreshToken;
+
+  if (!accessToken) {
+    throw new Error('Access token missing from response');
+  }
+
+  if (!refreshToken) {
+    throw new Error('Refresh token missing from response');
+  }
+
+  await setAuthAccessToken(accessToken);
+  await setRefreshTokenCookie(refreshToken);
+
+  return res;
+}
+*/
+export async function login(data: LoginPayload): Promise<ApiResponse<LoginResponse>> {
+  try {
+    console.log('STEP 1: calling API');
+
+    const res = await api.post<LoginResponse>('/auth/login', data);
+    const accessToken = res?.data?.token;
+    const refreshToken = res?.data?.refreshToken;
+    console.log('STEP 2: API response', res);
+
+    if (res.statusCode >= 400) {
+      throw new Error(res.message);
+    }
+    if (!accessToken) {
+      throw new Error('Access token missing from response');
+    }
+
+    if (!refreshToken) {
+      throw new Error('Refresh token missing from response');
+    }
+    console.log('STEP 3: setting tokens');
+
+    await setAuthAccessToken(accessToken);
+    await setRefreshTokenCookie(refreshToken);
+
+    console.log('STEP 4: success');
+
+    return res;
+  } catch (error) {
+    console.error('💥 LOGIN SERVER ERROR:', error);
+    throw error; // keep your throw
+  }
 }
