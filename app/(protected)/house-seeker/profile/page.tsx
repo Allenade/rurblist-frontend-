@@ -77,6 +77,7 @@ export default function HouseSeekerProfilePage() {
       console.error(error);
     }
   };
+
   const dataInfo = data?.data;
   const homeSeekerData = dataInfo?.homeSeeker;
   const userData = dataInfo?.user;

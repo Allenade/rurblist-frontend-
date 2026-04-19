@@ -17,11 +17,14 @@ import { useGetSavedProperties } from '@/app/apis/mutations/use-user/use-get-sav
 import { useSaveProperty } from '@/app/apis/mutations/use-property/use-save-unsave-property';
 import SavedPropertiesSkeleton from '@/components/homeseeker-c/loader-skelenton/save-property-skelenton';
 import SavedPropertiesSection from '@/components/homeseeker-c/save-properties';
+import { useGetTourAgents } from '@/app/apis/mutations/use-tour/use-get-tour-agent';
+import { formatTourDate } from '@/app/apis/utils/format-tour-date';
 
 export default function AgentPrivateProfilePage() {
   const setHideNavbar = useLayoutStore((state) => state.setHideNavbar);
   const router = useRouter();
   const { data, isLoading } = useGetCurrentAgent();
+  const { data: tour, isLoading: isFetching } = useGetTourAgents();
   const { data: propertiesData, isLoading: isPropertiesLoading } = useGetMyProperties();
   const { data: savedPropertiesData, isLoading: isSavedPropertiesLoading } =
     useGetSavedProperties();
@@ -83,16 +86,32 @@ export default function AgentPrivateProfilePage() {
       console.error(error);
     }
   };
-  const messages: Array<{
-    id: string;
-    name: string;
-    message: string;
-    date: string;
-    property: string;
-    timestamp: string;
-    avatar?: string;
-  }> = [];
-
+  // const messages: Array<{
+  //   id: string;
+  //   name: string;
+  //   message: string;
+  //   date: string;
+  //   property: string;
+  //   timestamp: string;
+  //   avatar?: string;
+  // }> = [];
+  const messages =
+    tour?.data?.map((t) => ({
+      id: t._id,
+      name: t.user?.fullName || 'Unknown User',
+      message: `Requested Tour: ${t.tourType === 'call' ? 'Virtual' : t.tourType === 'in-person' ? 'In-person' : 'Inspection'}`,
+      date: `Date & Time: ${formatTourDate(t.date)}`,
+      property: ` ${t.property?.title || 'No property'}`,
+      timestamp: new Date(t.createdAt).toLocaleString('en-US', {
+        month: 'long',
+        day: 'numeric',
+        year: 'numeric',
+        hour: 'numeric',
+        minute: '2-digit',
+      }),
+      avatar: t.user?.profileImage?.url,
+      tour: t,
+    })) ?? [];
   return (
     <div>
       <BackNavbar logoSrc="/Rublist.svg" />
@@ -115,7 +134,7 @@ export default function AgentPrivateProfilePage() {
         ) : (
           <CurrentListingsSection properties={listings} />
         )}
-        {isLoading ? <MessagesSectionSkeleton /> : <MessagesSection messages={messages} />}
+        {isFetching ? <MessagesSectionSkeleton /> : <MessagesSection messages={messages} />}
         {isSavedPropertiesLoading ? (
           <SavedPropertiesSkeleton />
         ) : (
