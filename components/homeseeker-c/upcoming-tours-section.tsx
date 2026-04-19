@@ -9,6 +9,7 @@ interface Tour {
   dateTime: string;
   tourType: string;
   status: string;
+  message: string;
 }
 
 interface UpcomingToursSectionProps {
@@ -47,6 +48,7 @@ export default function UpcomingToursSection({
                 tourType={tour.tourType}
                 loading={loadingId === tour.id}
                 status={tour.status}
+                message={tour.message}
                 onCancel={() => onCancelTour?.(tour.id)}
               />
             </div>

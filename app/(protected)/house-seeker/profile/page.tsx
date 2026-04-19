@@ -1,8 +1,6 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import Image from 'next/image';
-import Link from 'next/link';
 import { useLayoutStore } from '@/store/layout-store';
 import BackNavbar from '@/components/agent-c/back-navbar';
 import HomeSeekerBasicInfoCard from '@/components/homeseeker-c/homeseeker-basicInfo-card';
@@ -35,6 +33,7 @@ export default function HouseSeekerProfilePage() {
       agentName: t.agent?.user?.fullName || 'No agent',
       dateTime: formatTourDate(t.date),
       status: t.status,
+      message: t.note,
       tourType:
         t.tourType === 'call'
           ? 'Virtual Tour'
@@ -77,6 +76,7 @@ export default function HouseSeekerProfilePage() {
       console.error(error);
     }
   };
+
   const dataInfo = data?.data;
   const homeSeekerData = dataInfo?.homeSeeker;
   const userData = dataInfo?.user;

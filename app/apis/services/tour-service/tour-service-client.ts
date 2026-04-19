@@ -5,9 +5,11 @@ import { BookInspectionPayload, TourModel, TourModel2 } from '../../models/tour-
 import {
   bookInspectionServer,
   cancelleTourServer,
+  confirmTourServer,
   getTourAgentServer,
   getTourByIdServer,
   getTourUserServer,
+  rescheduleTourServer,
 } from './tour-service';
 
 export async function bookInspection(
@@ -55,4 +57,32 @@ export async function cancelleTour(tourId: string): Promise<ApiResponse<null>> {
     throw new Error(response.message);
   }
   return response;
+}
+
+// ✅ Confirm Tour
+export async function confirmTour(data: {
+  tourId: string;
+  note?: string;
+}): Promise<ApiResponse<null>> {
+  const res = await confirmTourServer(data.tourId, data.note);
+
+  if (res.statusCode >= 400) {
+    throw new Error(res.message);
+  }
+
+  return res;
+}
+
+// ✅ Reschedule Tour
+export async function rescheduleTour(data: {
+  tourId: string;
+  newDate: string;
+}): Promise<ApiResponse<null>> {
+  const res = await rescheduleTourServer(data.tourId, data.newDate);
+
+  if (res.statusCode >= 400) {
+    throw new Error(res.message);
+  }
+
+  return res;
 }

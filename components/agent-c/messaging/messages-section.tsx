@@ -1,5 +1,6 @@
 'use client';
 
+import { TourModel2 } from '@/app/apis/models/tour-model';
 import MessageCard from './message-card';
 import { IconImage } from '@/components/icon-image/icon-image';
 
@@ -11,6 +12,7 @@ interface Message {
   property: string;
   timestamp: string;
   avatar?: string;
+  tour: TourModel2;
 }
 
 interface MessagesSectionProps {

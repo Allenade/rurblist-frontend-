@@ -35,3 +35,18 @@ export async function cancelleTourServer(tourId: string): Promise<ApiResponse<nu
 
   return response;
 }
+
+// ✅ Confirm Tour
+export async function confirmTourServer(tourId: string, note?: string): Promise<ApiResponse<null>> {
+  return api.authPut<null>(`/tours/confirm/${tourId}`, { note });
+}
+
+// ✅ Reschedule Tour
+export async function rescheduleTourServer(
+  tourId: string,
+  newDate: string,
+): Promise<ApiResponse<null>> {
+  return api.authPut<null>(`/tours/reschedule/${tourId}`, {
+    newDate,
+  });
+}
