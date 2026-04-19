@@ -1,8 +1,12 @@
+'use server';
+
 import { ApiResponse } from '../../base-response';
 import { api } from '../../call-apis';
 import { AgentModel, CreateAgentPayload } from '../../models/agent-model';
 
-export async function createAgent(payload: CreateAgentPayload): Promise<ApiResponse<AgentModel>> {
+export async function createAgentServer(
+  payload: CreateAgentPayload,
+): Promise<ApiResponse<AgentModel>> {
   const formData = new FormData();
 
   // 🔹 Append fields
@@ -35,31 +39,22 @@ export async function createAgent(payload: CreateAgentPayload): Promise<ApiRespo
     formData, // ✅ IMPORTANT (multipart)
   );
 
-  if (res.statusCode >= 400) {
-    throw new Error(res.message);
-  }
-
   return res;
 }
 
-export async function getAgentById(agentId: string): Promise<ApiResponse<AgentModel>> {
+export async function getAgentByIdServer(agentId: string): Promise<ApiResponse<AgentModel>> {
   const res = await api.authGet<AgentModel>(`/agent/userAgent/${agentId}`);
-  if (res.statusCode >= 400) {
-    throw new Error(res.message);
-  }
+
   return res;
 }
 
-export async function getCurrentAgent(): Promise<ApiResponse<AgentModel>> {
+export async function getCurrentAgentServer(): Promise<ApiResponse<AgentModel>> {
   const res = await api.authGet<AgentModel>('/agent/me');
-  if (res.statusCode >= 400) {
-    throw new Error(res.message);
-  }
 
   return res;
 }
 
-export async function completeProfile(
+export async function completeProfileServer(
   payload: CreateAgentPayload,
 ): Promise<ApiResponse<AgentModel>> {
   const formData = new FormData();
@@ -93,10 +88,6 @@ export async function completeProfile(
     '/agent/complete-profile',
     formData, // ✅ IMPORTANT (multipart)
   );
-
-  if (res.statusCode >= 400) {
-    throw new Error(res.message);
-  }
 
   return res;
 }
