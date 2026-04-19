@@ -1,9 +1,10 @@
+'use server';
 import { ApiResponse } from '../../base-response';
 import { api } from '../../call-apis';
 import { CommentModel } from '../../models/comment-model';
 import { NextCursorModel } from '../../models/nextconsor-model';
 
-export async function getCommentsByPropertyId({
+export async function getCommentsByPropertyIdServer({
   propertyId,
   cursor,
 }: {
@@ -14,15 +15,11 @@ export async function getCommentsByPropertyId({
 
   const res = await api.authGet<CommentModel[]>(`/property/${propertyId}/comments${query}`);
 
-  if (res.statusCode >= 400) {
-    throw new Error(res.message);
-  }
-
   return res;
 }
 
 // ✅ POST COMMENT (top-level)
-export async function postComment({
+export async function postCommentServer({
   propertyId,
   text,
 }: {
@@ -33,15 +30,11 @@ export async function postComment({
     text,
   });
 
-  if (res.statusCode >= 400) {
-    throw new Error(res.message);
-  }
-
   return res;
 }
 
 // ✅ REPLY TO COMMENT
-export async function replyToComment({
+export async function replyToCommentServer({
   parentCommentId,
   text,
 }: {
@@ -51,10 +44,6 @@ export async function replyToComment({
   const res = await api.authPost<CommentModel>(`/property/comment/${parentCommentId}/reply`, {
     text,
   });
-
-  if (res.statusCode >= 400) {
-    throw new Error(res.message);
-  }
 
   return res;
 }

@@ -1,7 +1,7 @@
 'use client';
 
 import { useQuery } from '@tanstack/react-query';
-import { getSavedProperties } from '../../services/user-service/user-services';
+import { getSavedProperties } from '../../services/user-service/user-service-client';
 
 export function useGetSavedProperties() {
   return useQuery({

@@ -1,7 +1,10 @@
-"use client";
+'use client';
 
-import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { likeProperty, unlikeProperty } from "../../services/property-service/property-service";
+import { useMutation, useQueryClient } from '@tanstack/react-query';
+import {
+  likeProperty,
+  unlikeProperty,
+} from '../../services/property-service/property-service-clientt';
 
 export function useLikeProperty() {
   const queryClient = useQueryClient();
@@ -12,12 +15,12 @@ export function useLikeProperty() {
     onSuccess: (_, propertyId) => {
       // Refetch property details
       queryClient.invalidateQueries({
-        queryKey: ["propertyId", propertyId],
+        queryKey: ['propertyId', propertyId],
       });
 
       // Refetch lists if needed
       queryClient.invalidateQueries({
-        queryKey: ["seaech-properties"],
+        queryKey: ['seaech-properties'],
       });
     },
   });
@@ -27,11 +30,11 @@ export function useLikeProperty() {
 
     onSuccess: (_, propertyId) => {
       queryClient.invalidateQueries({
-        queryKey: ["propertyId", propertyId],
+        queryKey: ['propertyId', propertyId],
       });
 
       queryClient.invalidateQueries({
-        queryKey: ["seaech-properties"],
+        queryKey: ['seaech-properties'],
       });
     },
   });

@@ -2,9 +2,9 @@
 
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { BookInspectionPayload } from '../../models/tour-model';
-import { bookInspection } from '../../services/tour-service/tour-service';
 import toast from 'react-hot-toast';
 import { useRouter } from 'next/navigation';
+import { bookInspection } from '../../services/tour-service/tour-service-client';
 
 export const useBookInspection = () => {
   const queryClient = useQueryClient();

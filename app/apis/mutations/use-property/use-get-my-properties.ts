@@ -1,13 +1,12 @@
-"use client";
+'use client';
 
-import {  useQuery } from "@tanstack/react-query";
-import { getMyProperties } from "../../services/property-service/property-service";
-
+import { useQuery } from '@tanstack/react-query';
+import { getMyProperties } from '../../services/property-service/property-service-clientt';
 
 export function useGetMyProperties() {
   return useQuery({
-    queryKey:["my-properties"],
+    queryKey: ['my-properties'],
     queryFn: getMyProperties,
-    refetchOnWindowFocus: true
+    refetchOnWindowFocus: true,
   });
 }

@@ -1,43 +1,33 @@
+'use server';
+
 import { ApiResponse } from '../../base-response';
 import { api } from '../../call-apis';
 import { PropertyModel, PropertySearchParams } from '../../models/property-model';
 
-export async function getMyProperties(): Promise<ApiResponse<PropertyModel[]>> {
+export async function getMyPropertiesServer(): Promise<ApiResponse<PropertyModel[]>> {
   const res = await api.authGet<PropertyModel[]>('/property/my-properties');
 
-  if (res.statusCode >= 400) {
-    throw new Error(res.message);
-  }
-
   return res;
 }
 
-export async function getPropertyById(id: string): Promise<ApiResponse<PropertyModel>> {
+export async function getPropertyByIdServer(id: string): Promise<ApiResponse<PropertyModel>> {
   const res = await api.authGet<PropertyModel>(`/property/${id}`);
 
-  if (res.statusCode >= 400) {
-    throw new Error(res.message);
-  }
-
   return res;
 }
 
-export async function getAgentPropertiesById(id: string): Promise<ApiResponse<PropertyModel[]>> {
+export async function getAgentPropertiesByIdServer(
+  id: string,
+): Promise<ApiResponse<PropertyModel[]>> {
   const res = await api.authGet<PropertyModel[]>(`/property/agent-properties/${id}`);
 
-  if (res.statusCode >= 400) {
-    throw new Error(res.message);
-  }
-
   return res;
 }
 
-export async function uploadProperty(formData: FormData): Promise<ApiResponse<PropertyModel>> {
+export async function uploadPropertyServer(
+  formData: FormData,
+): Promise<ApiResponse<PropertyModel>> {
   const res = await api.authPost<PropertyModel>('/property', formData);
-
-  if (res.statusCode >= 400) {
-    throw new Error(res.message);
-  }
 
   return res;
 }
@@ -75,66 +65,42 @@ function buildQuery(params: PropertySearchParams): string {
   return query.join('&');
 }
 
-export async function searchProperties(
+export async function searchPropertiesServer(
   params: PropertySearchParams,
 ): Promise<ApiResponse<PropertyModel[]>> {
   const query = buildQuery(params);
   console.log('🌐 API CALL:', `/property?${query}`);
   const res = await api.authGet<PropertyModel[]>(`/property?${query}`);
 
-  if (res.statusCode >= 400) {
-    throw new Error(res.message);
-  }
-
   return res;
 }
 
-export async function likeProperty(propertyId: string): Promise<ApiResponse<null>> {
+export async function likePropertyServer(propertyId: string): Promise<ApiResponse<null>> {
   const res = await api.authPatch<null>(`/property/${propertyId}/like`, {});
 
-  if (res.statusCode >= 400) {
-    throw new Error(res.message);
-  }
-
   return res;
 }
 
-export async function unlikeProperty(propertyId: string): Promise<ApiResponse<null>> {
+export async function unlikePropertyServer(propertyId: string): Promise<ApiResponse<null>> {
   const res = await api.authPatch<null>(`/property/${propertyId}/unlike`);
 
-  if (res.statusCode >= 400) {
-    throw new Error(res.message);
-  }
-
   return res;
 }
 
-export async function deleteProperty(propertyId: string): Promise<ApiResponse<null>> {
+export async function deletePropertyServer(propertyId: string): Promise<ApiResponse<null>> {
   const res = await api.authDelete<null>(`/property/${propertyId}`);
 
-  if (res.statusCode >= 400) {
-    throw new Error(res.message);
-  }
-
   return res;
 }
 
-export async function saveProperty(propertyId: string): Promise<ApiResponse<null>> {
+export async function savePropertyServer(propertyId: string): Promise<ApiResponse<null>> {
   const res = await api.authPatch<null>(`/user/${propertyId}/save`, {});
 
-  if (res.statusCode >= 400) {
-    throw new Error(res.message);
-  }
-
   return res;
 }
 
-export async function unsaveProperty(propertyId: string): Promise<ApiResponse<null>> {
+export async function unsavePropertyServer(propertyId: string): Promise<ApiResponse<null>> {
   const res = await api.authPatch<null>(`/user/${propertyId}/save`);
-
-  if (res.statusCode >= 400) {
-    throw new Error(res.message);
-  }
 
   return res;
 }
