@@ -3,6 +3,7 @@
 import { ApiResponse } from '../../base-response';
 import { getErrorMessage } from '../../errors';
 import { LoginPayload, LoginResponse } from '../../models/login-model';
+import { API_URL } from '../../utils/api-links';
 import { setAuthAccessToken, setRefreshTokenCookie } from '../../utils/auth-cookies';
 
 const DEFAULT_TIMEOUT = 10000;
@@ -14,7 +15,8 @@ export async function Login(options?: { payload?: unknown }): Promise<ApiRespons
   const timeout = setTimeout(() => controller.abort(), DEFAULT_TIMEOUT);
 
   try {
-    const response = await fetch('http://localhost:6003/api/auth/login', {
+    const url = new URL(`/api/auth/login`, API_URL);
+    const response = await fetch(url, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
