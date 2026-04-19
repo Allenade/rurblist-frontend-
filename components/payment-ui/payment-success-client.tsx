@@ -6,12 +6,14 @@ import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import TourSuccessModal from '../popUp/tour-popup';
 import { useGetCurrentUser } from '@/app/apis/mutations/use-user/use-get-current-user';
+import { useDownloadReceipt } from '@/app/apis/mutations/use-payment/use-get-download-recipt';
 
 export default function PaymentSuccessClient({ reference }: { reference: string }) {
   const router = useRouter();
   const { data: userData, isLoading: isFetching } = useGetCurrentUser();
 
   const { data, isLoading, isError } = useGetPaymentDeails(reference);
+  const { mutate: downloadReceipt, isPending } = useDownloadReceipt();
 
   const info = data?.data;
   const user = userData?.statusCode === 401 ? null : (userData?.data ?? null);
@@ -61,7 +63,8 @@ export default function PaymentSuccessClient({ reference }: { reference: string 
         name={info?.paymentFor ?? ''}
         amount={`₦${payment.amount.toLocaleString()}`}
         onComplete={() => setOpen(true)}
-        onDownload={() => console.log('Download receipt')}
+        isDownloading={isPending}
+        onDownload={() => downloadReceipt(info?._id ?? '')}
       />
       <TourSuccessModal
         isOpen={open}

@@ -2,7 +2,7 @@
 
 import { ApiResponse } from '../../base-response';
 import { PaymentDetailModel, PaymentModel } from '../../models/payment-model';
-import { getPaymentDeailsServer, payForTourServer } from './payment-service';
+import { downloadReciptServer, getPaymentDeailsServer, payForTourServer } from './payment-service';
 
 export async function payForTour(
   tourId: string,
@@ -25,6 +25,27 @@ export async function getPaymentDeails(
     throw new Error(response.message);
   }
   return response;
+}
+
+export async function downloadReceipt(paymentId: string) {
+  const { blob, headers } = await downloadReciptServer(paymentId);
+
+  const url = window.URL.createObjectURL(blob);
+
+  const contentDisposition = headers['content-disposition'];
+
+  const fileNameMatch = contentDisposition?.match(/filename="?(.+)"?/);
+  const fileName = fileNameMatch?.[1] || `receipt-${paymentId}.pdf`;
+
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = fileName;
+
+  document.body.appendChild(a);
+  a.click();
+  a.remove();
+
+  window.URL.revokeObjectURL(url);
 }
 
 /*

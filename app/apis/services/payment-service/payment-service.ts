@@ -23,6 +23,12 @@ export async function getPaymentDeailsServer(
   return response;
 }
 
+export async function downloadReciptServer(paymentId: string) {
+  const response = await api.authGetDownload(`/payments/${paymentId}/receipt`);
+
+  return response;
+}
+
 // export async function getTourByIdServer(id: string): Promise<ApiResponse<TourModel2>> {
 //   const response = await api.authGet<TourModel2>(`/tours/${id}`);
 

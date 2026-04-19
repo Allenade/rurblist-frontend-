@@ -1,29 +1,41 @@
-import { request } from "./base-api";
-import { ApiResponse } from "./base-response";
+import { BlobResponse, request } from './base-api';
+import { ApiResponse } from './base-response';
 
 export const api = {
-  get: <T>(path: string): Promise<ApiResponse<T>> =>
-    request<T>("GET", path),
+  get: <T>(path: string): Promise<ApiResponse<T>> => request<T>('GET', path),
 
   post: <T>(path: string, payload?: unknown): Promise<ApiResponse<T>> =>
-    request<T>("POST", path, { payload }),
+    request<T>('POST', path, { payload }),
 
   patch: <T>(path: string, payload?: unknown): Promise<ApiResponse<T>> =>
-    request<T>("PATCH", path, { payload }),
+    request<T>('PATCH', path, { payload }),
 
-  delete: <T>(path: string): Promise<ApiResponse<T>> =>
-    request<T>("DELETE", path),
+  // ✅ NEW PUT
+  put: <T>(path: string, payload?: unknown): Promise<ApiResponse<T>> =>
+    request<T>('PUT', path, { payload }),
+
+  delete: <T>(path: string): Promise<ApiResponse<T>> => request<T>('DELETE', path),
 
   authGet: <T>(path: string): Promise<ApiResponse<T>> =>
-    request<T>("GET", path, { protected: true }),
+    request<T>('GET', path, { protected: true }),
 
   authPost: <T>(path: string, payload?: unknown): Promise<ApiResponse<T>> =>
-    request<T>("POST", path, { payload, protected: true }),
+    request<T>('POST', path, { payload, protected: true }),
 
   authPatch: <T>(path: string, payload?: unknown): Promise<ApiResponse<T>> =>
-    request<T>("PATCH", path, { payload, protected: true }),
+    request<T>('PATCH', path, { payload, protected: true }),
+
+  // ✅ NEW AUTH PUT
+  authPut: <T>(path: string, payload?: unknown): Promise<ApiResponse<T>> =>
+    request<T>('PUT', path, { payload, protected: true }),
 
   authDelete: <T>(path: string): Promise<ApiResponse<T>> =>
-    request<T>("DELETE", path, { protected: true }),
+    request<T>('DELETE', path, { protected: true }),
 
-  };
+  // ✅ DOWNLOAD
+  authGetDownload: (path: string): Promise<BlobResponse> =>
+    request('GET', path, {
+      protected: true,
+      responseType: 'blob',
+    }),
+};

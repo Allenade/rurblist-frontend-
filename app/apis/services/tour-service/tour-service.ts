@@ -17,3 +17,21 @@ export async function getTourByIdServer(id: string): Promise<ApiResponse<TourMod
 
   return response;
 }
+
+export async function getTourUserServer(): Promise<ApiResponse<TourModel2[]>> {
+  const response = await api.authGet<TourModel2[]>(`/tours/user`);
+
+  return response;
+}
+
+export async function getTourAgentServer(): Promise<ApiResponse<TourModel2[]>> {
+  const response = await api.authGet<TourModel2[]>(`/tours/agent`);
+
+  return response;
+}
+
+export async function cancelleTourServer(tourId: string): Promise<ApiResponse<null>> {
+  const response = await api.authPut<null>(`/tours/cancel/${tourId}`);
+
+  return response;
+}
