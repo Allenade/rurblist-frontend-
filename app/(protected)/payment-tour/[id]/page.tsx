@@ -7,14 +7,20 @@ import PageHeader from '@/components/page-header';
 import PaymentMethodSelector from '@/components/payment-ui/payment-method-selector';
 import PaymentSummary from '@/components/payment-ui/payment-summary';
 import { useParams } from 'next/navigation';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 export default function MakePaymentTourPage() {
   const params = useParams();
   const id = params.id as string;
-  const [method, setMethod] = useState<string>('bank');
+  const [method, setMethod] = useState<string>('bank_transfer');
   const { data, isLoading } = useGetTourById(id);
   const { mutate, isPending } = usePayForTour();
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+    document.body.style.overflow = 'auto';
+  }, []);
+
   const tourData = data?.data;
   const methods = [
     {
