@@ -41,7 +41,13 @@ export function getNavbarRoutes(roleOrRoles?: Role | Role[]): AppRoute[] {
 
       const route = appRoutes.find((item) => item.path === path);
 
-      if (!route || route.public || !route.roles?.includes(role)) {
+      if (!route) {
+        return;
+      }
+      const isPublicRoute = route.public === true;
+      const roleCanAccessRoute = route.roles?.includes(role);
+
+      if (!isPublicRoute && !roleCanAccessRoute) {
         return;
       }
 

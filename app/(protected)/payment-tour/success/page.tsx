@@ -6,8 +6,7 @@ export default async function PaymentSuccessPage({
   searchParams: Promise<{ trxref?: string; reference?: string }>;
 }) {
   const params = await searchParams;
-  const reference =
-    params?.reference || params?.trxref || '5852f266ad80946293f125ca2bafdd1eace608d8';
+  const reference = params?.reference || params?.trxref;
 
   if (!reference) {
     return <div className="p-6">Invalid payment reference</div>;

@@ -1,5 +1,3 @@
-'use server';
-
 import { ApiResponse } from '../../base-response';
 import { getErrorMessage } from '../../errors';
 import { LoginPayload, LoginResponse } from '../../models/login-model';
@@ -55,26 +53,26 @@ export async function Login(options?: { payload?: unknown }): Promise<ApiRespons
   }
 }
 
-export async function login(data: LoginPayload): Promise<ApiResponse<LoginResponse>> {
-  const res = await Login({ payload: data });
-  console.log(res);
-  if (res.statusCode >= 400) {
-    throw new Error(res.message);
-  }
+// export async function login(data: LoginPayload): Promise<ApiResponse<LoginResponse>> {
+//   const res = await Login({ payload: data });
+//   console.log(res);
+//   if (res.statusCode >= 400) {
+//     throw new Error(res.message);
+//   }
 
-  const accessToken = res.data?.token;
-  const refreshToken = res.data?.refreshToken;
+//   const accessToken = res.data?.token;
+//   const refreshToken = res.data?.refreshToken;
 
-  if (!accessToken) {
-    throw new Error('Access token missing from response');
-  }
+//   if (!accessToken) {
+//     throw new Error('Access token missing from response');
+//   }
 
-  if (!refreshToken) {
-    throw new Error('Refresh token missing from response');
-  }
+//   if (!refreshToken) {
+//     throw new Error('Refresh token missing from response');
+//   }
 
-  await setAuthAccessToken(accessToken);
-  await setRefreshTokenCookie(refreshToken);
+//   await setAuthAccessToken(accessToken);
+//   await setRefreshTokenCookie(refreshToken);
 
-  return res;
-}
+//   return res;
+// }

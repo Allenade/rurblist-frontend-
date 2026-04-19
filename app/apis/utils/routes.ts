@@ -72,6 +72,8 @@ export const publicRoutes: AppRoute[] = [
   {
     path: '/',
     title: 'Home',
+    defaultRedirect: true,
+    showInNaBar: true,
     public: true,
   },
 ];
@@ -81,6 +83,7 @@ export const sharedRoutes: AppRoute[] = [
   {
     path: '/',
     title: 'Home',
+    defaultRedirect: true,
     showInNaBar: true,
     public: true,
   },

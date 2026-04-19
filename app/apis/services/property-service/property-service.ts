@@ -1,5 +1,3 @@
-'use server';
-
 import { ApiResponse } from '../../base-response';
 import { api } from '../../call-apis';
 import { PropertyModel, PropertySearchParams } from '../../models/property-model';

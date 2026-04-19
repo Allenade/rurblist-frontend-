@@ -9,9 +9,11 @@ interface Props {
   paymentMethod: string;
   date: string;
   amount: string;
+  name: string;
   onDownload?: () => void;
   onComplete?: () => void;
   loading?: boolean;
+  isDownloading?: boolean;
 }
 
 export default function PaymentReceipt({
@@ -19,9 +21,11 @@ export default function PaymentReceipt({
   paymentMethod,
   date,
   amount,
+  name,
   onDownload,
   onComplete,
   loading = false,
+  isDownloading = false,
 }: Props) {
   const router = useRouter();
 
@@ -88,13 +92,14 @@ export default function PaymentReceipt({
             loading={loading}
             className="py-3 text-[14px]"
           >
-            Complete Payment - {amount}
+            {name === 'tour' ? 'Continue' : `Complete Payment - ${amount}`}
           </OrangeButton>
 
           <OrangeButton
             fullWidth
             variant="white"
             onClick={onDownload}
+            loading={isDownloading}
             className="py-3 text-[14px] border-[#e87722] text-[#e87722]"
           >
             Download Receipt
