@@ -60,6 +60,8 @@ export async function request<T = unknown>(
 
     const url = new URL(`${path}`, API_URL);
 
+    console.log(url);
+
     const response = await fetch(url, {
       method,
       headers,
