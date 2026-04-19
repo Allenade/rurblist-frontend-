@@ -27,9 +27,20 @@ export default function PaymentSuccessClient({ reference }: { reference: string 
       year: 'numeric',
     });
   };
+
   useEffect(() => {
-    document.body.style.overflow = open ? 'hidden' : 'auto';
+    if (open) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = 'auto';
+    }
+
+    // ✅ CLEANUP (this is what you're missing)
+    return () => {
+      document.body.style.overflow = 'auto';
+    };
   }, [open]);
+
   const formatTransactionId = (paidAt: string, transactionId: string) => {
     const year = new Date(paidAt).getFullYear();
     return `TNX-${year}-${transactionId}`;

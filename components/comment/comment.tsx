@@ -25,7 +25,8 @@ export default function Comment({
   const [showReplyInput, setShowReplyInput] = useState(false);
   const [replyText, setReplyText] = useState('');
   const { replyComment, isReplying } = useCommentMutation(propertyId);
-  const hasReplies = comment.replies && comment.replies.length > 0;
+  const validReplies = comment.replies?.filter((r) => r && r._id && r.text) || [];
+  const hasReplies = validReplies.length > 0;
   const formattedDate = new Date(comment.createdAt).toLocaleDateString('en-GB', {
     day: '2-digit',
     month: '2-digit',
@@ -49,8 +50,8 @@ export default function Comment({
     <div className="py-5 border-b border-gray-200 last:border-b-0">
       <div className="flex gap-3">
         <ProfileImage
-          src={comment.user.profileImage?.url}
-          alt={comment.user.fullName || 'user'}
+          src={comment?.user?.profileImage?.url}
+          alt={comment?.user?.fullName || 'user'}
           // name={comment.user.fullName || 'user'}
           size="sm"
         />
@@ -58,7 +59,7 @@ export default function Comment({
         <div className="flex-1">
           <div className="flex items-center gap-2">
             <h4 className="font-semibold text-gray-900">{comment.user.fullName}</h4>
-            {comment.user.roles[0] && (
+            {comment.user?.roles?.length > 0 && (
               <span className="text-xs text-[#e87722]">{comment.user.roles[0]}</span>
             )}
           </div>
@@ -85,7 +86,7 @@ export default function Comment({
                 onClick={() => setShowReplies((prev) => !prev)}
                 className="flex items-center gap-1 text-[#e87722]"
               >
-                {comment.replies.length} response
+                {validReplies.length} {validReplies.length === 1 ? 'response' : 'responses'}
                 <IconImage
                   src="/icons/chevron-down.svg"
                   alt="toggle"
@@ -134,23 +135,19 @@ export default function Comment({
           {/* Nested Replies */}
           {showReplies && hasReplies && (
             <div className="mt-5 ml-8 border-l border-gray-200 pl-6 space-y-5">
-              {(() => {
-                const latestReplyIndex = comment.replies.length - 1;
+              {validReplies.map((reply: any, index: number) => {
+                const isLastReply = index === validReplies.length - 1;
 
-                return comment.replies.map((reply: any, index: number) => {
-                  const isLastReply = index === latestReplyIndex;
-
-                  return (
-                    <Comment
-                      key={reply._id}
-                      comment={reply}
-                      currentUser={currentUser}
-                      propertyId={propertyId}
-                      showReplyAction={isLastReply}
-                    />
-                  );
-                });
-              })()}
+                return (
+                  <Comment
+                    key={reply._id || `${reply.createdAt}-${index}`}
+                    comment={reply}
+                    currentUser={currentUser}
+                    propertyId={propertyId}
+                    showReplyAction={isLastReply}
+                  />
+                );
+              })}
             </div>
           )}
         </div>
