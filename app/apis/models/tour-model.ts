@@ -38,6 +38,7 @@ export interface TourModel2 {
   price: number;
   paid: boolean;
   status: string;
+  note: string;
   expiresAt: string;
   createdAt: string;
   updatedAt: string;
