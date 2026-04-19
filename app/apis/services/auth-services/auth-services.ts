@@ -5,6 +5,7 @@ import { LoginPayload, LoginResponse, RefreshResponse } from '../../models/login
 import { SignupPayload } from '../../models/signup-model';
 import { setAuthAccessToken, setRefreshTokenCookie } from '../../utils/auth-cookies';
 import { ForgotPasswordPayload, ResetPasswordPayload } from '../../models/password-model';
+import { clearAuthCookies } from './logout-service';
 
 export type AuthUser = {
   id: string;
@@ -12,140 +13,85 @@ export type AuthUser = {
   name: string;
 };
 
-export async function signup(data: SignupPayload): Promise<ApiResponse<null>> {
+export async function signupServer(data: SignupPayload): Promise<ApiResponse<null>> {
   const res = await api.post<null>('/auth/register', data);
-  if (res.error) {
-    throw new Error(res.message);
-  }
 
   return res;
 }
 
-export async function verifyOtp(data: { email: string; otp: string }) {
+export async function verifyOtpServer(data: { email: string; otp: string }) {
   const res = await api.post<null>('/auth/verify-otp', data);
 
-  if (res.statusCode >= 400) {
-    throw new Error(res.message);
-  }
-
   return res;
 }
 
-export async function resendOtp(email: string) {
+export async function resendOtpServer(email: string) {
   const res = await api.post<null>('/auth/resend-otp', { email });
 
-  if (res.statusCode >= 400) {
-    throw new Error(res.message);
-  }
-
   return res;
 }
 
-export async function refreshToken(): Promise<ApiResponse<RefreshResponse>> {
+export async function refreshTokenServer(): Promise<ApiResponse<RefreshResponse>> {
   const res = await api.post<RefreshResponse>('/auth/refresh-token');
-  const token = res.data?.accessToken;
-  const refreshToken = res.data?.refreshToken;
 
-  if (res.statusCode >= 400 || !token || !refreshToken) {
-    throw new Error(res.message);
+  if (res.statusCode < 400) {
+    const accessToken = res.data?.accessToken;
+    const refreshToken = res.data?.refreshToken;
+
+    if (accessToken && refreshToken) {
+      await setAuthAccessToken(accessToken);
+      await setRefreshTokenCookie(refreshToken);
+    }
   }
-
-  if (!token) {
-    throw new Error('Token missing from response');
-  }
-
-  await setAuthAccessToken(token);
-  await setRefreshTokenCookie(refreshToken);
   return res;
 }
 
-export async function forgotPassword(data: ForgotPasswordPayload) {
+export async function forgotPasswordServer(data: ForgotPasswordPayload) {
   const res = await api.post<null>('/auth/forgot-password', data);
 
-  if (res.statusCode >= 400) {
-    throw new Error(res.message);
-  }
-
   return res;
 }
 
-export async function resetPassword(data: ResetPasswordPayload) {
+export async function resetPasswordServer(data: ResetPasswordPayload) {
   const res = await api.post<null>('/auth/reset-password', data);
 
-  if (res.statusCode >= 400) {
-    throw new Error(res.message);
-  }
-
   return res;
 }
 
-export async function verifyGoogleOtp(otp: string): Promise<ApiResponse<RefreshResponse>> {
+export async function verifyGoogleOtpServer(otp: string): Promise<ApiResponse<RefreshResponse>> {
   const res = await api.post<RefreshResponse>('/auth/verify-google-otp', { otp });
-  const token = res.data?.accessToken;
-  const refreshToken = res.data?.refreshToken;
-  console.log(token);
-  if (res.statusCode >= 400 || !token || !refreshToken) {
-    throw new Error(res.message);
+
+  if (res.statusCode < 400) {
+    const accessToken = res.data?.accessToken;
+    const refreshToken = res.data?.refreshToken;
+
+    if (accessToken && refreshToken) {
+      await setAuthAccessToken(accessToken);
+      await setRefreshTokenCookie(refreshToken);
+    }
   }
-  await setAuthAccessToken(token);
-  await setRefreshTokenCookie(refreshToken);
   return res;
 }
 
-/*
-export async function login(data: LoginPayload): Promise<ApiResponse<LoginResponse>> {
+export async function loginServer(data: LoginPayload): Promise<ApiResponse<LoginResponse>> {
   const res = await api.post<LoginResponse>('/auth/login', data);
-  console.log(res);
-  if (res.statusCode >= 400) {
-    throw new Error(res.message);
+
+  if (res.statusCode < 400) {
+    const accessToken = res.data?.token;
+    const refreshToken = res.data?.refreshToken;
+
+    if (accessToken && refreshToken) {
+      await setAuthAccessToken(accessToken);
+      await setRefreshTokenCookie(refreshToken);
+    }
   }
-
-  const accessToken = res.data?.token;
-  const refreshToken = res.data?.refreshToken;
-
-  if (!accessToken) {
-    throw new Error('Access token missing from response');
-  }
-
-  if (!refreshToken) {
-    throw new Error('Refresh token missing from response');
-  }
-
-  await setAuthAccessToken(accessToken);
-  await setRefreshTokenCookie(refreshToken);
-
   return res;
 }
-*/
-export async function login(data: LoginPayload): Promise<ApiResponse<LoginResponse>> {
-  try {
-    console.log('STEP 1: calling API');
 
-    const res = await api.post<LoginResponse>('/auth/login', data);
-    const accessToken = res?.data?.token;
-    const refreshToken = res?.data?.refreshToken;
-    console.log('STEP 2: API response', res);
+export async function logoutServer(): Promise<ApiResponse<null>> {
+  const res = await api.authPost<null>('/auth/logout');
 
-    if (res.statusCode >= 400) {
-      throw new Error(res.message);
-    }
-    if (!accessToken) {
-      throw new Error('Access token missing from response');
-    }
+  await clearAuthCookies();
 
-    if (!refreshToken) {
-      throw new Error('Refresh token missing from response');
-    }
-    console.log('STEP 3: setting tokens');
-
-    await setAuthAccessToken(accessToken);
-    await setRefreshTokenCookie(refreshToken);
-
-    console.log('STEP 4: success');
-
-    return res;
-  } catch (error) {
-    console.error('💥 LOGIN SERVER ERROR:', error);
-    throw error; // keep your throw
-  }
+  return res;
 }

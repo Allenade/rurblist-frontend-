@@ -1,12 +1,11 @@
-"use client";
+'use client';
 
-import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { logout } from "../../services/auth-services/logout-service";
-import toast from "react-hot-toast";
-import { logoutClient } from "../../services/auth-services/logout-client";
+import { useMutation, useQueryClient } from '@tanstack/react-query';
+import toast from 'react-hot-toast';
+import { logoutClient } from '../../services/auth-services/logout-client';
+import { logout } from '../../services/auth-services/auth-service-client';
 
 export function useLogout() {
-
   const queryClient = useQueryClient();
 
   return useMutation({
@@ -18,8 +17,7 @@ export function useLogout() {
 
       // notify other tabs
       logoutClient();
-      toast.success(data.message)
-   
+      toast.success(data.message);
     },
   });
 }

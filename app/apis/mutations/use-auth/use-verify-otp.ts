@@ -1,11 +1,10 @@
-"use client";
+'use client';
 
-import { useMutation } from "@tanstack/react-query";
-import { verifyOtp } from "@/app/apis/services/auth-services/auth-services";
-import toast from "react-hot-toast";
-import { useRouter } from "next/navigation";
-import { useOtpStore } from "../../store/otp-store";
-
+import { useMutation } from '@tanstack/react-query';
+import toast from 'react-hot-toast';
+import { useRouter } from 'next/navigation';
+import { useOtpStore } from '../../store/otp-store';
+import { verifyOtp } from '../../services/auth-services/auth-service-client';
 
 export function useVerifyOtp() {
   const router = useRouter();
@@ -22,7 +21,7 @@ export function useVerifyOtp() {
     onSuccess: (res) => {
       toast.success(res.message);
       clearEmail();
-      router.push("/login");
+      router.push('/login');
     },
 
     onError: (error: Error) => {

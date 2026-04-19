@@ -1,9 +1,10 @@
-"use client";
+'use client';
 
-import { useMutation } from "@tanstack/react-query";
-import { verifyGoogleOtp } from "../../services/auth-services/auth-services";
-import toast from "react-hot-toast";
-import { useRouter } from "next/navigation";
+import { useMutation } from '@tanstack/react-query';
+
+import toast from 'react-hot-toast';
+import { useRouter } from 'next/navigation';
+import { verifyGoogleOtp } from '../../services/auth-services/auth-service-client';
 
 export function useVerifyGoogleOtp() {
   const router = useRouter();
@@ -12,15 +13,14 @@ export function useVerifyGoogleOtp() {
     mutationFn: verifyGoogleOtp,
 
     onSuccess: (res) => {
+      toast.success('Login successful 🎉');
 
-      toast.success("Login successful 🎉");
-
-      router.push("/");
+      router.push('/');
     },
 
     onError: (error: Error) => {
       toast.error(error.message);
-      router.push("/login");
+      router.push('/login');
     },
   });
 }

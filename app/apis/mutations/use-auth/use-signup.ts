@@ -1,17 +1,15 @@
-"use client";
+'use client';
 
-import { useMutation } from "@tanstack/react-query";
-import { signup } from "@/app/apis/services/auth-services/auth-services";
-import toast from "react-hot-toast";
-import { useRouter } from "next/navigation";
-import { useSignupStore } from "../../store/auth-strore";
-import { useOtpStore } from "../../store/otp-store";
+import { useMutation } from '@tanstack/react-query';
+import toast from 'react-hot-toast';
+import { useRouter } from 'next/navigation';
+import { useSignupStore } from '../../store/auth-strore';
+import { useOtpStore } from '../../store/otp-store';
+import { signup } from '../../services/auth-services/auth-service-client';
 
 export function useSignup() {
   const router = useRouter();
-    const clearSignupData = useSignupStore(
-    (s) => s.clearSignupData
-  );
+  const clearSignupData = useSignupStore((s) => s.clearSignupData);
 
   return useMutation({
     mutationFn: signup,

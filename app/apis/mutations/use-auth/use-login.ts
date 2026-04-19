@@ -3,8 +3,7 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import toast from 'react-hot-toast';
 import { useRouter } from 'next/navigation';
-import { login } from '../../services/auth-services/auth-services';
-// import { login } from "../../services/auth-services/login-service";
+import { login } from '../../services/auth-services/auth-service-client';
 
 export function useLogin() {
   const router = useRouter();

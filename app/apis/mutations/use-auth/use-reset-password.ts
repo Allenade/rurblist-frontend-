@@ -1,10 +1,10 @@
-"use client";
+'use client';
 
-import { useMutation } from "@tanstack/react-query";
-import { resetPassword } from "../../services/auth-services/auth-services";
-import toast from "react-hot-toast";
-import { useRouter } from "next/navigation";
-import { useOtpStore } from "../../store/otp-store";
+import { useMutation } from '@tanstack/react-query';
+import toast from 'react-hot-toast';
+import { useRouter } from 'next/navigation';
+import { useOtpStore } from '../../store/otp-store';
+import { resetPassword } from '../../services/auth-services/auth-service-client';
 
 export function useResetPassword() {
   const clearOtpStore = useOtpStore((s) => s.clear);
@@ -15,8 +15,8 @@ export function useResetPassword() {
 
     onSuccess: (res) => {
       toast.success(res.message);
-      clearOtpStore()
-      router.push("/login");
+      clearOtpStore();
+      router.push('/login');
     },
 
     onError: (error: Error) => {

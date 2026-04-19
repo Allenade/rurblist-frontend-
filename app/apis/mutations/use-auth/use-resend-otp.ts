@@ -1,10 +1,9 @@
-"use client";
+'use client';
 
-import { useMutation } from "@tanstack/react-query";
-import { resendOtp } from "@/app/apis/services/auth-services/auth-services";
-import toast from "react-hot-toast";
-import { useOtpStore } from "../../store/otp-store";
-
+import { useMutation } from '@tanstack/react-query';
+import toast from 'react-hot-toast';
+import { useOtpStore } from '../../store/otp-store';
+import { resendOtp } from '../../services/auth-services/auth-service-client';
 
 export function useResendOtp() {
   const email = useOtpStore((s) => s.email);
