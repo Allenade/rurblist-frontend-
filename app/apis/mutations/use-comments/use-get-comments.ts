@@ -1,10 +1,10 @@
 'use client';
 
 import { InfiniteData, useInfiniteQuery } from '@tanstack/react-query';
-import { getCommentsByPropertyId } from '../../services/comment-service/comment-service';
 import { ApiResponse } from '../../base-response';
 import { CommentModel } from '../../models/comment-model';
 import { NextCursorModel } from '../../models/nextconsor-model';
+import { getCommentsByPropertyId } from '../../services/comment-service/comment-service-client';
 
 export function usePropertyComments(propertyId: string) {
   return useInfiniteQuery<

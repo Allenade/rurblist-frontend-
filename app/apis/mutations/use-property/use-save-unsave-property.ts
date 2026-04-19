@@ -1,7 +1,10 @@
 'use client';
 
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { saveProperty, unsaveProperty } from '../../services/property-service/property-service';
+import {
+  saveProperty,
+  unsaveProperty,
+} from '../../services/property-service/property-service-clientt';
 
 export function useSaveProperty() {
   const queryClient = useQueryClient();

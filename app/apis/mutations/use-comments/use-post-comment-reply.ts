@@ -1,7 +1,7 @@
 'use client';
 
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { postComment, replyToComment } from '../../services/comment-service/comment-service';
+import { postComment, replyToComment } from '../../services/comment-service/comment-service-client';
 
 export function useCommentMutation(propertyId: string) {
   const queryClient = useQueryClient();

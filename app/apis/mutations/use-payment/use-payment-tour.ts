@@ -2,7 +2,7 @@
 
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import toast from 'react-hot-toast';
-import { payForTour } from '../../services/payment-service/payment-service';
+import { payForTour } from '../../services/payment-service/payment-service-client';
 
 export const usePayForTour = () => {
   const queryClient = useQueryClient();
