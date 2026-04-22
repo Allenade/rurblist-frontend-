@@ -2,13 +2,32 @@
 
 import { ApiResponse } from '../../base-response';
 import { PaymentDetailModel, PaymentModel } from '../../models/payment-model';
-import { downloadReciptServer, getPaymentDeailsServer, payForTourServer } from './payment-service';
+import {
+  downloadReciptServer,
+  getPaymentDeailsServer,
+  payForPropertyServer,
+  payForTourServer,
+} from './payment-service';
 
 export async function payForTour(
   tourId: string,
   paymentMethod: string,
 ): Promise<ApiResponse<PaymentModel>> {
   const response = await payForTourServer(tourId, paymentMethod);
+
+  if (response.statusCode >= 400) {
+    throw new Error(response.message);
+  }
+  return response;
+}
+
+export async function payForProperty(
+  propertyd: string,
+  planId: string | undefined,
+  enscrowFee: number,
+  paymentMethod: string,
+): Promise<ApiResponse<PaymentModel>> {
+  const response = await payForPropertyServer(propertyd, planId, enscrowFee, paymentMethod);
 
   if (response.statusCode >= 400) {
     throw new Error(response.message);

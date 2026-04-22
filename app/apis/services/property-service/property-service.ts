@@ -3,6 +3,7 @@
 import { ApiResponse } from '../../base-response';
 import { api } from '../../call-apis';
 import { PropertyModel, PropertySearchParams } from '../../models/property-model';
+import { currentUserModel } from '../../models/user-model';
 
 export async function getMyPropertiesServer(): Promise<ApiResponse<PropertyModel[]>> {
   const res = await api.authGet<PropertyModel[]>('/property/my-properties');
@@ -28,6 +29,18 @@ export async function uploadPropertyServer(
   formData: FormData,
 ): Promise<ApiResponse<PropertyModel>> {
   const res = await api.authPost<PropertyModel>('/property', formData);
+
+  return res;
+}
+
+export async function verifyBuyerPropertyServer(
+  formData: FormData,
+  propertyId: string,
+): Promise<ApiResponse<currentUserModel>> {
+  const res = await api.authPost<currentUserModel>(
+    `/property/${propertyId}/verify-buyer`,
+    formData,
+  );
 
   return res;
 }

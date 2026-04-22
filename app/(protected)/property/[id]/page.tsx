@@ -6,14 +6,19 @@ import OtherProperties from '@/components/property-cm/other-properties';
 import PropertyDetails from '@/components/property-cm/property-details';
 import PropertyDetailSkeleton from '@/components/property-cm/property-detail-skeleton';
 import PropertyMap from '@/components/property-cm/property-map';
-import { useParams } from 'next/navigation';
+import { useParams, useRouter } from 'next/navigation';
 import toast from 'react-hot-toast';
+import { OrangeButton } from '@/components/button/button';
+import { useGetCurrentUser } from '@/app/apis/mutations/use-user/use-get-current-user';
 
 export default function PropertyDetail() {
   const params = useParams();
+  const router = useRouter();
   const id = params.id as string;
 
   const { data, error, isLoading } = useGetPropertyById(id);
+  const { data: userData, isLoading: isUserLoading } = useGetCurrentUser();
+  const user = userData?.data;
   const property = data?.data;
 
   if (isLoading) {
@@ -78,6 +83,16 @@ export default function PropertyDetail() {
           </div>
         </div>
       </div>
+      <OrangeButton
+        variant="orange"
+        className="mx-auto block w-1/2 mb-10"
+        onClick={() => {
+          const propertyId = property?._id ?? '';
+          router.push(`/property/escrow/${propertyId}`);
+        }}
+      >
+        Buy this property
+      </OrangeButton>
       <PropertyMap
         address={property?.location.address}
         latitude={property?.location.coordinates.coordinates[1]}
