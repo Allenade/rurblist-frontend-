@@ -15,6 +15,30 @@ export async function payForTourServer(
   return response;
 }
 
+export async function payForPropertyServer(
+  propertyd: string,
+  planId: string | undefined,
+  enscrowFee: number,
+  paymentMethod: string,
+): Promise<ApiResponse<PaymentModel>> {
+  const payload: {
+    paymentMethod: string;
+    enscrowFee: number;
+    planId?: string;
+  } = {
+    paymentMethod,
+    enscrowFee,
+  };
+
+  if (planId) {
+    payload.planId = planId;
+  }
+
+  const response = await api.authPost<PaymentModel>(`/payments/property/${propertyd}`, payload);
+  console.log(response);
+  return response;
+}
+
 export async function getPaymentDeailsServer(
   reference: string,
 ): Promise<ApiResponse<PaymentDetailModel>> {

@@ -170,7 +170,7 @@ export const homeSeekerRoutes: AppRoute[] = [
     permissions: ['VIEW_PROFILE'],
   },
   {
-    path: '/payment',
+    path: '/payment/',
     roles: ['Agent', 'Admin', 'Landlord', 'Home_Seeker'],
     title: 'Payment',
     permissions: ['MANAGE_PROPERTIES', 'VIEW_PROFILE'],
@@ -213,7 +213,7 @@ export const homeSeekerRoutes: AppRoute[] = [
   },
   {
     path: '/property/escrow',
-    roles: ['Home_Seeker'],
+    roles: ['Agent', 'Admin', 'Landlord', 'Home_Seeker'],
     title: 'Property Escrow',
     permissions: ['MANAGE_PROPERTIES', 'VIEW_PROFILE'],
   },

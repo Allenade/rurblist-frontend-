@@ -2,6 +2,7 @@
 
 import { ApiResponse } from '../../base-response';
 import { PropertyModel, PropertySearchParams } from '../../models/property-model';
+import { currentUserModel } from '../../models/user-model';
 import {
   deletePropertyServer,
   getAgentPropertiesByIdServer,
@@ -13,6 +14,7 @@ import {
   unlikePropertyServer,
   unsavePropertyServer,
   uploadPropertyServer,
+  verifyBuyerPropertyServer,
 } from './property-service';
 
 export async function getMyProperties(): Promise<ApiResponse<PropertyModel[]>> {
@@ -55,6 +57,18 @@ export async function uploadProperty(formData: FormData): Promise<ApiResponse<Pr
   return res;
 }
 
+export async function verifyBuyerProperty(
+  formData: FormData,
+  propertyId: string,
+): Promise<ApiResponse<currentUserModel>> {
+  const res = await verifyBuyerPropertyServer(formData, propertyId);
+
+  if (res.statusCode >= 400) {
+    throw new Error(res.message);
+  }
+
+  return res;
+}
 export async function searchProperties(
   params: PropertySearchParams,
 ): Promise<ApiResponse<PropertyModel[]>> {

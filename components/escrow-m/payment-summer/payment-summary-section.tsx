@@ -21,13 +21,14 @@ export function PaymentSummarySection({
         Payment Summary
       </h2>
 
-      <div className="grid gap-2 sm:grid-cols-2 lg:grid-cols-4">
+      <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
         {items.map((item, index) => (
           <PaymentSummaryCard
             key={index}
             title={item.title}
             amount={item.amount}
             icon={item.icon}
+            className="min-w-0"
           />
         ))}
       </div>

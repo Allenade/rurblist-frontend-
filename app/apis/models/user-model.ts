@@ -29,6 +29,7 @@ export interface HomeSeekerModel {
   status: string;
   plan: any;
   isPlanActive: boolean;
+  planActivatedAt: string;
   nin: any;
   createdAt: string;
   updatedAt: string;
@@ -55,6 +56,9 @@ export interface AgentModelc {
   savedProperties: any[];
   createdAt: string;
   updatedAt: string;
+  planActivatedAt: string;
+  plan: any;
+  isPlanActive: boolean;
   __v: number;
 }
 
