@@ -35,7 +35,6 @@ export async function payForPropertyServer(
   }
 
   const response = await api.authPost<PaymentModel>(`/payments/property/${propertyd}`, payload);
-  console.log(response);
   return response;
 }
 

@@ -104,6 +104,11 @@ export default function EscrowForm({ id }: EscrowFormProps) {
     }
 
     if (step === TOTAL_STEPS) {
+      if (isPlanActive) {
+        router.push(`/payment/${id}`);
+        return;
+      }
+
       if (!effectiveSelectedPlanId) {
         toast.error('Please select a verification plan.');
         return;
