@@ -19,11 +19,13 @@ import { useCancelTour } from '@/app/apis/mutations/use-tour/use-cancel-tour';
 import { useGetVerifications } from '@/app/apis/mutations/use-verification/use-get-verifications-me';
 import PropertyVerificationsSection from '@/components/homeseeker-c/property-verifications-section';
 import PropertyVerificationsSkeleton from '@/components/homeseeker-c/loader-skeleton/property-verifications-skeleton';
+import { getLocalPropertyState, setLocalPropertyState } from '@/app/apis/utils/property-local-state';
 
 export default function HouseSeekerProfilePage() {
   const setHideNavbar = useLayoutStore((s) => s.setHideNavbar);
   const router = useRouter();
   const [loadingId, setLoadingId] = useState<string | null>(null);
+  const [removedSavedIds, setRemovedSavedIds] = useState<string[]>([]);
   const { data, isLoading } = useGetCurrentUser();
   const { data: tour, isLoading: isFetching } = useGetTourUsers();
   const { data: savedPropertiesData, isLoading: isSavedPropertiesLoading } =
@@ -32,6 +34,9 @@ export default function HouseSeekerProfilePage() {
     useGetVerifications();
   const { unsave } = useSaveProperty();
   const { mutate: cancelTour } = useCancelTour();
+  const dataInfo = data?.data;
+  const userData = dataInfo?.user;
+  const currentUserId = userData?._id;
 
   const tours =
     tour?.data?.map((t) => ({
@@ -53,6 +58,18 @@ export default function HouseSeekerProfilePage() {
     return () => setHideNavbar(false);
   }, [setHideNavbar]);
 
+  useEffect(() => {
+    const frame = window.requestAnimationFrame(() => {
+      const locallyUnsavedIds = (savedPropertiesData?.data ?? [])
+        .filter((property) => getLocalPropertyState(property._id, currentUserId)?.isSaved === false)
+        .map((property) => property._id);
+
+      setRemovedSavedIds(locallyUnsavedIds);
+    });
+
+    return () => window.cancelAnimationFrame(frame);
+  }, [currentUserId, savedPropertiesData?.data]);
+
   const handleCancel = (id: string) => {
     if (loadingId === id) return;
     setLoadingId(id);
@@ -63,16 +80,18 @@ export default function HouseSeekerProfilePage() {
       },
     });
   };
-  const listings = (savedPropertiesData?.data ?? []).map((property) => ({
-    id: property._id,
-    title: property.title,
-    price: property.price,
-    status: property.status as 'For_Rent' | 'For_Sale' | 'Sold',
-    bedrooms: property.bedrooms,
-    bathrooms: property.bathrooms,
-    sqft: property.size,
-    image: property.images?.[0]?.url || '/image/image1.jpg',
-  }));
+  const listings = (savedPropertiesData?.data ?? [])
+    .filter((property) => !removedSavedIds.includes(property._id))
+    .map((property) => ({
+      id: property._id,
+      title: property.title,
+      price: property.price,
+      status: property.status as 'For_Rent' | 'For_Sale' | 'Sold',
+      bedrooms: property.bedrooms,
+      bathrooms: property.bathrooms,
+      sqft: property.size,
+      image: property.images?.[0]?.url || '/image/image1.jpg',
+    }));
   const verifications =
     verificationsData?.data?.map((verification) => ({
       id: verification._id,
@@ -82,18 +101,23 @@ export default function HouseSeekerProfilePage() {
       date: verification.updatedAt || verification.createdAt,
     })) ?? [];
 
-  const handleRemove = async (id?: string) => {
+  const handleRemove = (id?: string) => {
     if (!id) return;
 
-    try {
-      unsave(id); // ✅ call backend
-    } catch (error) {
-      console.error(error);
-    }
-  };
+    const previousIds = removedSavedIds;
+    const nextIds = Array.from(new Set([...removedSavedIds, id]));
 
-  const dataInfo = data?.data;
-  const userData = dataInfo?.user;
+    setRemovedSavedIds(nextIds);
+    setLocalPropertyState(id, currentUserId, { isSaved: false });
+
+    unsave(id, {
+      onError: (error) => {
+        console.error(error);
+        setRemovedSavedIds(previousIds);
+        setLocalPropertyState(id, currentUserId, { isSaved: true });
+      },
+    });
+  };
 
   return (
     <div>

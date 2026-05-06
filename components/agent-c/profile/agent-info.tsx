@@ -42,11 +42,19 @@ export default function AgentInfoSection({
         </div>
 
         {/* Info */}
-        <div className="space-y-1 min-w-0">
-          <h3 className="text-sm sm:text-xl font-semibold truncate">{name}</h3>
-          <p className="text-sm sm:text-base text-gray-600">{agency}</p>
-          <p className="text-sm sm:text-base text-gray-600">{experience}</p>
-          <p className="text-sm sm:text-base text-gray-600">Area of operation: {location}</p>
+        <div className="min-w-0 space-y-1">
+          <h3 className="break-words text-sm font-semibold [overflow-wrap:anywhere] sm:text-xl">
+            {name}
+          </h3>
+          <p className="break-words text-sm text-gray-600 [overflow-wrap:anywhere] sm:text-base">
+            {agency}
+          </p>
+          <p className="break-words text-sm text-gray-600 [overflow-wrap:anywhere] sm:text-base">
+            {experience}
+          </p>
+          <p className="break-words text-sm text-gray-600 [overflow-wrap:anywhere] sm:text-base">
+            Area of operation: {location}
+          </p>
         </div>
       </div>
 
@@ -135,10 +143,12 @@ function ContactInfo({
 
 function AboutAgent({ about }: { about: string }) {
   return (
-    <div>
+    <div className="min-w-0">
       <h3 className="text-lg sm:text-xl font-bold text-[#7A3E0A] mb-4">About Agent</h3>
 
-      <p className="text-sm sm:text-base text-gray-600 leading-relaxed">{about}</p>
+      <p className="whitespace-pre-wrap break-words text-sm leading-relaxed text-gray-600 [overflow-wrap:anywhere] sm:text-base">
+        {about}
+      </p>
     </div>
   );
 }
