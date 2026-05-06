@@ -1,15 +1,20 @@
 'use client';
 
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import Image from 'next/image';
-import { OrangeButton } from '../button/button';
-import ProfileImage from '../profile-image/profile-image';
-import CommentModal from '../comment/comment-modal';
-import { IconImage } from '../icon-image/icon-image';
 import { useRouter } from 'next/navigation';
+import { useCommentMutation } from '@/app/apis/mutations/use-comments/use-post-comment-reply';
 import { useLikeProperty } from '@/app/apis/mutations/use-property/use-like-unlike';
 import { useSaveProperty } from '@/app/apis/mutations/use-property/use-save-unsave-property';
-import { useCommentMutation } from '@/app/apis/mutations/use-comments/use-post-comment-reply';
+import {
+  getLocalPropertyState,
+  LocalPropertyReaction,
+  setLocalPropertyState,
+} from '@/app/apis/utils/property-local-state';
+import { OrangeButton } from '../button/button';
+import CommentModal from '../comment/comment-modal';
+import { IconImage } from '../icon-image/icon-image';
+import ProfileImage from '../profile-image/profile-image';
 import ReadMoreText from '../read-more';
 
 interface GalleryImage {
@@ -18,6 +23,7 @@ interface GalleryImage {
 }
 
 type UserReference = string | { _id?: string };
+type Reaction = LocalPropertyReaction;
 
 function getUserReferenceId(user: UserReference) {
   return typeof user === 'string' ? user : user._id;
@@ -36,12 +42,11 @@ interface PropertyCardProps {
   profileName: string;
   likeCount: number;
   unlikeCount: number;
-  // comments: CommentType[]
   listLike: UserReference[];
   listunlike: UserReference[];
-  savedList: UserReference[]; // users who saved
-  currentUserId: string; // ✅ REQUIRED
-  createdAt: string; // ✅ NEW
+  savedList: UserReference[];
+  currentUserId: string;
+  createdAt: string;
   agentFee: string;
   commentCount: number;
   type?: string;
@@ -68,23 +73,19 @@ export default function PropertyCard({
   verificationStatus,
   profileImage,
   profileName,
-  // comments,
   type,
   createdAt,
   onChatClick,
 }: PropertyCardProps) {
   const router = useRouter();
   const { like, unlike, isLiking, isUnliking } = useLikeProperty();
-
   const { save, unsave, isSaving, isUnSaving } = useSaveProperty();
-
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
-
   const [isCommentModalOpen, setIsCommentModalOpen] = useState(false);
   const [commentText, setCommentText] = useState('');
   const { postComment, isPosting } = useCommentMutation(id);
-  // ✅ Detect user reaction from backend lists
-  const reaction = useMemo<'like' | 'unlike' | null>(() => {
+
+  const backendReaction = useMemo<Reaction>(() => {
     const liked = listLike?.some((user) => getUserReferenceId(user) === currentUserId);
     const unliked = listunlike?.some((user) => getUserReferenceId(user) === currentUserId);
 
@@ -93,22 +94,57 @@ export default function PropertyCard({
     return null;
   }, [listLike, listunlike, currentUserId]);
 
-  // ✅ Optimistic UI counts
-  const likes = likeCount;
-  const unlikes = unlikeCount;
-
-  const isSaved = useMemo(() => {
+  const backendIsSaved = useMemo(() => {
     return savedList?.some((user) => getUserReferenceId(user) === id);
   }, [savedList, id]);
-  // ✅ Optimize Cloudinary image
-  const optimizeImage = (url: string) => url?.replace('/upload/', '/upload/w_800,q_auto,f_auto/');
 
+  const [reaction, setReaction] = useState<Reaction>(backendReaction);
+  const [likes, setLikes] = useState(likeCount);
+  const [unlikes, setUnlikes] = useState(unlikeCount);
+  const [isSaved, setIsSaved] = useState(backendIsSaved);
+  const hydratedStorageKey = useRef('');
+
+  useEffect(() => {
+    const storageKey = `${currentUserId}:${id}`;
+
+    if (hydratedStorageKey.current === storageKey) return;
+
+    const frame = window.requestAnimationFrame(() => {
+      const stored = getLocalPropertyState(id, currentUserId);
+      hydratedStorageKey.current = storageKey;
+
+      if (stored) {
+        setReaction(stored.reaction ?? null);
+        setIsSaved(stored.isSaved ?? backendIsSaved);
+        setLikes(stored.likes ?? likeCount);
+        setUnlikes(stored.unlikes ?? unlikeCount);
+        return;
+      }
+
+      setReaction(backendReaction);
+      setIsSaved(backendIsSaved);
+      setLikes(likeCount);
+      setUnlikes(unlikeCount);
+    });
+
+    return () => window.cancelAnimationFrame(frame);
+  }, [id, currentUserId, backendReaction, backendIsSaved, likeCount, unlikeCount]);
+
+  const persistState = (nextState: {
+    reaction: Reaction;
+    isSaved: boolean;
+    likes: number;
+    unlikes: number;
+  }) => {
+    setLocalPropertyState(id, currentUserId, nextState);
+  };
+
+  const optimizeImage = (url: string) => url?.replace('/upload/', '/upload/w_800,q_auto,f_auto/');
   const displayImage =
     currentImageIndex === 0
       ? optimizeImage(mainImage)
       : optimizeImage(galleryImages[currentImageIndex - 1]?.url);
 
-  // ✅ Format date
   const formattedDate = new Date(createdAt).toLocaleDateString('en-GB', {
     day: '2-digit',
     month: '2-digit',
@@ -117,30 +153,82 @@ export default function PropertyCard({
   const isVerified = verificationStatus?.toLowerCase() === 'verified';
   const verificationLabel = isVerified ? 'Verified' : 'Unverified';
 
-  // ✅ HANDLE LIKE
   const handleLike = () => {
-    if (reaction === 'like') {
-      // toggle off → call unlike API
-      like(id);
-    } else {
-      like(id);
-    }
+    const previous = { reaction, isSaved, likes, unlikes };
+    const nextReaction: Reaction = reaction === 'like' ? null : 'like';
+    const nextLikes = reaction === 'like' ? Math.max(likes - 1, 0) : likes + 1;
+    const nextUnlikes = reaction === 'unlike' ? Math.max(unlikes - 1, 0) : unlikes;
+
+    setReaction(nextReaction);
+    setLikes(nextLikes);
+    setUnlikes(nextUnlikes);
+    persistState({
+      reaction: nextReaction,
+      isSaved,
+      likes: nextLikes,
+      unlikes: nextUnlikes,
+    });
+
+    like(id, {
+      onError: () => {
+        setReaction(previous.reaction);
+        setIsSaved(previous.isSaved);
+        setLikes(previous.likes);
+        setUnlikes(previous.unlikes);
+        persistState(previous);
+      },
+    });
   };
 
-  // ✅ HANDLE UNLIKE
   const handleUnlike = () => {
-    if (reaction === 'unlike') {
-      unlike(id); // toggle off
-    } else {
-      unlike(id); // assuming backend handles dislike toggle
-    }
+    const previous = { reaction, isSaved, likes, unlikes };
+    const nextReaction: Reaction = reaction === 'unlike' ? null : 'unlike';
+    const nextUnlikes = reaction === 'unlike' ? Math.max(unlikes - 1, 0) : unlikes + 1;
+    const nextLikes = reaction === 'like' ? Math.max(likes - 1, 0) : likes;
+
+    setReaction(nextReaction);
+    setLikes(nextLikes);
+    setUnlikes(nextUnlikes);
+    persistState({
+      reaction: nextReaction,
+      isSaved,
+      likes: nextLikes,
+      unlikes: nextUnlikes,
+    });
+
+    unlike(id, {
+      onError: () => {
+        setReaction(previous.reaction);
+        setIsSaved(previous.isSaved);
+        setLikes(previous.likes);
+        setUnlikes(previous.unlikes);
+        persistState(previous);
+      },
+    });
   };
+
   const handleSave = () => {
-    if (isSaved) {
-      unsave(id);
-    } else {
-      save(id);
-    }
+    const previous = { reaction, isSaved, likes, unlikes };
+    const nextSaved = !isSaved;
+    const mutation = nextSaved ? save : unsave;
+
+    setIsSaved(nextSaved);
+    persistState({
+      reaction,
+      isSaved: nextSaved,
+      likes,
+      unlikes,
+    });
+
+    mutation(id, {
+      onError: () => {
+        setReaction(previous.reaction);
+        setIsSaved(previous.isSaved);
+        setLikes(previous.likes);
+        setUnlikes(previous.unlikes);
+        persistState(previous);
+      },
+    });
   };
 
   const handlePostComment = () => {
@@ -157,31 +245,27 @@ export default function PropertyCard({
   };
 
   return (
-    <div className="bg-white mb-10">
-      {/* Title */}
+    <div className="mb-10 bg-white">
       <button type="button" onClick={handleOpenProperty} className="mb-6 text-left">
-        <h2 className="text-2xl font-semibold text-gray-900 hover:text-[#e87722] transition-colors">
+        <h2 className="text-2xl font-semibold text-gray-900 transition-colors hover:text-[#e87722]">
           {title}
         </h2>
       </button>
 
-      {/* Main Image */}
       <div
-        className="relative w-full h-99.75 overflow-hidden cursor-pointer"
+        className="relative h-99.75 w-full cursor-pointer overflow-hidden"
         onClick={handleOpenProperty}
       >
         <Image src={displayImage} alt={title} fill className="object-cover" />
 
-        {/* Verified badge */}
         <div
-          className={`absolute top-4 left-4 text-white text-sm px-4 py-1 rounded-full ${
+          className={`absolute left-4 top-4 rounded-full px-4 py-1 text-sm text-white ${
             isVerified ? 'bg-green-500' : 'bg-red-500'
           }`}
         >
           {verificationLabel}
         </div>
 
-        {/* Heart icon */}
         <button
           type="button"
           onClick={(e) => {
@@ -189,7 +273,7 @@ export default function PropertyCard({
             handleSave();
           }}
           disabled={isSaving || isUnSaving}
-          className="absolute top-4 right-4 p-3"
+          className="absolute right-4 top-4 p-3"
         >
           <IconImage
             src={isSaved ? '/icons/orange-heart.svg' : '/icons/heart.svg'}
@@ -203,39 +287,36 @@ export default function PropertyCard({
         </button>
       </div>
 
-      {/* Thumbnails */}
-      <div className="hidden sm:flex gap-5 mt-5 overflow-x-auto">
+      <div className="mt-5 hidden gap-5 overflow-x-auto sm:flex">
         {[{ id: 'main', url: mainImage }, ...galleryImages].map((img, idx) => (
           <button
             key={img.id}
             onClick={() => setCurrentImageIndex(idx)}
-            className="relative w-40.75 h-25  overflow-hidden"
+            className="relative h-25 w-40.75 overflow-hidden"
           >
             <Image src={img.url} alt="gallery" fill className="object-cover" />
           </button>
         ))}
       </div>
 
-      {/* Content Layout */}
-      <div className="grid md:grid-cols-3 gap-10 mt-8">
-        {/* LEFT CONTENT */}
+      <div className="mt-8 grid gap-10 md:grid-cols-3">
         <div className="md:col-span-2">
           <ReadMoreText
             text={description ?? 'No description available.'}
-            className="text-gray-700 leading-relaxed text-sm mb-6"
+            className="mb-6 text-sm leading-relaxed text-gray-700"
             maxLength={300}
           />
           {bedrooms > 0 && (
-            <p className="text-sm text-gray-700 mb-1">
+            <p className="mb-1 text-sm text-gray-700">
               {bedrooms} bedroom{bedrooms > 1 ? 's' : ''} {type}
             </p>
           )}
           <div className="mb-6">
-            <h3 className="text-2xl md:text-3xl  font-bold text-black">{price}</h3>
+            <h3 className="text-2xl font-bold text-black md:text-3xl">{price}</h3>
             <p className="text-sm text-gray-600">Agent fee: {agentFee}</p>
           </div>
-          {/* Agent (Mobile position) */}
-          <div className="md:hidden mb-6">
+
+          <div className="mb-6 md:hidden">
             <div className="flex items-center gap-4">
               <ProfileImage src={profileImage} alt={profileName} size="md" />
               <div>
@@ -244,15 +325,12 @@ export default function PropertyCard({
               </div>
             </div>
 
-            {/* <Link href="/property/escrow" > */}
             <OrangeButton variant="orange" className="mt-4 px-6 py-2 text-sm" onClick={onChatClick}>
               CHAT
             </OrangeButton>
-            {/* </Link> */}
           </div>
 
-          {/* Engagement */}
-          <div className="flex items-center gap-6 text-gray-600 text-sm mb-10">
+          <div className="mb-10 flex items-center gap-6 text-sm text-gray-600">
             <button
               onClick={handleLike}
               disabled={isLiking}
@@ -281,30 +359,16 @@ export default function PropertyCard({
             </button>
           </div>
 
-          {/* Comment Section */}
           <div className="mt-12">
-            <h4 className="font-semibold text-lg mb-6">Leave a Reply</h4>
+            <h4 className="mb-6 text-lg font-semibold">Leave a Reply</h4>
 
-            <div className="space-y-5 max-w-2xl">
+            <div className="max-w-2xl space-y-5">
               <textarea
                 value={commentText}
                 onChange={(e) => setCommentText(e.target.value)}
                 placeholder="Your comment here..."
                 rows={7}
-                className="
-        w-full 
-        px-4 
-        py-3 
-        bg-white 
-        border 
-        border-[#808080] 
-        rounded-lg 
-        resize-none
-        focus:outline-none 
-        focus:ring-2 
-        focus:ring-[#e87722] 
-        focus:border-transparent
-      "
+                className="w-full resize-none rounded-lg border border-[#808080] bg-white px-4 py-3 focus:border-transparent focus:outline-none focus:ring-2 focus:ring-[#e87722]"
               />
               <OrangeButton
                 variant="gray"
@@ -319,8 +383,7 @@ export default function PropertyCard({
           </div>
         </div>
 
-        {/* RIGHT SIDE AGENT CARD */}
-        <div className="hidden md:flex  justify-end">
+        <div className="hidden justify-end md:flex">
           <div className="flex items-start gap-4">
             <ProfileImage src={profileImage} alt={profileName} size="lg" />
 
@@ -328,7 +391,6 @@ export default function PropertyCard({
               <p className="font-semibold text-gray-900">{profileName}</p>
               <p className="text-xs text-gray-500">Posted on {formattedDate}</p>
 
-              {/* <Link href="/property/escrow" >   */}
               <OrangeButton
                 variant="orange"
                 className="mt-3 px-7 py-2 text-[12px]"
@@ -336,7 +398,6 @@ export default function PropertyCard({
               >
                 CHAT
               </OrangeButton>
-              {/* </Link> */}
             </div>
           </div>
         </div>

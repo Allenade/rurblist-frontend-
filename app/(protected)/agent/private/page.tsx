@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import BackNavbar from '@/components/agent-c/back-navbar';
 import { AgentInfoSection } from '@/components/agent-c/agent-info-section';
@@ -18,6 +18,7 @@ import SavedPropertiesSkeleton from '@/components/homeseeker-c/loader-skeleton/s
 import SavedPropertiesSection from '@/components/homeseeker-c/save-properties';
 import { useGetTourAgents } from '@/app/apis/mutations/use-tour/use-get-tour-agent';
 import { formatTourDate } from '@/app/apis/utils/format-tour-date';
+import { getLocalPropertyState, setLocalPropertyState } from '@/app/apis/utils/property-local-state';
 
 export default function AgentPrivateProfilePage() {
   const setHideNavbar = useLayoutStore((state) => state.setHideNavbar);
@@ -28,6 +29,7 @@ export default function AgentPrivateProfilePage() {
   const { data: savedPropertiesData, isLoading: isSavedPropertiesLoading } =
     useGetSavedProperties();
   const { unsave } = useSaveProperty();
+  const [removedSavedIds, setRemovedSavedIds] = useState<string[]>([]);
 
   useEffect(() => {
     setHideNavbar(true);
@@ -36,8 +38,21 @@ export default function AgentPrivateProfilePage() {
 
   const agentData = data?.data;
   const currentAgent = agentData?.user;
+  const currentUserId = currentAgent?._id;
   const isAgent = agentData?.isAgreement;
   const properties = propertiesData?.data ?? [];
+
+  useEffect(() => {
+    const frame = window.requestAnimationFrame(() => {
+      const locallyUnsavedIds = (savedPropertiesData?.data ?? [])
+        .filter((property) => getLocalPropertyState(property._id, currentUserId)?.isSaved === false)
+        .map((property) => property._id);
+
+      setRemovedSavedIds(locallyUnsavedIds);
+    });
+
+    return () => window.cancelAnimationFrame(frame);
+  }, [currentUserId, savedPropertiesData?.data]);
 
   const agent = {
     name:
@@ -66,25 +81,35 @@ export default function AgentPrivateProfilePage() {
     sqft: property.size,
     image: property.images?.[0]?.url || '/image/image1.jpg',
   }));
-  const saveListings = (savedPropertiesData?.data ?? []).map((property) => ({
-    id: property._id,
-    title: property.title,
-    price: property.price,
-    status: property.status as 'For_Rent' | 'For_Sale' | 'Sold',
-    bedrooms: property.bedrooms,
-    bathrooms: property.bathrooms,
-    sqft: property.size,
-    image: property.images?.[0]?.url || '/image/image1.jpg',
-  }));
+  const saveListings = (savedPropertiesData?.data ?? [])
+    .filter((property) => !removedSavedIds.includes(property._id))
+    .map((property) => ({
+      id: property._id,
+      title: property.title,
+      price: property.price,
+      status: property.status as 'For_Rent' | 'For_Sale' | 'Sold',
+      bedrooms: property.bedrooms,
+      bathrooms: property.bathrooms,
+      sqft: property.size,
+      image: property.images?.[0]?.url || '/image/image1.jpg',
+    }));
 
-  const handleRemove = async (id?: string) => {
+  const handleRemove = (id?: string) => {
     if (!id) return;
 
-    try {
-      unsave(id); // ✅ call backend
-    } catch (error) {
-      console.error(error);
-    }
+    const previousIds = removedSavedIds;
+    const nextIds = Array.from(new Set([...removedSavedIds, id]));
+
+    setRemovedSavedIds(nextIds);
+    setLocalPropertyState(id, currentUserId, { isSaved: false });
+
+    unsave(id, {
+      onError: (error) => {
+        console.error(error);
+        setRemovedSavedIds(previousIds);
+        setLocalPropertyState(id, currentUserId, { isSaved: true });
+      },
+    });
   };
   // const messages: Array<{
   //   id: string;

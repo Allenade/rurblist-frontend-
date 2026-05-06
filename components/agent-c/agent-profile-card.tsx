@@ -1,6 +1,6 @@
-"use client";
+'use client';
 
-import Image from "next/image";
+import Image from 'next/image';
 
 interface AgentProfileCardProps {
   name: string;
@@ -18,33 +18,23 @@ export function AgentProfileCard({
   image,
 }: AgentProfileCardProps) {
   return (
-    <div className="flex items-center gap-4 sm:gap-6 border border-[#DEDEDE] rounded-xl p-4 sm:p-6 bg-white">
-      
+    <div className="flex items-center gap-4 rounded-xl border border-[#DEDEDE] bg-white p-4 sm:gap-6 sm:p-6">
       {/* Agent Image */}
-      <div className="relative w-20 h-20 sm:w-24 sm:h-24 md:w-27.5 md:h-27.5 rounded-lg overflow-hidden flex-shrink-0">
-        <Image
-          src={image}
-          alt={name}
-          fill
-          className="object-cover"
-        />
+      <div className="relative w-20 h-20 sm:w-24 sm:h-24 md:w-27.5 md:h-27.5 rounded-lg overflow-hidden shrink-0">
+        <Image src={image} alt={name} fill className="object-cover" />
       </div>
 
       {/* Agent Info */}
-      <div className="flex flex-col justify-center space-y-1">
-        <h3 className="text-lg sm:text-xl md:text-2xl font-semibold text-gray-900">
+      <div className="flex min-w-0 flex-col justify-center space-y-1">
+        <h3 className="wrap-break-word text-lg font-semibold text-gray-900 sm:text-xl md:text-2xl">
           {name}
         </h3>
 
-        <p className="text-gray-600 text-sm sm:text-base">
-          {agency}
-        </p>
+        <p className="wrap-break-word text-sm text-gray-600 sm:text-base">{agency}</p>
 
-        <p className="text-gray-600 text-sm sm:text-base">
-          {experience}
-        </p>
+        <p className="wrap-break-word text-sm text-gray-600  sm:text-base">{experience}</p>
 
-        <p className="text-gray-500 text-xs sm:text-sm">
+        <p className="wrap-break-word text-xs text-gray-500 sm:text-sm">
           Area of operation: {location}
         </p>
       </div>

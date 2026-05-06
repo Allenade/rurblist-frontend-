@@ -42,9 +42,16 @@ export default function BookTourModal({
     email?: string;
   }>({});
 
-  /* Prevent body scroll */
   useEffect(() => {
-    document.body.style.overflow = isOpen ? 'hidden' : 'auto';
+    if (!isOpen) return;
+
+    const previousOverflow = document.body.style.overflow;
+
+    document.body.style.overflow = 'hidden';
+
+    return () => {
+      document.body.style.overflow = previousOverflow;
+    };
   }, [isOpen]);
 
   /* Generate 30 days */
