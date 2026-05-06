@@ -19,6 +19,9 @@ import SavedPropertiesSection from '@/components/homeseeker-c/save-properties';
 import { useGetTourAgents } from '@/app/apis/mutations/use-tour/use-get-tour-agent';
 import { formatTourDate } from '@/app/apis/utils/format-tour-date';
 import { getLocalPropertyState, setLocalPropertyState } from '@/app/apis/utils/property-local-state';
+import { useGetVerifications } from '@/app/apis/mutations/use-verification/use-get-verifications-me';
+import PropertyVerificationsSection from '@/components/homeseeker-c/property-verifications-section';
+import PropertyVerificationsSkeleton from '@/components/homeseeker-c/loader-skeleton/property-verifications-skeleton';
 
 export default function AgentPrivateProfilePage() {
   const setHideNavbar = useLayoutStore((state) => state.setHideNavbar);
@@ -28,6 +31,7 @@ export default function AgentPrivateProfilePage() {
   const { data: propertiesData, isLoading: isPropertiesLoading } = useGetMyProperties();
   const { data: savedPropertiesData, isLoading: isSavedPropertiesLoading } =
     useGetSavedProperties();
+  const { data: verificationsData, isLoading: isVerificationsLoading } = useGetVerifications();
   const { unsave } = useSaveProperty();
   const [removedSavedIds, setRemovedSavedIds] = useState<string[]>([]);
 
@@ -137,6 +141,15 @@ export default function AgentPrivateProfilePage() {
       avatar: t.user?.profileImage?.url ?? t.agent?.selfieUrl?.url ?? undefined,
       tour: t,
     })) ?? [];
+  const verifications =
+    verificationsData?.data?.map((verification) => ({
+      id: verification._id,
+      propertyTitle: verification.property?.title || 'Property',
+      status: verification.status || 'pending',
+      stage: verification.currentStage?.title || 'Verification in progress',
+      date: verification.updatedAt || verification.createdAt,
+    })) ?? [];
+
   return (
     <div>
       <BackNavbar logoSrc="/Rublist.svg" />
@@ -160,6 +173,14 @@ export default function AgentPrivateProfilePage() {
           <CurrentListingsSection properties={listings} />
         )}
         {isFetching ? <MessagesSectionSkeleton /> : <MessagesSection messages={messages} />}
+        {isVerificationsLoading ? (
+          <PropertyVerificationsSkeleton />
+        ) : (
+          <PropertyVerificationsSection
+            verifications={verifications}
+            onOpen={(verificationId) => router.push(`/verification?id=${verificationId}`)}
+          />
+        )}
         {isSavedPropertiesLoading ? (
           <SavedPropertiesSkeleton />
         ) : (
