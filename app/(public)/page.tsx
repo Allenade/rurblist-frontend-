@@ -1,14 +1,18 @@
-import Image from "next/image";
-import { OrangeButton } from "@/components/button/button";
-import { FAQSection } from "@/components/faq-section";
-import { SearchBar } from "@/components/search-bar";
+'use client';
+
+import Image from 'next/image';
+import { OrangeButton } from '@/components/button/button';
+import { FAQSection } from '@/components/faq-section';
+import { SearchBar } from '@/components/search-bar';
+import { useRouter } from 'next/navigation';
 
 export default function Home() {
+  const router = useRouter();
   return (
     <>
       <section
         className="relative min-h-[70vh] sm:min-h-[75vh] lg:min-h-[85vh] w-full bg-cover bg-center bg-no-repeat"
-        style={{ backgroundImage: "url(/homebackground.jpg)" }}
+        style={{ backgroundImage: 'url(/homebackground.jpg)' }}
         aria-label="Home Background"
       >
         {/* Overlay for text readability */}
@@ -24,9 +28,8 @@ export default function Home() {
                 Home With Ease
               </h3>
               <p className="mt-3 text-[12px] text-white/90 sm:mt-4 sm:text-[6px] md:text-lg md:max-w-137.5 md:mx-auto lg:mt-5">
-                Rurblist connects you with trusted agents, verified properties,
-                and <br /> escrow services , so your next deal is clean, clear,
-                and worry-free
+                Rurblist connects you with trusted agents, verified properties, and <br /> escrow
+                services , so your next deal is clean, clear, and worry-free
               </p>
               <SearchBar />
             </div>
@@ -36,9 +39,7 @@ export default function Home() {
       {/* key features */}
       <section className="py-16 sm:py-20 lg:py-24">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <p className="font-medium text-muted-foreground uppercase tracking-wide">
-            Key Features
-          </p>
+          <p className="font-medium text-muted-foreground uppercase tracking-wide">Key Features</p>
           <h2 className="mt-2 text-2xl font-bold text-foreground sm:text-3xl lg:text-4xl">
             What Makes Us Your Perfect Partner
           </h2>
@@ -62,9 +63,7 @@ export default function Home() {
               </svg>
             </div>
             <div className="mt-13">
-              <h3 className="text-base font-bold text-foreground">
-                Verified Properties
-              </h3>
+              <h3 className="text-base font-bold text-foreground">Verified Properties</h3>
               <p className="mt-2 text-xs text-muted-foreground sm:text-sm">
                 We are your one stop home destination,
                 <br /> from search to sold!
@@ -95,12 +94,9 @@ export default function Home() {
               </svg>
             </div>
             <div className="mt-13">
-              <h3 className="mt-4 text-base font-bold text-foreground">
-                Escrow
-              </h3>
+              <h3 className="mt-4 text-base font-bold text-foreground">Escrow</h3>
               <p className="mt-2 text-xs text-muted-foreground sm:text-sm">
-                We can be part of your realtor journey <br /> and we help build
-                your realtor profile
+                We can be part of your realtor journey <br /> and we help build your realtor profile
               </p>
             </div>
           </div>
@@ -122,12 +118,9 @@ export default function Home() {
               </svg>
             </div>
             <div className="mt-13">
-              <h3 className="text-base font-bold text-foreground">
-                Trust score
-              </h3>
+              <h3 className="text-base font-bold text-foreground">Trust score</h3>
               <p className="mt-2 text-xs text-muted-foreground sm:text-sm">
-                Our properties are rated highly, we <br /> provide a great
-                service.
+                Our properties are rated highly, we <br /> provide a great service.
               </p>
             </div>
           </div>
@@ -156,10 +149,7 @@ export default function Home() {
             </div>
             <div className="space-y-8 sm:space-y-10">
               <div className="flex gap-3">
-                <div
-                  className="h-35 w-1.25 shrink-0 rounded-full bg-brand-400"
-                  aria-hidden
-                />
+                <div className="h-35 w-1.25 shrink-0 rounded-full bg-brand-400" aria-hidden />
                 <div>
                   <h1 className="font-semibold text-3xl">Step 1</h1>
                   <div className="mt-6">
@@ -167,8 +157,7 @@ export default function Home() {
                       Find a Verified Property
                     </h3>
                     <p className="pt-2 text-muted-foreground">
-                      Browse hundreds of listings with trust scores and verified{" "}
-                      <br />
+                      Browse hundreds of listings with trust scores and verified <br />
                       documents
                     </p>
                   </div>
@@ -183,8 +172,7 @@ export default function Home() {
                       Pay Safely with Escrow
                     </h3>
                     <p className="pt-2 text-muted-foreground">
-                      Your money is held securely until we confirm everything is
-                      legit
+                      Your money is held securely until we confirm everything is legit
                     </p>
                   </div>
                 </div>
@@ -194,7 +182,7 @@ export default function Home() {
                 <div>
                   <h1 className="font-semibold text-3xl">Step 3</h1>
                   <div className="mt-6">
-                    {" "}
+                    {' '}
                     <h3 className="text-lg font-bold text-foreground sm:text-xl">
                       Close the Deal with Peace of Mind
                     </h3>
@@ -215,8 +203,7 @@ export default function Home() {
             Featured listings
           </h2>
           <p className="mt-2 text-muted-foreground sm:text-lg">
-            Dive into our extensive listings and discover apartments that match
-            your lifestyle!
+            Dive into our extensive listings and discover apartments that match your lifestyle!
           </p>
           <div className="mt-8 grid grid-cols-1 gap-6 lg:grid-cols-2 lg:gap-8">
             {/* Large image – left */}
@@ -287,11 +274,13 @@ export default function Home() {
                 Get Expert Help Before You Pay
               </h2>
               <p className="mt-4 text-muted-foreground sm:text-lg">
-                Let our legal & inspection team confirm everything - from titles
-                to government acquisition status.
+                Let our legal & inspection team confirm everything - from titles to government
+                acquisition status.
               </p>
               <div className="mt-6">
-                <OrangeButton>Request Property Advisory</OrangeButton>
+                <OrangeButton onClick={() => router.push('/property-advisory')}>
+                  Request Property Advisory
+                </OrangeButton>
               </div>
             </div>
           </div>
@@ -312,11 +301,7 @@ export default function Home() {
                     className="mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center text-green-500"
                     aria-hidden
                   >
-                    <svg
-                      className="h-5 w-5"
-                      fill="currentColor"
-                      viewBox="0 0 20 20"
-                    >
+                    <svg className="h-5 w-5" fill="currentColor" viewBox="0 0 20 20">
                       <path
                         fillRule="evenodd"
                         d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
@@ -324,20 +309,14 @@ export default function Home() {
                       />
                     </svg>
                   </span>
-                  <span className="text-foreground">
-                    Your money stays safe in escrow
-                  </span>
+                  <span className="text-foreground">Your money stays safe in escrow</span>
                 </li>
                 <li className="flex items-start gap-3">
                   <span
                     className="mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center text-green-500"
                     aria-hidden
                   >
-                    <svg
-                      className="h-5 w-5"
-                      fill="currentColor"
-                      viewBox="0 0 20 20"
-                    >
+                    <svg className="h-5 w-5" fill="currentColor" viewBox="0 0 20 20">
                       <path
                         fillRule="evenodd"
                         d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
@@ -354,11 +333,7 @@ export default function Home() {
                     className="mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center text-green-500"
                     aria-hidden
                   >
-                    <svg
-                      className="h-5 w-5"
-                      fill="currentColor"
-                      viewBox="0 0 20 20"
-                    >
+                    <svg className="h-5 w-5" fill="currentColor" viewBox="0 0 20 20">
                       <path
                         fillRule="evenodd"
                         d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
@@ -366,9 +341,7 @@ export default function Home() {
                       />
                     </svg>
                   </span>
-                  <span className="text-foreground">
-                    Your peace of mind is our first product
-                  </span>
+                  <span className="text-foreground">Your peace of mind is our first product</span>
                 </li>
               </ul>
               <div className="mt-6">
@@ -383,10 +356,7 @@ export default function Home() {
                 className="object-cover object-center"
                 sizes="(max-width: 1024px) 100vw, 50vw"
               />
-              <div
-                className="absolute inset-0 bg-black/20 rounded-lg"
-                aria-hidden
-              />
+              <div className="absolute inset-0 bg-black/20 rounded-lg" aria-hidden />
             </div>
           </div>
         </div>
@@ -395,7 +365,7 @@ export default function Home() {
       {/* Confused about a property? – homebackground.jpg as background */}
       <section
         className="relative min-h-100 w-full bg-cover bg-center bg-no-repeat py-20 sm:min-h-125 sm:py-24 lg:min-h-140 lg:py-28"
-        style={{ backgroundImage: "url(/background.svg)" }}
+        style={{ backgroundImage: 'url(/background.svg)' }}
         aria-label="Request Property Advisory"
       >
         <div className="absolute inset-0 bg-black/40" aria-hidden />
@@ -404,11 +374,13 @@ export default function Home() {
             Confused about a property? Need a land background check?
           </h2>
           <p className="mt-4 text-lg text-white/90 sm:text-xl">
-            Let our legal & inspection team confirm everything - from titles to
-            government acquisition status.
+            Let our legal & inspection team confirm everything - from titles to government
+            acquisition status.
           </p>
           <div className="mt-8 flex justify-center">
-            <OrangeButton>Request Property Advisory</OrangeButton>
+            <OrangeButton onClick={() => router.push('/property-advisory')}>
+              Request Property Advisory
+            </OrangeButton>
           </div>
         </div>
       </section>
@@ -431,17 +403,14 @@ export default function Home() {
               </h3>
               <blockquote className="mt-6">
                 <p className="text-muted-foreground sm:text-lg">
-                  After going through the frustrations and stress of looking for
-                  a house that suits my needs and with the frustrations from
-                  agents, I found rubrlist and decided to give it a trial and it
-                  was the best decision I made because i found an amazing home.
-                  Their stress free and affordable services are top notch.
+                  After going through the frustrations and stress of looking for a house that suits
+                  my needs and with the frustrations from agents, I found rubrlist and decided to
+                  give it a trial and it was the best decision I made because i found an amazing
+                  home. Their stress free and affordable services are top notch.
                 </p>
                 <div className="mt-4 flex items-start gap-20">
                   <div className="flex flex-col items-start">
-                    <span className="font-semibold text-foreground">
-                      Peter Adams
-                    </span>
+                    <span className="font-semibold text-foreground">Peter Adams</span>
                     <span className="text-muted-foreground text-sm">
                       65 Old gra road, Maryland.
                     </span>
@@ -451,9 +420,7 @@ export default function Home() {
                     <span className="flex text-amber-500" aria-label="5 stars">
                       ★★★★★
                     </span>
-                    <span className="mt-1 text-sm text-muted-foreground">
-                      06/02/23
-                    </span>
+                    <span className="mt-1 text-sm text-muted-foreground">06/02/23</span>
                   </div>
                 </div>
               </blockquote>
@@ -463,12 +430,7 @@ export default function Home() {
                   className="flex h-10 w-10 items-center justify-center rounded-full border border-border bg-white text-foreground transition-colors hover:bg-muted"
                   aria-label="Previous testimonial"
                 >
-                  <svg
-                    className="h-5 w-5"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                  >
+                  <svg className="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path
                       strokeLinecap="round"
                       strokeLinejoin="round"
@@ -482,12 +444,7 @@ export default function Home() {
                   className="flex h-10 w-10 items-center justify-center rounded-full border border-border bg-white text-foreground transition-colors hover:bg-muted"
                   aria-label="Next testimonial"
                 >
-                  <svg
-                    className="h-5 w-5"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                  >
+                  <svg className="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path
                       strokeLinecap="round"
                       strokeLinejoin="round"
@@ -514,10 +471,7 @@ export default function Home() {
       <FAQSection />
 
       {/* CTA: Ready to find your dream home – orange background + search (contained, not full width) */}
-      <section
-        className="py-16 sm:py-20 lg:py-24"
-        aria-label="Explore listings"
-      >
+      <section className="py-16 sm:py-20 lg:py-24" aria-label="Explore listings">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="rounded-2xl bg-brand-500 py-12 sm:py-16 lg:py-20 px-6 sm:px-8 lg:px-10 text-center">
             <h2 className="text-2xl font-bold leading-tight text-white sm:text-3xl lg:text-4xl">
