@@ -1,24 +1,24 @@
 'use client';
-import { useGetPropertyById } from '@/app/apis/mutations/use-property/use-get-property-by-id';
-import { optimizeCloudinaryImage } from '@/app/apis/utils/cloudinary';
-import AdvancedHeroGallery, { GalleryImage } from '@/components/property-cm/advanced-hero-gallery';
-import PropertyDetails from '@/components/property-cm/property-details';
-import PropertyDetailSkeleton from '@/components/property-cm/property-detail-skeleton';
+import { useGetPropertyById } from '@/features/properties/hooks/use-get-property-by-id';
+import { optimizeCloudinaryImage } from '@/shared/utils/cloudinary';
+import AdvancedHeroGallery, { GalleryImage } from '@/components/property/advanced-hero-gallery';
+import PropertyDetails from '@/components/property/property-details';
+import PropertyDetailSkeleton from '@/components/property/property-detail-skeleton';
 import { useParams, useRouter } from 'next/navigation';
 import dynamic from 'next/dynamic';
 import toast from 'react-hot-toast';
 import { OrangeButton } from '@/components/button/button';
 import { useAuth } from '@/components/layout/auth-provider';
 
-const ContactCard = dynamic(() => import('@/components/property-cm/contact-card'), {
+const ContactCard = dynamic(() => import('@/components/property/contact-card'), {
   loading: () => <SectionSkeleton className="h-80" />,
 });
 
-const OtherProperties = dynamic(() => import('@/components/property-cm/other-properties'), {
+const OtherProperties = dynamic(() => import('@/components/property/other-properties'), {
   loading: () => <SectionSkeleton className="h-64" />,
 });
 
-const PropertyMap = dynamic(() => import('@/components/property-cm/property-map'), {
+const PropertyMap = dynamic(() => import('@/components/property/property-map'), {
   loading: () => <SectionSkeleton className="h-100" />,
 });
 

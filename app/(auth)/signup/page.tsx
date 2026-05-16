@@ -7,7 +7,7 @@ import Input from '@/components/input';
 import { OrangeButton } from '@/components/button/button';
 import { IconImage } from '@/components/icon-image/icon-image';
 import { useRouter } from 'next/navigation';
-import { useSignupStore } from '@/app/apis/store/auth-strore';
+import { useSignupStore } from '@/features/auth/store/auth-store';
 
 export default function RegisterPage() {
   const router = useRouter();
@@ -63,12 +63,6 @@ export default function RegisterPage() {
 
     if (!validate()) return;
 
-    console.log({
-      fullName,
-      phoneNumber,
-      email,
-      password,
-    });
     const formData = {
       fullName,
       phoneNumber,
@@ -187,7 +181,7 @@ export default function RegisterPage() {
               transition
             "
             onClick={() => {
-              window.location.href = `https://rurblist-backend.onrender.com/api/auth/google`;
+              window.location.href = `https://rurblist-backend.onrender.com/api/v1/auth/google`;
             }}
           >
             Continue with google

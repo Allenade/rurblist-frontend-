@@ -2,15 +2,15 @@
 
 import { useEffect, useMemo } from 'react';
 import { useLayoutStore } from '@/store/layout-store';
-import BackNavbar from '@/components/agent-c/back-navbar';
-import AgentInfoSection from '@/components/agent-c/profile/agent-info';
-import AgentPropertiesSection from '@/components/agent-c/profile/other-property-agent';
-import RatingsSection from '@/components/agent-c/profile/rating-reviews-agent';
-import { useGetAgentById } from '@/app/apis/mutations/use-agent/get-agent-by-id';
+import BackNavbar from '@/components/agent/back-navbar';
+import AgentInfoSection from '@/components/agent/profile/agent-info';
+import AgentPropertiesSection from '@/components/agent/profile/other-property-agent';
+import RatingsSection from '@/components/agent/profile/rating-reviews-agent';
+import { useGetAgentById } from '@/features/agents/hooks/use-get-agent-by-id';
 import { useParams } from 'next/navigation';
-import AgentInfoSectionSkeleton from '@/components/agent-c/agent-info-section-skeleton';
-import { useGetAgentPropertiesById } from '@/app/apis/mutations/use-property/use-get-agents-propeties-byId';
-import CurrentListingsSectionSkeleton from '@/components/agent-c/current-listings-section-skeleton';
+import AgentInfoSectionSkeleton from '@/components/agent/agent-info-section-skeleton';
+import { useGetAgentPropertiesById } from '@/features/properties/hooks/use-get-agent-properties-by-id';
+import CurrentListingsSectionSkeleton from '@/components/agent/current-listings-section-skeleton';
 
 export default function AgentProfilePage() {
   const setHideNavbar = useLayoutStore((state) => state.setHideNavbar);
@@ -79,7 +79,7 @@ export default function AgentProfilePage() {
           image={agent.image}
           about={agent.about}
           onSendMessage={async (msg) => {
-            console.log(msg);
+            void msg;
           }}
         />
       )}

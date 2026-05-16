@@ -1,8 +1,8 @@
 'use client';
 
-import { usePayForProperty } from '@/app/apis/mutations/use-payment/use-payment-property';
-import { useGetPlanById } from '@/app/apis/mutations/use-plan/use-get-plan-byId';
-import { useGetPropertyById } from '@/app/apis/mutations/use-property/use-get-property-by-id';
+import { usePayForProperty } from '@/features/payments/hooks/use-payment-property';
+import { useGetPlanById } from '@/features/plans/hooks/use-get-plan-by-id';
+import { useGetPropertyById } from '@/features/properties/hooks/use-get-property-by-id';
 import { OrangeButton } from '@/components/button/button';
 import PageHeader from '@/components/page-header';
 import PaymentMethodSelector from '@/components/payment-ui/payment-method-selector';
@@ -69,9 +69,9 @@ export default function MakePaymentClient({ propertyId, planId }: MakePaymentCli
     if (!propertyId) return;
 
     mutate({
-      propertyd: propertyId,
+      propertyId,
       planId: planId || undefined,
-      enscrowFee: escrowFee,
+      escrowFee,
       paymentMethod: method,
     });
   };

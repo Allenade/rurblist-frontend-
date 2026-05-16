@@ -3,14 +3,14 @@
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { useLayoutStore } from '@/store/layout-store';
-import BackNavbar from '@/components/agent-c/back-navbar';
+import BackNavbar from '@/components/agent/back-navbar';
 import { OrangeButton } from '@/components/button/button';
-import { useAgentForm } from '@/app/apis/store/agent-store';
-import { useCreateAgent } from '@/app/apis/mutations/use-agent/post-agent';
-import { buildAgentPayload } from '@/app/apis/utils/build-agent-payload';
+import { useAgentForm } from '@/features/agents/store/agent-store';
+import { useCreateAgent } from '@/features/agents/hooks/use-agent-mutations';
+import { buildAgentPayload } from '@/shared/utils/build-agent-payload';
 import toast from 'react-hot-toast';
-import SuccessModal from '@/components/agent-c/modal/create-success-modal';
-import { useGetCurrentUser } from '@/app/apis/mutations/use-user/use-get-current-user';
+import SuccessModal from '@/components/agent/modal/create-success-modal';
+import { useGetCurrentUser } from '@/features/users/hooks/use-get-current-user';
 
 export default function AgentAgreementPage() {
   const setHideNavbar = useLayoutStore((s) => s.setHideNavbar);

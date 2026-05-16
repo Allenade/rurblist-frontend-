@@ -1,11 +1,11 @@
 'use client';
 
 import { useMemo } from 'react';
-import { useGetMyProperties } from '@/app/apis/mutations/use-property/use-get-my-properties';
+import { useGetMyProperties } from '@/features/properties/hooks/use-get-my-properties';
 import LoadMoreTrigger from '@/components/load-more-trigger';
-import EmptyPropertyState from '@/components/property-cm/list-pr/empty-property';
-import PropertyCard from '@/components/property-cm/property-card';
-import PropertySkeletonGrid from '@/components/property-cm/property-loder-grid';
+import EmptyPropertyState from '@/components/property/list-pr/empty-property';
+import PropertyCard from '@/components/property/property-card';
+import PropertySkeletonGrid from '@/components/property/property-loader-grid';
 
 export default function ListPropertiesPage() {
   const {

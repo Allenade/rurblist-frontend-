@@ -3,9 +3,9 @@
 import React, { useState } from 'react';
 import ProfileImage from '../profile-image/profile-image';
 import { IconImage } from '../icon-image/icon-image';
-import { CommentModel } from '@/app/apis/models/comment-model';
-import { currentUserModel } from '@/app/apis/models/user-model';
-import { useCommentMutation } from '@/app/apis/mutations/use-comments/use-post-comment-reply';
+import { CommentModel } from '@/features/comments/models/comment-model';
+import { currentUserModel } from '@/features/users/models/user-model';
+import { useCommentMutation } from '@/features/comments/hooks/use-post-comment-reply';
 import { OrangeButton } from '../button/button';
 
 interface CommentProps {

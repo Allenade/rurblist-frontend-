@@ -4,15 +4,15 @@ import { useEffect, useMemo, useRef, useState } from 'react';
 import Image from 'next/image';
 import dynamic from 'next/dynamic';
 import { useRouter } from 'next/navigation';
-import { useCommentMutation } from '@/app/apis/mutations/use-comments/use-post-comment-reply';
-import { useLikeProperty } from '@/app/apis/mutations/use-property/use-like-unlike';
-import { useSaveProperty } from '@/app/apis/mutations/use-property/use-save-unsave-property';
-import { optimizeCloudinaryImage } from '@/app/apis/utils/cloudinary';
+import { useCommentMutation } from '@/features/comments/hooks/use-post-comment-reply';
+import { useLikeProperty } from '@/features/properties/hooks/use-like-unlike';
+import { useSaveProperty } from '@/features/properties/hooks/use-save-unsave-property';
+import { optimizeCloudinaryImage } from '@/shared/utils/cloudinary';
 import {
   getLocalPropertyState,
   LocalPropertyReaction,
   setLocalPropertyState,
-} from '@/app/apis/utils/property-local-state';
+} from '@/features/properties/utils/property-local-state';
 import { OrangeButton } from '../button/button';
 import { IconImage } from '../icon-image/icon-image';
 import ProfileImage from '../profile-image/profile-image';

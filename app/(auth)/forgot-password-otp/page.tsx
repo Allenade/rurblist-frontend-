@@ -3,8 +3,8 @@
 import { useState, useRef, useEffect } from 'react';
 import { OrangeButton } from '@/components/button/button';
 import toast from 'react-hot-toast';
-import { useOtpStore } from '@/app/apis/store/otp-store';
-import { useForgotPassword } from '@/app/apis/mutations/use-auth/use-forgot-password';
+import { useOtpStore } from '@/features/auth/store/otp-store';
+import { useForgotPassword } from '@/features/auth/hooks/use-forgot-password';
 import { useRouter } from 'next/navigation';
 
 export default function ForgotPasswordOtpPage() {

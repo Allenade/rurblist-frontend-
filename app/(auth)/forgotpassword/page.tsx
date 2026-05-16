@@ -6,7 +6,7 @@ import { useState } from "react"
 import Link from "next/link"
 import Input from "@/components/input"
 import { OrangeButton } from "@/components/button/button"
-import { useForgotPassword } from "@/app/apis/mutations/use-auth/use-forgot-password"
+import { useForgotPassword } from "@/features/auth/hooks/use-forgot-password"
 
 export default function ForgotPassword() {
   const [email, setEmail] = useState("");
@@ -37,8 +37,6 @@ export default function ForgotPassword() {
 
     if (!validate()) return;
 
-    // Handle password reset logic here
-    console.log("Password reset requested for:", email)
     mutate({ email });
   }
 

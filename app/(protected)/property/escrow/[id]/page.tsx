@@ -1,5 +1,5 @@
 'use client';
-import EscrowForm from '@/components/escrow-m/escrow-form';
+import EscrowForm from '@/components/escrow/escrow-form';
 import { useParams } from 'next/navigation';
 
 export default function EscrowPage() {

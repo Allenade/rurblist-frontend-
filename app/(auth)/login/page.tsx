@@ -6,7 +6,7 @@ import Link from 'next/link';
 import Input from '@/components/input';
 import { OrangeButton } from '@/components/button/button';
 import { IconImage } from '@/components/icon-image/icon-image';
-import { useLogin } from '@/app/apis/mutations/use-auth/use-login';
+import { useLogin } from '@/features/auth/hooks/use-login';
 
 export default function LoginPage() {
   const { mutate, isPending } = useLogin();
@@ -94,7 +94,7 @@ export default function LoginPage() {
               transition
             "
             onClick={() => {
-              window.location.href = `https://rurblist-backend.onrender.com/api/auth/google`;
+              window.location.href = `https://rurblist-backend.onrender.com/api/v1/auth/google`;
             }}
           >
             Login with google

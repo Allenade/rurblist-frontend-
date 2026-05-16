@@ -4,33 +4,33 @@ import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import dynamic from 'next/dynamic';
 import { useLayoutStore } from '@/store/layout-store';
-import BackNavbar from '@/components/agent-c/back-navbar';
-import HomeSeekerBasicInfoCard from '@/components/homeseeker-c/homeseeker-basicInfo-card';
+import BackNavbar from '@/components/agent/back-navbar';
+import HomeSeekerBasicInfoCard from '@/components/home-seeker/home-seeker-basic-info-card';
 import { useAuth } from '@/components/layout/auth-provider';
-import HomeSeekerBasicInfoSkeleton from '@/components/homeseeker-c/loader-skeleton/home-seeker-basicInfo-skeleton';
-import { useGetSavedProperties } from '@/app/apis/mutations/use-user/use-get-saved-property';
-import { useSaveProperty } from '@/app/apis/mutations/use-property/use-save-unsave-property';
-import SavedPropertiesSkeleton from '@/components/homeseeker-c/loader-skeleton/save-property-skeleton';
-import { useGetTourUsers } from '@/app/apis/mutations/use-tour/use-get-tour-user';
-import TourCardSkeleton from '@/components/homeseeker-c/loader-skeleton/tour-card-skeleton';
-import { formatTourDate } from '@/app/apis/utils/format-tour-date';
-import { useCancelTour } from '@/app/apis/mutations/use-tour/use-cancel-tour';
-import { useGetVerifications } from '@/app/apis/mutations/use-verification/use-get-verifications-me';
-import PropertyVerificationsSkeleton from '@/components/homeseeker-c/loader-skeleton/property-verifications-skeleton';
-import { getLocalPropertyState, setLocalPropertyState } from '@/app/apis/utils/property-local-state';
-import { useDeferredReady } from '@/app/apis/hooks/use-deferred-ready';
+import HomeSeekerBasicInfoSkeleton from '@/components/home-seeker/loader-skeleton/home-seeker-basic-info-skeleton';
+import { useGetSavedProperties } from '@/features/users/hooks/use-get-saved-property';
+import { useSaveProperty } from '@/features/properties/hooks/use-save-unsave-property';
+import SavedPropertiesSkeleton from '@/components/home-seeker/loader-skeleton/save-property-skeleton';
+import { useGetTourUsers } from '@/features/tours/hooks/use-get-tour-user';
+import TourCardSkeleton from '@/components/home-seeker/loader-skeleton/tour-card-skeleton';
+import { formatTourDate } from '@/shared/utils/format-tour-date';
+import { useCancelTour } from '@/features/tours/hooks/use-cancel-tour';
+import { useGetVerifications } from '@/features/verification/hooks/use-get-verifications-me';
+import PropertyVerificationsSkeleton from '@/components/home-seeker/loader-skeleton/property-verifications-skeleton';
+import { getLocalPropertyState, setLocalPropertyState } from '@/features/properties/utils/property-local-state';
+import { useDeferredReady } from '@/shared/hooks/use-deferred-ready';
 
 const UpcomingToursSection = dynamic(
-  () => import('@/components/homeseeker-c/upcoming-tours-section'),
+  () => import('@/components/home-seeker/upcoming-tours-section'),
   { loading: () => <TourCardSkeleton /> },
 );
 
 const PropertyVerificationsSection = dynamic(
-  () => import('@/components/homeseeker-c/property-verifications-section'),
+  () => import('@/components/home-seeker/property-verifications-section'),
   { loading: () => <PropertyVerificationsSkeleton /> },
 );
 
-const SavedPropertiesSection = dynamic(() => import('@/components/homeseeker-c/save-properties'), {
+const SavedPropertiesSection = dynamic(() => import('@/components/home-seeker/save-properties'), {
   loading: () => <SavedPropertiesSkeleton />,
 });
 

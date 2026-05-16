@@ -1,40 +1,37 @@
 import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
-import { AUTHENTICATION_COOKIE, REFRESH_TOKEN } from './app/apis/utils/api-links';
+import { AUTHENTICATION_COOKIE, REFRESH_TOKEN } from './src/shared/config/api-links';
 import {
   appRoutes,
   getDefaultRouteForRole,
   Permission,
   Role,
   rolePermissions,
-} from './app/apis/utils/routes';
-import { decodeToken } from './app/apis/utils/decode-token';
+} from './src/shared/config/routes';
+import { getTokenRoles } from './src/shared/utils/decode-token';
 
-function matchRoute(pathname: string) {
-  return appRoutes.find(
-    (route) => pathname === route.path || pathname.startsWith(`${route.path}/`),
-  );
+const routeMatchers = appRoutes
+  .slice()
+  .sort((a, b) => b.path.length - a.path.length)
+  .map((route) => ({
+    route,
+    pattern: createRoutePattern(route.path),
+  }));
+
+function createRoutePattern(path: string) {
+  const segments = path.split('/').map((segment) => {
+    if (/^\[[^\]]+\]$/.test(segment)) {
+      return '[^/]+';
+    }
+
+    return segment.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+  });
+
+  return new RegExp(`^${segments.join('/')}$`);
 }
 
-function getUserRolesFromToken(token: string): Role[] {
-  const decoded = decodeToken(token) as {
-    role?: Role;
-    roles?: Role[];
-  } | null;
-
-  if (!decoded) {
-    return [];
-  }
-
-  if (decoded.roles?.length) {
-    return decoded.roles;
-  }
-
-  if (decoded.role) {
-    return [decoded.role];
-  }
-
-  return [];
+function matchRoute(pathname: string) {
+  return routeMatchers.find(({ pattern }) => pattern.test(pathname))?.route;
 }
 
 function hasRouteAccess(userRoles: Role[], routeRoles?: Role[]) {
@@ -61,11 +58,9 @@ export function proxy(request: NextRequest) {
 
   const token = request.cookies.get(AUTHENTICATION_COOKIE)?.value;
   const refreshToken = request.cookies.get(REFRESH_TOKEN)?.value;
-  console.log('Authentication token:', token);
 
-  const userRoles = token ? getUserRolesFromToken(token) : [];
+  const userRoles = token ? getTokenRoles(token) : [];
   const primaryRole = userRoles[0];
-  console.log('User roles:', userRoles[0]);
 
   const route = matchRoute(pathname);
 

@@ -1,0 +1,15 @@
+import { UserModel } from '@/features/users/models/user-model'
+
+export interface ReplyModel {
+  _id: string
+  property: string
+  user: UserModel
+  text: string
+  parentComment: string
+  createdAt: string
+  updatedAt: string
+  replies: ReplyModel[]
+  isOwnerReply: boolean
+  isOwnerComment: boolean
+  isCurrentUser: boolean
+}

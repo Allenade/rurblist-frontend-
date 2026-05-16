@@ -6,11 +6,11 @@ import { useRouter } from 'next/navigation';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { OrangeButton } from '@/components/button/button';
 import { NavLink } from './nav-links';
-import { getNavbarRoutes } from '@/app/apis/utils/get-navbar-routes';
+import { getNavbarRoutes } from '@/shared/config/get-navbar-routes';
 import { useAuth } from '../layout/auth-provider';
 import UserAvatar from '../profile-image/user-avatar';
-import { Role } from '@/app/apis/utils/routes';
-import { useLogout } from '@/app/apis/mutations/use-auth/use-logout';
+import { Role } from '@/shared/config/routes';
+import { useLogout } from '@/features/auth/hooks/use-logout';
 
 export default function Navbar() {
   const { user, isLoading } = useAuth();

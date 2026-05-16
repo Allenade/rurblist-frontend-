@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useRef } from 'react';
-import LoadMoreSkeleton from './property-cm/load-more-skeleton';
+import LoadMoreSkeleton from './property/load-more-skeleton';
 
 interface LoadMoreTriggerProps {
   hasNextPage?: boolean;

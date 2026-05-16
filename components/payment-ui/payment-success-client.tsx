@@ -1,11 +1,11 @@
 'use client';
 
-import { useGetPaymentDeails } from '@/app/apis/mutations/use-payment/use-get-payment';
+import { useGetPaymentDetails } from '@/features/payments/hooks/use-get-payment';
 import PaymentReceipt from '@/components/payment-ui/payment-receipt';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
-import TourSuccessModal from '../popUp/tour-popup';
-import { useDownloadReceipt } from '@/app/apis/mutations/use-payment/use-get-download-recipt';
+import TourSuccessModal from '../popup/tour-popup';
+import { useDownloadReceipt } from '@/features/payments/hooks/use-get-download-receipt';
 import { useAuth } from '@/components/layout/auth-provider';
 
 function PaymentSuccessSkeleton() {
@@ -57,7 +57,7 @@ export default function PaymentSuccessClient({ reference }: { reference: string 
   const router = useRouter();
   const { user, isLoading: isUserLoading } = useAuth();
 
-  const { data, isLoading, isError } = useGetPaymentDeails(reference);
+  const { data, isLoading, isError } = useGetPaymentDetails(reference);
   const { mutate: downloadReceipt, isPending } = useDownloadReceipt();
 
   const info = data?.data;

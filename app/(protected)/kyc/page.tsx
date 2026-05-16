@@ -149,7 +149,7 @@ export default function KYCPage() {
             <TermsContainer
               title="Please read carefully before proceeding"
               downloadLabel="Download"
-              onDownloadClick={() => console.log('Download clicked')}
+              onDownloadClick={() => {}}
               items={termsItems}
             />
           </div>

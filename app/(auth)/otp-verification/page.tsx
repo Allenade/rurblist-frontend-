@@ -3,9 +3,9 @@
 import { useState, useRef, useEffect } from "react";
 import { OrangeButton } from "@/components/button/button";
 import toast from "react-hot-toast";
-import { useOtpStore } from "@/app/apis/store/otp-store";
-import { useVerifyOtp } from "@/app/apis/mutations/use-auth/use-verify-otp";
-import { useResendOtp } from "@/app/apis/mutations/use-auth/use-resend-otp";
+import { useOtpStore } from "@/features/auth/store/otp-store";
+import { useVerifyOtp } from "@/features/auth/hooks/use-verify-otp";
+import { useResendOtp } from "@/features/auth/hooks/use-resend-otp";
 
 export default function VerifyOtpPage() {
   const email = useOtpStore((s) => s.email);

@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import { memo } from "react";
-import { optimizeCloudinaryImage } from "@/app/apis/utils/cloudinary";
+import { optimizeCloudinaryImage } from "@/shared/utils/cloudinary";
 
 type Props = {
   name?: string;
