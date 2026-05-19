@@ -1,9 +1,9 @@
 'use client';
 
-import { RoleCard } from '@/components/role-card/role-card';
-import { Footer } from '@/components/footer/footer';
+import { RoleCard } from '@/shared/ui';
+import { Footer } from '@/shared/layout/footer/footer';
 import { useState } from 'react';
-import { IconImage } from '@/components/icon-image/icon-image';
+import { IconImage } from '@/shared/ui';
 import { useRouter } from 'next/navigation';
 
 export default function AddPropertyPage() {

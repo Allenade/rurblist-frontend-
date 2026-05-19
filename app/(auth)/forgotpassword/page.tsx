@@ -4,8 +4,7 @@ import React from "react"
 
 import { useState } from "react"
 import Link from "next/link"
-import Input from "@/components/input"
-import { OrangeButton } from "@/components/button/button"
+import { Input } from '@/shared/ui';import { OrangeButton } from "@/shared/ui"
 import { useForgotPassword } from "@/features/auth/hooks/use-forgot-password"
 
 export default function ForgotPassword() {

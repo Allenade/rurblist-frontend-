@@ -1,4 +1,4 @@
-import VerificationTrackerClient from '@/components/verification/verification-client';
+import VerificationTrackerClient from '@/features/verification/components/verification-client';
 
 export default async function VerificationTrackerPage({
   searchParams,

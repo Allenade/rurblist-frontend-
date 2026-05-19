@@ -2,8 +2,8 @@
 
 import { useState } from 'react';
 import Image from 'next/image';
-import { OrangeButton } from '@/components/button/button';
-import { RoleCard } from '@/components/role-card/role-card';
+import { OrangeButton } from '@/shared/ui';
+import { RoleCard } from '@/shared/ui';
 import { useSignup } from '@/features/auth/hooks/use-signup';
 import { useSignupStore } from '@/features/auth/store/auth-store';
 import type { Role } from '@/shared/config/routes';

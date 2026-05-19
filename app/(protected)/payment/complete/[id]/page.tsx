@@ -1,10 +1,9 @@
 'use client';
 
 import { useGetVerificationById } from '@/features/verification/hooks/use-get-verification-by-id';
-import { OrangeButton } from '@/components/button/button';
-import { IconImage } from '@/components/icon-image/icon-image';
-import TransactionTimeline from '@/components/payment-ui/time-line-ui';
-import VerificationCertificate from '@/components/payment-ui/verification-ui';
+import { OrangeButton } from '@/shared/ui';
+import { IconImage } from '@/shared/ui';
+import { TransactionTimeline, VerificationCertificate } from '@/features/payments/components';
 import { useParams, useRouter } from 'next/navigation';
 
 export default function DealClosedPage() {

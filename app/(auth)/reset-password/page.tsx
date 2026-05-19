@@ -3,8 +3,8 @@
 import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import toast from 'react-hot-toast';
-import { OrangeButton } from '@/components/button/button';
-import Input from '@/components/input';
+import { OrangeButton } from '@/shared/ui';
+import { Input } from '@/shared/ui';
 import { useResetPassword } from '@/features/auth/hooks/use-reset-password';
 import { useOtpStore } from '@/features/auth/store/otp-store';
 

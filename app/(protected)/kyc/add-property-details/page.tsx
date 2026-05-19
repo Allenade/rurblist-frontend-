@@ -2,12 +2,9 @@
 
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
-import Input from '@/components/input'
-import Dropdown from '@/components/dropdown/dropdown'
-import ImageUpload from '@/components/image-upload/image-upload'
-import { OrangeButton } from '@/components/button/button'
-import Footer from '@/components/footer/footer'
-import { IconImage } from '@/components/icon-image/icon-image'
+import { Input } from '@/shared/ui';import { Dropdown } from '@/shared/ui';import { ImageUpload } from '@/shared/ui';import { OrangeButton } from '@/shared/ui'
+import Footer from '@/shared/layout/footer/footer'
+import { IconImage } from '@/shared/ui'
 
 export default function AddPropertyPage() {
   const router = useRouter();

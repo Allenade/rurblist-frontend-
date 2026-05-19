@@ -2,14 +2,14 @@
 
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { useLayoutStore } from '@/store/layout-store';
-import BackNavbar from '@/components/agent/back-navbar';
-import { OrangeButton } from '@/components/button/button';
+import { useLayoutStore } from '@/shared/layout/layout-store';
+import BackNavbar from '@/features/agents/components/back-navbar';
+import { OrangeButton } from '@/shared/ui';
 import { useAgentForm } from '@/features/agents/store/agent-store';
 import { useCreateAgent } from '@/features/agents/hooks/use-agent-mutations';
 import { buildAgentPayload } from '@/shared/utils/build-agent-payload';
 import toast from 'react-hot-toast';
-import SuccessModal from '@/components/agent/modal/create-success-modal';
+import SuccessModal from '@/features/agents/components/modal/create-success-modal';
 import { useGetCurrentUser } from '@/features/users/hooks/use-get-current-user';
 
 export default function AgentAgreementPage() {

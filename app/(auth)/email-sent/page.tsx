@@ -1,6 +1,6 @@
 import Link from "next/link"
 import Image from "next/image"
-import { OrangeButton } from "@/components/button/button"
+import { OrangeButton } from "@/shared/ui"
 
 export default function EmailSent() {
   return (

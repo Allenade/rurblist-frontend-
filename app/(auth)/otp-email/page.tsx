@@ -2,7 +2,7 @@
 
 import { useRouter } from 'next/navigation';
 import Image from 'next/image';
-import { OrangeButton } from '@/components/button/button';
+import { OrangeButton } from '@/shared/ui';
 import { useOtpStore } from '@/features/auth/store/otp-store';
 
 export default function OtpSent() {

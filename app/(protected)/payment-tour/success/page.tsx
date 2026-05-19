@@ -1,4 +1,4 @@
-import PaymentSuccessClient from '@/components/payment-ui/payment-success-client';
+import { PaymentSuccessClient } from '@/features/payments/components';
 
 export default async function PaymentSuccessPage({
   searchParams,

@@ -1,9 +1,9 @@
 'use client';
 
 import Image from 'next/image';
-import { OrangeButton } from '@/components/button/button';
-import { FAQSection } from '@/components/faq-section';
-import { SearchBar } from '@/components/search-bar';
+import { OrangeButton } from '@/shared/ui';
+import { FAQSection } from '@/features/marketing/components/faq-section';
+import { SearchBar } from '@/shared/ui/search-bar';
 import { useRouter } from 'next/navigation';
 
 export default function Home() {

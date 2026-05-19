@@ -1,4 +1,4 @@
-import { ConditionalShell } from "@/components/layout/conditional-shell";
+import { ConditionalShell } from "@/shared/layout/conditional-shell";
 export default function ProtectedLayout({
   children,
 }: {

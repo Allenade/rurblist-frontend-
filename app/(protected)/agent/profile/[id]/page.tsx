@@ -1,16 +1,16 @@
 'use client';
 
 import { useEffect, useMemo } from 'react';
-import { useLayoutStore } from '@/store/layout-store';
-import BackNavbar from '@/components/agent/back-navbar';
-import AgentInfoSection from '@/components/agent/profile/agent-info';
-import AgentPropertiesSection from '@/components/agent/profile/other-property-agent';
-import RatingsSection from '@/components/agent/profile/rating-reviews-agent';
+import { useLayoutStore } from '@/shared/layout/layout-store';
+import BackNavbar from '@/features/agents/components/back-navbar';
+import AgentInfoSection from '@/features/agents/components/profile/agent-info';
+import AgentPropertiesSection from '@/features/agents/components/profile/other-property-agent';
+import RatingsSection from '@/features/agents/components/profile/rating-reviews-agent';
 import { useGetAgentById } from '@/features/agents/hooks/use-get-agent-by-id';
 import { useParams } from 'next/navigation';
-import AgentInfoSectionSkeleton from '@/components/agent/agent-info-section-skeleton';
+import AgentInfoSectionSkeleton from '@/features/agents/components/agent-info-section-skeleton';
 import { useGetAgentPropertiesById } from '@/features/properties/hooks/use-get-agent-properties-by-id';
-import CurrentListingsSectionSkeleton from '@/components/agent/current-listings-section-skeleton';
+import CurrentListingsSectionSkeleton from '@/features/agents/components/current-listings-section-skeleton';
 
 export default function AgentProfilePage() {
   const setHideNavbar = useLayoutStore((state) => state.setHideNavbar);
