@@ -9,7 +9,7 @@ type ReadMoreTextProps = {
   className?: string;
 };
 
-export default function ReadMoreText({ text, maxLength = 160, className }: ReadMoreTextProps) {
+export default function ReadMoreText({ text, maxLength = 161, className }: ReadMoreTextProps) {
   const [isExpanded, setIsExpanded] = useState(false);
 
   const shouldTruncate = text.length > maxLength;
