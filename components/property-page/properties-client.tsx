@@ -2,9 +2,9 @@
 
 import { useCallback, useMemo, useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { useDebouncedValue } from '@/app/apis/hooks/use-debounced-value';
-import { useSearchProperties } from '@/app/apis/mutations/use-property/use-search-properties';
-import { PropertyModel } from '@/app/apis/models/property-model';
+import { useDebouncedValue } from '@/shared/hooks/use-debounced-value';
+import { useSearchProperties } from '@/features/properties/hooks/use-search-properties';
+import { PropertyModel } from '@/features/properties/models/property-model';
 import { useAuth } from '@/components/layout/auth-provider';
 import {
   BedsBathsFilter,
@@ -13,7 +13,7 @@ import {
   TypeFilter,
 } from '@/components/dropdown/filter-dropdown';
 import LoadMoreTrigger from '@/components/load-more-trigger';
-import PropertiesPageSkeleton from '@/components/property-cm/properties-page-skeleton';
+import PropertiesPageSkeleton from '@/components/property/properties-page-skeleton';
 import PropertyBanner from '@/components/property-details/property-banner';
 import PropertyCard from '@/components/property-details/property-card';
 import SearchBar from '@/components/search-bar/search-bar2';

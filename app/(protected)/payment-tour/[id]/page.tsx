@@ -1,7 +1,7 @@
 'use client';
 
-import { usePayForTour } from '@/app/apis/mutations/use-payment/use-payment-tour';
-import { useGetTourById } from '@/app/apis/mutations/use-tour/use-get-tourby-id';
+import { usePayForTour } from '@/features/payments/hooks/use-payment-tour';
+import { useGetTourById } from '@/features/tours/hooks/use-get-tour-by-id';
 import { OrangeButton } from '@/components/button/button';
 import PageHeader from '@/components/page-header';
 import PaymentMethodSelector from '@/components/payment-ui/payment-method-selector';

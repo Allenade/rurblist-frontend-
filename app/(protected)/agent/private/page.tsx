@@ -3,49 +3,49 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import dynamic from 'next/dynamic';
-import BackNavbar from '@/components/agent-c/back-navbar';
-import { AgentInfoSection } from '@/components/agent-c/agent-info-section';
-import AgentInfoSectionSkeleton from '@/components/agent-c/agent-info-section-skeleton';
-import CurrentListingsSectionSkeleton from '@/components/agent-c/current-listings-section-skeleton';
-import MessagesSectionSkeleton from '@/components/agent-c/messaging/messages-section-skeleton';
-import TourCardSkeleton from '@/components/homeseeker-c/loader-skeleton/tour-card-skeleton';
-import { useGetCurrentAgent } from '@/app/apis/mutations/use-agent/get-current-agent';
-import { useGetMyProperties } from '@/app/apis/mutations/use-property/use-get-my-properties';
+import BackNavbar from '@/components/agent/back-navbar';
+import { AgentInfoSection } from '@/components/agent/agent-info-section';
+import AgentInfoSectionSkeleton from '@/components/agent/agent-info-section-skeleton';
+import CurrentListingsSectionSkeleton from '@/components/agent/current-listings-section-skeleton';
+import MessagesSectionSkeleton from '@/components/agent/messaging/messages-section-skeleton';
+import TourCardSkeleton from '@/components/home-seeker/loader-skeleton/tour-card-skeleton';
+import { useGetCurrentAgent } from '@/features/agents/hooks/use-get-current-agent';
+import { useGetMyProperties } from '@/features/properties/hooks/use-get-my-properties';
 import { useLayoutStore } from '@/store/layout-store';
-import { useGetSavedProperties } from '@/app/apis/mutations/use-user/use-get-saved-property';
-import { useSaveProperty } from '@/app/apis/mutations/use-property/use-save-unsave-property';
-import SavedPropertiesSkeleton from '@/components/homeseeker-c/loader-skeleton/save-property-skeleton';
-import { useGetTourAgents } from '@/app/apis/mutations/use-tour/use-get-tour-agent';
-import { useGetTourUsers } from '@/app/apis/mutations/use-tour/use-get-tour-user';
-import { useCancelTour } from '@/app/apis/mutations/use-tour/use-cancel-tour';
-import { formatTourDate } from '@/app/apis/utils/format-tour-date';
-import { getLocalPropertyState, setLocalPropertyState } from '@/app/apis/utils/property-local-state';
-import { useGetVerifications } from '@/app/apis/mutations/use-verification/use-get-verifications-me';
-import PropertyVerificationsSkeleton from '@/components/homeseeker-c/loader-skeleton/property-verifications-skeleton';
-import { useDeleteProperty } from '@/app/apis/mutations/use-property/use-update-delete-property';
+import { useGetSavedProperties } from '@/features/users/hooks/use-get-saved-property';
+import { useSaveProperty } from '@/features/properties/hooks/use-save-unsave-property';
+import SavedPropertiesSkeleton from '@/components/home-seeker/loader-skeleton/save-property-skeleton';
+import { useGetTourAgents } from '@/features/tours/hooks/use-get-tour-agent';
+import { useGetTourUsers } from '@/features/tours/hooks/use-get-tour-user';
+import { useCancelTour } from '@/features/tours/hooks/use-cancel-tour';
+import { formatTourDate } from '@/shared/utils/format-tour-date';
+import { getLocalPropertyState, setLocalPropertyState } from '@/features/properties/utils/property-local-state';
+import { useGetVerifications } from '@/features/verification/hooks/use-get-verifications-me';
+import PropertyVerificationsSkeleton from '@/components/home-seeker/loader-skeleton/property-verifications-skeleton';
+import { useDeleteProperty } from '@/features/properties/hooks/use-update-delete-property';
 import { OrangeButton } from '@/components/button/button';
-import { useDeferredReady } from '@/app/apis/hooks/use-deferred-ready';
+import { useDeferredReady } from '@/shared/hooks/use-deferred-ready';
 
 const CurrentListingsSection = dynamic(
-  () => import('@/components/agent-c/current-listings-section'),
+  () => import('@/components/agent/current-listings-section'),
   { loading: () => <CurrentListingsSectionSkeleton /> },
 );
 
-const MessagesSection = dynamic(() => import('@/components/agent-c/messaging/messages-section'), {
+const MessagesSection = dynamic(() => import('@/components/agent/messaging/messages-section'), {
   loading: () => <MessagesSectionSkeleton />,
 });
 
 const UpcomingToursSection = dynamic(
-  () => import('@/components/homeseeker-c/upcoming-tours-section'),
+  () => import('@/components/home-seeker/upcoming-tours-section'),
   { loading: () => <TourCardSkeleton /> },
 );
 
 const PropertyVerificationsSection = dynamic(
-  () => import('@/components/homeseeker-c/property-verifications-section'),
+  () => import('@/components/home-seeker/property-verifications-section'),
   { loading: () => <PropertyVerificationsSkeleton /> },
 );
 
-const SavedPropertiesSection = dynamic(() => import('@/components/homeseeker-c/save-properties'), {
+const SavedPropertiesSection = dynamic(() => import('@/components/home-seeker/save-properties'), {
   loading: () => <SavedPropertiesSkeleton />,
 });
 

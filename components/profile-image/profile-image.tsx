@@ -2,7 +2,7 @@
 
 import Image from 'next/image';
 import { useState } from 'react';
-import { optimizeCloudinaryImage } from '@/app/apis/utils/cloudinary';
+import { optimizeCloudinaryImage } from '@/shared/utils/cloudinary';
 
 interface ProfileImageProps {
   src?: string;

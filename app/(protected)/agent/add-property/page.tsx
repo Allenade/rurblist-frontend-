@@ -1,17 +1,17 @@
 'use client';
 
-import { ImageModel } from '@/app/apis/models/image-model';
-import { useGetPropertyById } from '@/app/apis/mutations/use-property/use-get-property-by-id';
-import { useUploadProperty } from '@/app/apis/mutations/use-property/use-post-property';
-import { useUpdateProperty } from '@/app/apis/mutations/use-property/use-update-delete-property';
-import { compressImage } from '@/app/apis/utils/compress-image';
-import { getCachedCoordinates, setCachedCoordinates } from '@/app/apis/utils/geocode-cache';
+import { ImageModel } from '@/shared/models/image-model';
+import { useGetPropertyById } from '@/features/properties/hooks/use-get-property-by-id';
+import { useUploadProperty } from '@/features/properties/hooks/use-post-property';
+import { useUpdateProperty } from '@/features/properties/hooks/use-update-delete-property';
+import { compressImage } from '@/shared/utils/compress-image';
+import { getCachedCoordinates, setCachedCoordinates } from '@/shared/utils/geocode-cache';
 import {
   COUNTRY_OPTIONS,
   NIGERIA_STATE_OPTIONS,
   getCityOptions,
-} from '@/app/apis/utils/nigeria-location-options';
-import ModalHeader from '@/components/agent-c/modal/headder-model';
+} from '@/shared/utils/nigeria-location-options';
+import ModalHeader from '@/components/agent/modal/header-modal';
 import { OrangeButton } from '@/components/button/button';
 import Dropdown from '@/components/dropdown/dropdown';
 import SearchableDropdown from '@/components/dropdown/searchable-dropdown';

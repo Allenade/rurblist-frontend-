@@ -3,7 +3,7 @@
 import { useRouter } from 'next/navigation';
 import Image from 'next/image';
 import { OrangeButton } from '@/components/button/button';
-import { useOtpStore } from '@/app/apis/store/otp-store';
+import { useOtpStore } from '@/features/auth/store/otp-store';
 
 export default function OtpSent() {
   const router = useRouter();
@@ -11,10 +11,9 @@ export default function OtpSent() {
   const email = useOtpStore((s) => s.email);
 
   function handleProceed() {
-    console.log(email);
     if (!email) return;
 
-    router.push(`/otp-verification`);
+    router.push('/otp-verification');
   }
 
   return (

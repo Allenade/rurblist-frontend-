@@ -155,7 +155,7 @@ export default function ExpertPropertyAdviceForm({
 
               <p className="mt-5 text-[12px] text-[#565656] sm:text-[13px]">
                 <span className="font-semibold text-[#1685ff]">
-                  Paste Rulbist Property Link Here
+                  Paste Rurblist Property Link Here
                 </span>{' '}
                 or drag & drop files here
               </p>
@@ -190,7 +190,7 @@ export default function ExpertPropertyAdviceForm({
             <Input
               value={propertyLink}
               onChange={(e) => setPropertyLink(e.target.value)}
-              placeholder="https://rulbist.com/property/..."
+              placeholder="https://rurblist.com/property/..."
               className="mt-5 px-4 text-[13px]"
             />
           </div>

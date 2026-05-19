@@ -22,8 +22,8 @@ export default function AddPropertyPage() {
     price: '',
   })
 
-  const [images, setImages] = useState<File[]>([])
-  const [video, setVideo] = useState<File[]>([])
+  const [, setImages] = useState<File[]>([])
+  const [, setVideo] = useState<File[]>([])
 
   const handleInputChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -37,11 +37,11 @@ export default function AddPropertyPage() {
   }
 
   const handleSaveDraft = () => {
-    console.log('Saving draft...', formData)
+    // TODO: connect draft persistence when the backend supports it.
   }
 
   const handleUploadProperty = () => {
-    console.log('Uploading property...', { formData, images, video })
+    // TODO: connect property upload when this legacy flow is re-enabled.
   }
 
   return (
