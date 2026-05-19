@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import { cn } from '@/lib/utils';
 
 type ReadMoreTextProps = {
   text: string;
@@ -18,17 +19,18 @@ export default function ReadMoreText({ text, maxLength = 160, className }: ReadM
     : text.slice(0, maxLength) + (shouldTruncate ? '...' : '');
 
   return (
-    <p className={className}>
+    <div className={cn('whitespace-pre-line', className)}>
       {displayedText}
 
       {shouldTruncate && (
         <button
+          type="button"
           onClick={() => setIsExpanded((prev) => !prev)}
           className="ml-2 text-blue-600 hover:underline font-medium"
         >
           {isExpanded ? 'Read less' : 'Read more'}
         </button>
       )}
-    </p>
+    </div>
   );
 }
