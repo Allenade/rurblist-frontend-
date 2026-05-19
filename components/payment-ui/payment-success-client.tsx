@@ -4,7 +4,7 @@ import { useGetPaymentDetails } from '@/features/payments/hooks/use-get-payment'
 import PaymentReceipt from '@/components/payment-ui/payment-receipt';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
-import TourSuccessModal from '../popup/tour-popup';
+import TourSuccessModal from '@/components/popup/tour-popup';
 import { useDownloadReceipt } from '@/features/payments/hooks/use-get-download-receipt';
 import { useAuth } from '@/components/layout/auth-provider';
 
