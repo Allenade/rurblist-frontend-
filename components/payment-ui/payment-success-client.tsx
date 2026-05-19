@@ -4,7 +4,7 @@ import { useGetPaymentDetails } from '@/features/payments/hooks/use-get-payment'
 import PaymentReceipt from '@/components/payment-ui/payment-receipt';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
-import TourSuccessModal from '@/components/popup/tour-popup';
+import TourSuccessModal from '@/components/payment-ui/tour-success-modal';
 import { useDownloadReceipt } from '@/features/payments/hooks/use-get-download-receipt';
 import { useAuth } from '@/components/layout/auth-provider';
 
@@ -107,7 +107,7 @@ export default function PaymentSuccessClient({ reference }: { reference: string 
   const payment = {
     transactionId: formatTransactionId(
       info?.paidAt ?? '',
-      info?.transactionId ?? '', // or data.id if you have it
+      info?.transactionId ?? '',
     ),
     paymentMethod: info?.paymentMethod || 'Payment',
     amount: info?.amount ?? 0,
