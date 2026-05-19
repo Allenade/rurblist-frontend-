@@ -2,10 +2,9 @@
 
 import { usePayForTour } from '@/features/payments/hooks/use-payment-tour';
 import { useGetTourById } from '@/features/tours/hooks/use-get-tour-by-id';
-import { OrangeButton } from '@/components/button/button';
-import PageHeader from '@/components/page-header';
-import PaymentMethodSelector from '@/components/payment-ui/payment-method-selector';
-import PaymentSummary from '@/components/payment-ui/payment-summary';
+import { OrangeButton } from '@/shared/ui';
+import { PageHeader } from '@/shared/ui';
+import { PaymentMethodSelector, PaymentSummary } from '@/features/payments/components';
 import { useParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
 

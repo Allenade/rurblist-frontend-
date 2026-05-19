@@ -8,12 +8,12 @@ import { useFileUpload } from '@/shared/hooks/use-file-upload';
 import { useUpdateAgent } from '@/features/agents/hooks/use-agent-mutations';
 import { useGetCurrentUser } from '@/features/users/hooks/use-get-current-user';
 import { useAgentForm } from '@/features/agents/store/agent-store';
-import BackNavbar from '@/components/agent/back-navbar';
-import { OrangeButton } from '@/components/button/button';
-import SelectDropdown from '@/components/dropdown/select-dropdown';
-import Input from '@/components/input';
-import Textarea from '@/components/text-area';
-import { useLayoutStore } from '@/store/layout-store';
+import BackNavbar from '@/features/agents/components/back-navbar';
+import { OrangeButton } from '@/shared/ui';
+import { SelectDropdown } from '@/shared/ui';
+import { Input } from '@/shared/ui';
+import { Textarea } from '@/shared/ui';
+import { useLayoutStore } from '@/shared/layout/layout-store';
 
 export default function AgentRequestFormPage() {
   const router = useRouter();

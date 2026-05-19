@@ -11,13 +11,13 @@ import {
   NIGERIA_STATE_OPTIONS,
   getCityOptions,
 } from '@/shared/utils/nigeria-location-options';
-import ModalHeader from '@/components/agent/modal/header-modal';
-import { OrangeButton } from '@/components/button/button';
-import Dropdown from '@/components/dropdown/dropdown';
-import SearchableDropdown from '@/components/dropdown/searchable-dropdown';
-import ImageUpload from '@/components/image-upload/image-upload';
-import Input from '@/components/input';
-import { useLayoutStore } from '@/store/layout-store';
+import ModalHeader from '@/features/agents/components/modal/header-modal';
+import { OrangeButton } from '@/shared/ui';
+import { Dropdown } from '@/shared/ui';
+import { SearchableDropdown } from '@/shared/ui';
+import { ImageUpload } from '@/shared/ui';
+import { Input } from '@/shared/ui';
+import { useLayoutStore } from '@/shared/layout/layout-store';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 

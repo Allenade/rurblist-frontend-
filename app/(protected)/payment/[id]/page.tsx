@@ -1,5 +1,5 @@
 'use server';
-import MakePaymentClient from '@/components/payment-ui/make-payment-client';
+import { MakePaymentClient } from '@/features/payments/components';
 
 export default async function MakePaymentPage({
   params,

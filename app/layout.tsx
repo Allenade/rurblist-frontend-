@@ -1,6 +1,6 @@
 import type { Metadata } from 'next';
 import './globals.css';
-import { Providers } from './providers';
+import ReactQueryProvider from '@/shared/react-query/provider';
 import ToastProvider from '@/shared/toast/toast-provider';
 
 export const metadata: Metadata = {
@@ -16,10 +16,10 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className="antialiased">
-        <Providers>
+        <ReactQueryProvider>
           <ToastProvider />
           {children}
-        </Providers>
+        </ReactQueryProvider>
       </body>
     </html>
   );

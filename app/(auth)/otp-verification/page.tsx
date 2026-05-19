@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useRef, useEffect } from "react";
-import { OrangeButton } from "@/components/button/button";
+import { OrangeButton } from "@/shared/ui";
 import toast from "react-hot-toast";
 import { useOtpStore } from "@/features/auth/store/otp-store";
 import { useVerifyOtp } from "@/features/auth/hooks/use-verify-otp";

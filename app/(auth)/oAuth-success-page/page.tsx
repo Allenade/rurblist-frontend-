@@ -1,4 +1,4 @@
-import OAuthHandler from '@/components/oauth-h/oauth-handler';
+import OAuthHandler from '@/features/auth/components/oauth-handler';
 
 export default async function OAuthSuccessPage({
   searchParams,

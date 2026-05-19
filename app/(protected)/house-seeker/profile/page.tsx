@@ -3,34 +3,34 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import dynamic from 'next/dynamic';
-import { useLayoutStore } from '@/store/layout-store';
-import BackNavbar from '@/components/agent/back-navbar';
-import HomeSeekerBasicInfoCard from '@/components/home-seeker/home-seeker-basic-info-card';
-import { useAuth } from '@/components/layout/auth-provider';
-import HomeSeekerBasicInfoSkeleton from '@/components/home-seeker/loader-skeleton/home-seeker-basic-info-skeleton';
+import { useLayoutStore } from '@/shared/layout/layout-store';
+import BackNavbar from '@/features/agents/components/back-navbar';
+import HomeSeekerBasicInfoCard from '@/features/users/components/home-seeker/home-seeker-basic-info-card';
+import { useAuth } from '@/shared/layout/auth-provider';
+import HomeSeekerBasicInfoSkeleton from '@/features/users/components/home-seeker/loader-skeleton/home-seeker-basic-info-skeleton';
 import { useGetSavedProperties } from '@/features/users/hooks/use-get-saved-property';
 import { useSaveProperty } from '@/features/properties/hooks/use-save-unsave-property';
-import SavedPropertiesSkeleton from '@/components/home-seeker/loader-skeleton/save-property-skeleton';
+import SavedPropertiesSkeleton from '@/features/users/components/home-seeker/loader-skeleton/save-property-skeleton';
 import { useGetTourUsers } from '@/features/tours/hooks/use-get-tour-user';
-import TourCardSkeleton from '@/components/home-seeker/loader-skeleton/tour-card-skeleton';
+import TourCardSkeleton from '@/features/users/components/home-seeker/loader-skeleton/tour-card-skeleton';
 import { formatTourDate } from '@/shared/utils/format-tour-date';
 import { useCancelTour } from '@/features/tours/hooks/use-cancel-tour';
 import { useGetVerifications } from '@/features/verification/hooks/use-get-verifications-me';
-import PropertyVerificationsSkeleton from '@/components/home-seeker/loader-skeleton/property-verifications-skeleton';
+import PropertyVerificationsSkeleton from '@/features/users/components/home-seeker/loader-skeleton/property-verifications-skeleton';
 import { getLocalPropertyState, setLocalPropertyState } from '@/features/properties/utils/property-local-state';
 import { useDeferredReady } from '@/shared/hooks/use-deferred-ready';
 
 const UpcomingToursSection = dynamic(
-  () => import('@/components/home-seeker/upcoming-tours-section'),
+  () => import('@/features/users/components/home-seeker/upcoming-tours-section'),
   { loading: () => <TourCardSkeleton /> },
 );
 
 const PropertyVerificationsSection = dynamic(
-  () => import('@/components/home-seeker/property-verifications-section'),
+  () => import('@/features/users/components/home-seeker/property-verifications-section'),
   { loading: () => <PropertyVerificationsSkeleton /> },
 );
 
-const SavedPropertiesSection = dynamic(() => import('@/components/home-seeker/save-properties'), {
+const SavedPropertiesSection = dynamic(() => import('@/features/users/components/home-seeker/save-properties'), {
   loading: () => <SavedPropertiesSkeleton />,
 });
 

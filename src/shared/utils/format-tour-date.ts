@@ -1,5 +1,3 @@
-// lib/utils/format-tour-date.ts
-
 export function formatTourDate(dateString: string): string {
   return new Date(dateString).toLocaleString('en-US', {
     weekday: 'long',

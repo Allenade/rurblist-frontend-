@@ -1,9 +1,9 @@
 'use client';
 
-import AdvisoryServicesCard from '@/components/advisory-ui/advisory-ui';
-import ExpertPropertyAdviceForm from '@/components/advisory-ui/expert-property-advice';
-import { IconImage } from '@/components/icon-image/icon-image';
-import { useAuth } from '@/components/layout/auth-provider';
+import AdvisoryServicesCard from '@/features/properties/components/advisory/advisory-services-card';
+import ExpertPropertyAdviceForm from '@/features/properties/components/advisory/expert-property-advice-form';
+import { IconImage } from '@/shared/ui';
+import { useAuth } from '@/shared/layout/auth-provider';
 import { useRouter } from 'next/navigation';
 
 const ADVISORY_SERVICES = [

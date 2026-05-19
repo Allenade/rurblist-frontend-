@@ -2,10 +2,10 @@
 
 import { useMemo } from 'react';
 import { useGetMyProperties } from '@/features/properties/hooks/use-get-my-properties';
-import LoadMoreTrigger from '@/components/load-more-trigger';
-import EmptyPropertyState from '@/components/property/list-pr/empty-property';
-import PropertyCard from '@/components/property/property-card';
-import PropertySkeletonGrid from '@/components/property/property-loader-grid';
+import { LoadMoreTrigger } from '@/shared/ui';
+import EmptyPropertyState from '@/features/properties/components/property/list-pr/empty-property';
+import PropertyCard from '@/features/properties/components/property/property-card';
+import PropertySkeletonGrid from '@/features/properties/components/property/property-loader-grid';
 
 export default function ListPropertiesPage() {
   const {

@@ -3,11 +3,11 @@
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
-import { TermsContainer } from '@/components/terms-container/terms-container'
-import { OrangeButton } from '@/components/button/button'
-import { Footer } from '@/components/footer/footer'
-import { IconImage } from '@/components/icon-image/icon-image'
-import { cn } from '@/lib/utils'
+import { TermsContainer } from '@/shared/ui'
+import { OrangeButton } from '@/shared/ui'
+import { Footer } from '@/shared/layout/footer/footer'
+import { IconImage } from '@/shared/ui'
+import { cn } from '@/shared/utils/cn'
 
 export default function KYCPage() {
   const router = useRouter();

@@ -3,9 +3,9 @@
 import { useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
-import Input from '@/components/input';
-import { OrangeButton } from '@/components/button/button';
-import { IconImage } from '@/components/icon-image/icon-image';
+import { Input } from '@/shared/ui';
+import { OrangeButton } from '@/shared/ui';
+import { IconImage } from '@/shared/ui';
 import { useRouter } from 'next/navigation';
 import { useSignupStore } from '@/features/auth/store/auth-store';
 
