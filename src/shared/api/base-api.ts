@@ -1,8 +1,8 @@
 'use server';
 
 import { cookies } from 'next/headers';
-import { ApiResponse, HttpMethod } from './base-response';
-import { getErrorMessage } from './errors';
+import { ApiErrorPayload, ApiResponse, HttpMethod } from './base-response';
+import { getErrorMessage, normalizeApiErrors } from './errors';
 import { API_URL, AUTHENTICATION_COOKIE } from '@/shared/config/api-links';
 import {
   subscribeTokenRefresh,
@@ -15,11 +15,17 @@ import { refreshTokenServer } from '@/features/auth/services/auth-service';
 
 const DEFAULT_TIMEOUT = 140000; // 2 minutes
 
-function buildErrorResponse(message: string, statusCode: number, error = 'Request failed') {
+function buildErrorResponse(
+  message: string,
+  statusCode: number,
+  error = 'Request failed',
+  errors?: ApiErrorPayload,
+) {
   return {
     error,
     message,
     statusCode,
+    errors: normalizeApiErrors(errors),
   };
 }
 export type BlobResponse = {
@@ -32,6 +38,7 @@ type ParsedApiResponse = {
   message?: string | string[];
   statusCode?: number;
   error?: string;
+  errors?: ApiErrorPayload;
   success?: boolean;
   count?: number;
   hasNextPage?: boolean;
@@ -184,6 +191,7 @@ export async function request<T = unknown>(
           getErrorMessage(err) ?? 'Something went wrong',
           err?.statusCode ?? response.status,
           err?.error ?? 'Download failed',
+          err?.errors,
         );
       }
       const headersObj: Record<string, string> = {};
@@ -210,6 +218,7 @@ export async function request<T = unknown>(
         getErrorMessage(parsed) ?? 'Something went wrong',
         parsed?.statusCode ?? response.status,
         parsed?.error ?? 'Request failed',
+        parsed?.errors,
       );
     }
 
@@ -217,6 +226,7 @@ export async function request<T = unknown>(
       data: parsed?.data as T,
       message: getErrorMessage(parsed) ?? 'Success',
       statusCode: response.status,
+      errors: normalizeApiErrors(parsed?.errors),
       success: parsed?.success,
       count: parsed?.count,
       hasNextPage: parsed?.hasNextPage,

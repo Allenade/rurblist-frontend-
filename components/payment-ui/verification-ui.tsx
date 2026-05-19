@@ -8,6 +8,7 @@ type VerificationCertificateProps = {
   certificateId: string;
   status?: string;
   qrCodeSrc?: string;
+  showQrCode?: boolean;
   title?: string;
   subtitle?: string;
 };
@@ -18,9 +19,12 @@ export default function VerificationCertificate({
   certificateId,
   status = 'verified',
   qrCodeSrc = '/icons/qr-code.svg',
+  showQrCode = true,
   title = 'Verification Certificate',
   subtitle = 'Property Verification Completed Successfully',
 }: VerificationCertificateProps) {
+  const statusStyle = getStatusStyle(status);
+
   return (
     <section className="w-full px-4 sm:px-6 lg:px-8">
       <div className="mx-auto w-full max-w-5xl rounded-md bg-[#eeeeee] px-4 py-10 sm:px-8 sm:py-12 lg:px-16">
@@ -46,7 +50,7 @@ export default function VerificationCertificate({
 
               <div className="flex items-center gap-2">
                 <span className="text-sm text-[#9c9c9c]">Status:</span>
-                <span className="rounded-full bg-[#bff3cf] px-3 py-1 text-xs font-medium text-[#1f9d55]">
+                <span className={`rounded-full px-3 py-1 text-xs font-medium ${statusStyle}`}>
                   {status}
                 </span>
               </div>
@@ -54,15 +58,42 @@ export default function VerificationCertificate({
           </div>
         </div>
 
-        <div className="mt-12 flex justify-center">
-          <div className="flex h-[96px] w-[96px] flex-col items-center justify-center rounded-md border border-[#8f8f8f] bg-white">
-            <Image src={qrCodeSrc} alt="QR Code" width={28} height={28} />
-            <p className="mt-3 text-sm text-black">QR Code</p>
+        {showQrCode && (
+          <div className="mt-12 flex justify-center">
+            <div className="flex h-[96px] w-[96px] flex-col items-center justify-center rounded-md border border-[#8f8f8f] bg-white">
+              <Image src={qrCodeSrc} alt="QR Code" width={28} height={28} />
+              <p className="mt-3 text-sm text-black">QR Code</p>
+            </div>
           </div>
-        </div>
+        )}
       </div>
     </section>
   );
+}
+
+function normalizeStatus(status?: string) {
+  return status?.toLowerCase().replaceAll('-', '_').replaceAll(' ', '_');
+}
+
+function getStatusStyle(status?: string) {
+  switch (normalizeStatus(status)) {
+    case 'completed':
+      return 'bg-[#bff3cf] text-[#1f9d55]';
+    case 'payment_confirmed':
+      return 'bg-[#dbeafe] text-[#1d4ed8]';
+    case 'verification_started':
+      return 'bg-[#e0f2fe] text-[#0369a1]';
+    case 'documents_under_review':
+    case 'inspection_scheduled':
+      return 'bg-[#fef3c7] text-[#b45309]';
+    case 'rejected':
+      return 'bg-[#fee2e2] text-[#b91c1c]';
+    case 'cancelled':
+      return 'bg-[#e5e7eb] text-[#4b5563]';
+    case 'pending':
+    default:
+      return 'bg-[#f3f4f6] text-[#6b7280]';
+  }
 }
 
 function InfoItem({ label, value }: { label: string; value: string }) {

@@ -56,7 +56,7 @@ export async function getAgentPropertiesById(
 
 export async function uploadProperty(formData: FormData): Promise<ApiResponse<PropertyModel>> {
   const res = await uploadPropertyServer(formData);
-
+  console.log(res);
   if (res.statusCode >= 400) {
     throw new Error(res.message);
   }

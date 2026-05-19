@@ -13,6 +13,9 @@ export default function DealClosedPage() {
   const router = useRouter();
   const { data, isLoading } = useGetVerificationById(id);
   const verification = data?.data;
+  const verificationStatus = normalizeStatus(verification?.status);
+  const isVerificationCompleted = verificationStatus === 'completed';
+  const statusContent = getStatusContent(verificationStatus);
   const propertyTitle = verification?.property?.title || 'Property';
   const completedDate = formatDisplayDate(
     verification?.completedAt || verification?.certificate?.issuedAt || verification?.updatedAt,
@@ -77,16 +80,18 @@ export default function DealClosedPage() {
           {/* ✅ Center Content */}
           <div className="flex flex-col items-center text-center">
             <h1 className="text-[19px] font-semibold text-black sm:text-[22px]">
-              Congratulations! Deal Closed
+              {statusContent.title}
             </h1>
 
             <p className="mt-4 text-[17px] font-medium text-black sm:text-[20px]">
-              Verification Completed Successfully
+              {statusContent.subtitle}
             </p>
 
-            <p className="mt-2 text-[12px] text-black sm:text-[14px]">
-              Funds have been released to seller
-            </p>
+            {statusContent.description && (
+              <p className="mt-2 text-[12px] text-black sm:text-[14px]">
+                {statusContent.description}
+              </p>
+            )}
           </div>
         </div>
       </header>
@@ -97,46 +102,116 @@ export default function DealClosedPage() {
         certificateId={certificateId}
         status={verification?.status || 'pending'}
         qrCodeSrc="/icons/noto_mobile-phone.svg"
+        showQrCode={isVerificationCompleted}
+        subtitle={statusContent.certificateSubtitle}
       />
-      {/* ACTION BUTTONS */}
-      <section className="w-full px-4 sm:px-6 lg:px-8 pb-10">
-        <div className="mx-auto flex w-full max-w-6xl flex-col gap-5 mt-8">
-          <OrangeButton
-            fullWidth
-            iconSrc="/icons/Document.svg"
-            iconAlt="certificate"
-            iconSize={22}
-            className="min-h-[64px] sm:min-h-[68px] rounded-md text-base sm:text-[16px]"
-          >
-            Download Verification Certificate
-          </OrangeButton>
 
-          <OrangeButton
-            fullWidth
-            variant="white"
-            iconSrc="/icons/Receipt.svg"
-            iconAlt="receipt"
-            iconSize={24}
-            className="min-h-[64px] sm:min-h-[68px] rounded-md border-[#e87722] text-base text-[#e87722] text-[14px] hover:bg-[#fff7f1] sm:text-[16px]"
-          >
-            Download Receipts & Timeline
-          </OrangeButton>
+      {isVerificationCompleted && (
+        <section className="w-full px-4 sm:px-6 lg:px-8 pb-10">
+          <div className="mx-auto flex w-full max-w-6xl flex-col gap-5 mt-8">
+            <OrangeButton
+              fullWidth
+              iconSrc="/icons/Document.svg"
+              iconAlt="certificate"
+              iconSize={22}
+              className="min-h-[64px] sm:min-h-[68px] rounded-md text-base sm:text-[16px]"
+            >
+              Download Verification Certificate
+            </OrangeButton>
 
-          <OrangeButton
-            fullWidth
-            variant="white"
-            iconSrc="/icons/Star1.svg"
-            iconAlt="rate agent"
-            iconSize={26}
-            className="min-h-[64px] sm:min-h-[68px] rounded-md border-[#e87722] text-base text-[#e87722] text-[14px] hover:bg-[#fff7f1] sm:text-[16px]"
-          >
-            Rate Your Agent
-          </OrangeButton>
-        </div>
-      </section>
+            <OrangeButton
+              fullWidth
+              variant="white"
+              iconSrc="/icons/Receipt.svg"
+              iconAlt="receipt"
+              iconSize={24}
+              className="min-h-[64px] sm:min-h-[68px] rounded-md border-[#e87722] text-base text-[#e87722] text-[14px] hover:bg-[#fff7f1] sm:text-[16px]"
+            >
+              Download Receipts & Timeline
+            </OrangeButton>
+
+            <OrangeButton
+              fullWidth
+              variant="white"
+              iconSrc="/icons/Star1.svg"
+              iconAlt="rate agent"
+              iconSize={26}
+              className="min-h-[64px] sm:min-h-[68px] rounded-md border-[#e87722] text-base text-[#e87722] text-[14px] hover:bg-[#fff7f1] sm:text-[16px]"
+            >
+              Rate Your Agent
+            </OrangeButton>
+          </div>
+        </section>
+      )}
       <TransactionTimeline items={timelineItems} onStartNewTransaction={() => router.push('/')} />
     </>
   );
+}
+
+function normalizeStatus(status?: string | null) {
+  return status?.toLowerCase().replaceAll('-', '_').replaceAll(' ', '_');
+}
+
+function getStatusContent(status?: string) {
+  switch (status) {
+    case 'completed':
+      return {
+        title: 'Congratulations! Deal Closed',
+        subtitle: 'Verification Completed Successfully',
+        description: 'Funds have been released to seller',
+        certificateSubtitle: 'Property Verification Completed Successfully',
+      };
+    case 'payment_confirmed':
+      return {
+        title: 'Payment Confirmed',
+        subtitle: 'Verification is waiting to start',
+        description: 'Your payment has been received and the verification process will begin soon.',
+        certificateSubtitle: 'Property verification is waiting to start.',
+      };
+    case 'verification_started':
+      return {
+        title: 'Verification Started',
+        subtitle: 'Property verification is in progress',
+        description: 'Our team has started reviewing the property details.',
+        certificateSubtitle: 'Property verification is in progress.',
+      };
+    case 'documents_under_review':
+      return {
+        title: 'Documents Under Review',
+        subtitle: 'Property documents are being checked',
+        description: 'We are reviewing the submitted documents before moving to the next stage.',
+        certificateSubtitle: 'Property documents are being reviewed.',
+      };
+    case 'inspection_scheduled':
+      return {
+        title: 'Inspection Scheduled',
+        subtitle: 'Property inspection is scheduled',
+        description: 'The property inspection has been scheduled and verification is still ongoing.',
+        certificateSubtitle: 'Property inspection has been scheduled.',
+      };
+    case 'rejected':
+      return {
+        title: 'Verification Rejected',
+        subtitle: 'Property verification was not approved',
+        description: 'Please review the timeline for more details about the rejection.',
+        certificateSubtitle: 'Property verification was not approved.',
+      };
+    case 'cancelled':
+      return {
+        title: 'Verification Cancelled',
+        subtitle: 'This verification has been cancelled',
+        description: 'The verification process is no longer active.',
+        certificateSubtitle: 'Property verification has been cancelled.',
+      };
+    case 'pending':
+    default:
+      return {
+        title: 'Verification Pending',
+        subtitle: 'Property verification is pending',
+        description: 'We are waiting for the next step before verification can continue.',
+        certificateSubtitle: 'Property verification is pending.',
+      };
+  }
 }
 
 function formatDisplayDate(date?: string | null) {

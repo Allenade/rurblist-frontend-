@@ -17,7 +17,7 @@ export async function bookInspection(
   payload: BookInspectionPayload,
 ): Promise<ApiResponse<TourModel>> {
   const response = await bookInspectionServer(payload);
-
+  console.log(response);
   if (response.statusCode >= 400) {
     throw new Error(response.message);
   }
@@ -33,9 +33,7 @@ export async function getTourById(id: string): Promise<ApiResponse<TourModel2>> 
   return response;
 }
 
-export async function getTourAgent(
-  cursor?: NextCursorModel,
-): Promise<ApiResponse<TourModel2[]>> {
+export async function getTourAgent(cursor?: NextCursorModel): Promise<ApiResponse<TourModel2[]>> {
   const response = await getTourAgentServer(cursor);
 
   if (response.statusCode >= 400) {
@@ -44,9 +42,7 @@ export async function getTourAgent(
   return response;
 }
 
-export async function getTourUser(
-  cursor?: NextCursorModel,
-): Promise<ApiResponse<TourModel2[]>> {
+export async function getTourUser(cursor?: NextCursorModel): Promise<ApiResponse<TourModel2[]>> {
   const response = await getTourUserServer(cursor);
 
   if (response.statusCode >= 400) {

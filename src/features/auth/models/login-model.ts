@@ -1,5 +1,5 @@
 export type LoginResponse = {
-  token: string;
+  accessToken: string;
   refreshToken: string;
 };
 

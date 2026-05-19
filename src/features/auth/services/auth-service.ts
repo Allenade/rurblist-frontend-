@@ -59,8 +59,8 @@ export async function resetPasswordServer(data: ResetPasswordPayload) {
   return res;
 }
 
-export async function verifyGoogleOtpServer(otp: string): Promise<ApiResponse<RefreshResponse>> {
-  const res = await api.post<RefreshResponse>('/auth/verify-google-otp', { otp });
+export async function verifyGoogleOtpServer(ticket: string): Promise<ApiResponse<RefreshResponse>> {
+  const res = await api.post<RefreshResponse>('/auth/verify-google-otp', { ticket });
 
   if (res.statusCode < 400) {
     const accessToken = res.data?.accessToken;
@@ -78,7 +78,7 @@ export async function loginServer(data: LoginPayload): Promise<ApiResponse<Login
   const res = await api.post<LoginResponse>('/auth/login', data);
 
   if (res.statusCode < 400) {
-    const accessToken = res.data?.token;
+    const accessToken = res.data?.accessToken;
     const refreshToken = res.data?.refreshToken;
 
     if (accessToken && refreshToken) {
