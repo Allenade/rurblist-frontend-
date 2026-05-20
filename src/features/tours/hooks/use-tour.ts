@@ -1,10 +1,10 @@
 'use client';
 
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { BookInspectionPayload } from '@/features/tours/models/tour-model';
+import { BookInspectionPayload } from '../models/tour-model';
 import toast from 'react-hot-toast';
 import { useRouter } from 'next/navigation';
-import { bookInspection } from '@/features/tours/services/tour-service-client';
+import { bookInspection } from '../services/tour-service-client';
 
 export const useBookInspection = () => {
   const queryClient = useQueryClient();

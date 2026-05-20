@@ -3,7 +3,7 @@
 import { ApiResponse } from '@/shared/api/base-response';
 import { api } from '@/shared/api/call-apis';
 import { NextCursorModel } from '@/shared/models/next-cursor-model';
-import { BookInspectionPayload, TourModel, TourModel2 } from '@/features/tours/models/tour-model';
+import { BookInspectionPayload, TourModel, TourModel2 } from '../models/tour-model';
 import { buildCursorQuery } from '@/shared/utils/build-cursor-query';
 
 export async function bookInspectionServer(

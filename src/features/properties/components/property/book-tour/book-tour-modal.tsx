@@ -5,7 +5,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { OrangeButton } from '@/shared/ui';
 import { Input } from '@/shared/ui';
 import { IconImage } from '@/shared/ui';
-import { useBookInspection } from '@/features/tours/hooks/use-tour';
+import { useBookInspection } from '@/features/tours/hooks';
 
 interface BookTourModalProps {
   isOpen: boolean;

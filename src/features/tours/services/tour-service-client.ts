@@ -2,7 +2,7 @@
 
 import { ApiResponse } from '@/shared/api/base-response';
 import { NextCursorModel } from '@/shared/models/next-cursor-model';
-import { BookInspectionPayload, TourModel, TourModel2 } from '@/features/tours/models/tour-model';
+import { BookInspectionPayload, TourModel, TourModel2 } from '../models/tour-model';
 import {
   bookInspectionServer,
   cancelTourServer,

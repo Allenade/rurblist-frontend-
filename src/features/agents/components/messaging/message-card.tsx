@@ -4,7 +4,7 @@ import Image from 'next/image';
 import dynamic from 'next/dynamic';
 import { useState } from 'react';
 import { optimizeCloudinaryImage } from '@/shared/utils/cloudinary';
-import { TourModel2 } from '@/features/tours/models/tour-model';
+import { TourModel2 } from '@/features/tours/models';
 import { formatTourDate } from '@/shared/utils/format-tour-date';
 
 const ConfirmTourModal = dynamic(() => import('../modal/confirm-tour-modal'), {

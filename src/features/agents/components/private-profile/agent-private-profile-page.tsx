@@ -4,6 +4,9 @@ import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import dynamic from 'next/dynamic';
 import {
+  LazyPropertyVerificationsSection,
+  LazySavedPropertiesSection,
+  LazyUpcomingToursSection,
   PropertyVerificationsSkeleton,
   SavedPropertiesSkeleton,
   TourCardSkeleton,
@@ -13,12 +16,12 @@ import { useGetMyProperties } from '@/features/properties/hooks';
 import { useLayoutStore } from '@/shared/layout';
 import { useGetSavedProperties } from '@/features/users/hooks';
 import { useSaveProperty } from '@/features/properties/hooks';
-import { useGetTourAgents } from '@/features/tours/hooks/use-get-tour-agent';
-import { useGetTourUsers } from '@/features/tours/hooks/use-get-tour-user';
-import { useCancelTour } from '@/features/tours/hooks/use-cancel-tour';
+import { useGetTourAgents } from '@/features/tours/hooks';
+import { useGetTourUsers } from '@/features/tours/hooks';
+import { useCancelTour } from '@/features/tours/hooks';
 import { formatTourDate } from '@/shared/utils/format-tour-date';
 import { getLocalPropertyState, setLocalPropertyState } from '@/features/properties/utils';
-import { useGetVerifications } from '@/features/verification/hooks/use-get-verifications-me';
+import { useGetVerifications } from '@/features/verification/hooks';
 import { useDeleteProperty } from '@/features/properties/hooks';
 import { OrangeButton } from '@/shared/ui';
 import { useDeferredReady } from '@/shared/hooks/use-deferred-ready';
@@ -35,20 +38,6 @@ const CurrentListingsSection = dynamic(
 
 const MessagesSection = dynamic(() => import('@/features/agents/components/messaging/messages-section'), {
   loading: () => <MessagesSectionSkeleton />,
-});
-
-const UpcomingToursSection = dynamic(
-  () => import('@/features/users/components/home-seeker/upcoming-tours-section'),
-  { loading: () => <TourCardSkeleton /> },
-);
-
-const PropertyVerificationsSection = dynamic(
-  () => import('@/features/users/components/home-seeker/property-verifications-section'),
-  { loading: () => <PropertyVerificationsSkeleton /> },
-);
-
-const SavedPropertiesSection = dynamic(() => import('@/features/users/components/home-seeker/save-properties'), {
-  loading: () => <SavedPropertiesSkeleton />,
 });
 
 type Listing = {
@@ -343,7 +332,7 @@ export function AgentPrivateProfilePage() {
           {!deferredReady || isUserToursFetching ? (
             <TourCardSkeleton />
           ) : (
-            <UpcomingToursSection
+            <LazyUpcomingToursSection
               tours={tours}
               onCancelTour={handleCancelTour}
               loadingId={loadingTourId ?? undefined}
@@ -357,7 +346,7 @@ export function AgentPrivateProfilePage() {
           {!deferredReady || isVerificationsLoading ? (
             <PropertyVerificationsSkeleton />
           ) : (
-            <PropertyVerificationsSection
+            <LazyPropertyVerificationsSection
               verifications={verifications}
               onOpen={handleOpenVerification}
               hasNextPage={hasNextVerificationsPage}
@@ -369,7 +358,7 @@ export function AgentPrivateProfilePage() {
         {!deferredReady || isSavedPropertiesLoading ? (
           <SavedPropertiesSkeleton />
         ) : (
-          <SavedPropertiesSection
+          <LazySavedPropertiesSection
             properties={saveListings}
             onRemove={handleRemove}
             hasNextPage={hasNextSavedPropertiesPage}

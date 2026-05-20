@@ -1,5 +1,5 @@
 import { AgentModel } from '@/features/agents/models';
-import { CommentModel } from '@/features/comments/models/comment-model';
+import { CommentModel } from '@/features/comments/models';
 import { ImageModel } from '@/shared/models/image-model';
 import { LocationModel } from '@/shared/models/location-model';
 

@@ -1,6 +1,6 @@
 'use client';
 
-import { TourModel2 } from '@/features/tours/models/tour-model';
+import { TourModel2 } from '@/features/tours/models';
 import MessageCard from './message-card';
 import { IconImage } from '@/shared/ui';
 import { LoadMoreTrigger } from '@/shared/ui';

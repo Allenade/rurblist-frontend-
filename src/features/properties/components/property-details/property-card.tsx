@@ -4,7 +4,7 @@ import { useEffect, useMemo, useRef, useState } from 'react';
 import Image from 'next/image';
 import dynamic from 'next/dynamic';
 import { useRouter } from 'next/navigation';
-import { useCommentMutation } from '@/features/comments/hooks/use-post-comment-reply';
+import { useCommentMutation } from '@/features/comments/hooks';
 import { useLikeProperty } from '../../hooks/use-like-unlike';
 import { useSaveProperty } from '../../hooks/use-save-unsave-property';
 import { optimizeCloudinaryImage } from '@/shared/utils/cloudinary';

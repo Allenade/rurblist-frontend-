@@ -2,37 +2,27 @@
 
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useRouter } from 'next/navigation';
-import dynamic from 'next/dynamic';
 import { useLayoutStore } from '@/shared/layout';
 import { BackNavbar } from '@/features/agents/components';
 import { useAuth } from '@/features/shell/components';
 import { useGetSavedProperties } from '../../../hooks/use-get-saved-property';
 import { useSaveProperty } from '@/features/properties/hooks';
-import { useGetTourUsers } from '@/features/tours/hooks/use-get-tour-user';
+import { useGetTourUsers } from '@/features/tours/hooks';
 import { formatTourDate } from '@/shared/utils/format-tour-date';
-import { useCancelTour } from '@/features/tours/hooks/use-cancel-tour';
-import { useGetVerifications } from '@/features/verification/hooks/use-get-verifications-me';
+import { useCancelTour } from '@/features/tours/hooks';
+import { useGetVerifications } from '@/features/verification/hooks';
 import { getLocalPropertyState, setLocalPropertyState } from '@/features/properties/utils';
 import { useDeferredReady } from '@/shared/hooks/use-deferred-ready';
+import {
+  LazyPropertyVerificationsSection,
+  LazySavedPropertiesSection,
+  LazyUpcomingToursSection,
+} from '../lazy-sections';
 import HomeSeekerBasicInfoCard from '../home-seeker-basic-info-card';
 import HomeSeekerBasicInfoSkeleton from '../loader-skeleton/home-seeker-basic-info-skeleton';
 import PropertyVerificationsSkeleton from '../loader-skeleton/property-verifications-skeleton';
 import SavedPropertiesSkeleton from '../loader-skeleton/save-property-skeleton';
 import TourCardSkeleton from '../loader-skeleton/tour-card-skeleton';
-
-const UpcomingToursSection = dynamic(
-  () => import('@/features/users/components/home-seeker/upcoming-tours-section'),
-  { loading: () => <TourCardSkeleton /> },
-);
-
-const PropertyVerificationsSection = dynamic(
-  () => import('@/features/users/components/home-seeker/property-verifications-section'),
-  { loading: () => <PropertyVerificationsSkeleton /> },
-);
-
-const SavedPropertiesSection = dynamic(() => import('@/features/users/components/home-seeker/save-properties'), {
-  loading: () => <SavedPropertiesSkeleton />,
-});
 
 export function HouseSeekerProfilePage() {
   const setHideNavbar = useLayoutStore((s) => s.setHideNavbar);
@@ -194,7 +184,7 @@ export function HouseSeekerProfilePage() {
         {!deferredReady || isFetching ? (
           <TourCardSkeleton />
         ) : (
-          <UpcomingToursSection
+          <LazyUpcomingToursSection
             tours={tours}
             onCancelTour={handleCancel}
             loadingId={loadingId ?? undefined}
@@ -206,7 +196,7 @@ export function HouseSeekerProfilePage() {
         {!deferredReady || isVerificationsLoading ? (
           <PropertyVerificationsSkeleton />
         ) : (
-          <PropertyVerificationsSection
+          <LazyPropertyVerificationsSection
             verifications={verifications}
             onOpen={handleOpenVerification}
             hasNextPage={hasNextVerificationsPage}
@@ -217,7 +207,7 @@ export function HouseSeekerProfilePage() {
         {!deferredReady || isSavedPropertiesLoading ? (
           <SavedPropertiesSkeleton />
         ) : (
-          <SavedPropertiesSection
+          <LazySavedPropertiesSection
             properties={listings}
             onRemove={handleRemove}
             hasNextPage={hasNextSavedPropertiesPage}

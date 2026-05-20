@@ -1,4 +1,4 @@
-import { PlanModel } from '@/features/plans/models/plan-model';
+import { PlanModel } from '@/features/plans/models';
 import { UserModel } from '@/features/users/models';
 
 type VerificationProviderData = unknown;

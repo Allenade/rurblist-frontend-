@@ -9,3 +9,8 @@ export { default as TourCardSkeleton } from './loader-skeleton/tour-card-skeleto
 export { default as UpcomingToursSection } from './upcoming-tours-section';
 export { default as UpcomingToursSkeleton } from './loader-skeleton/upcoming-tours-skeleton';
 export { HouseSeekerProfilePage } from './profile/house-seeker-profile-page';
+export {
+  LazyPropertyVerificationsSection,
+  LazySavedPropertiesSection,
+  LazyUpcomingToursSection,
+} from './lazy-sections';

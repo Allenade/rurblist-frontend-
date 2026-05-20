@@ -9,6 +9,11 @@ export { default as PropertyDetails } from './property/property-details';
 export { PropertyDetailPage } from './property/property-detail-page';
 export { default as PropertyDetailSkeleton } from './property/property-detail-skeleton';
 export { default as PropertyMap } from './property/property-map';
+export {
+  LazyContactCard,
+  LazyOtherProperties,
+  LazyPropertyMap,
+} from './property/lazy-sections';
 export { default as PropertyCard } from './property/property-card';
 export { default as PropertySkeletonGrid } from './property/property-loader-grid';
 export { default as EscrowForm } from './escrow/escrow-form';

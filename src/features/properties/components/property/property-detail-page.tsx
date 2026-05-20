@@ -2,25 +2,13 @@
 import { useGetPropertyById } from '../../hooks/use-get-property-by-id';
 import { optimizeCloudinaryImage } from '@/shared/utils/cloudinary';
 import { useParams, useRouter } from 'next/navigation';
-import dynamic from 'next/dynamic';
 import toast from 'react-hot-toast';
 import { OrangeButton } from '@/shared/ui';
 import { useAuth } from '@/features/shell/components';
 import AdvancedHeroGallery, { type GalleryImage } from './advanced-hero-gallery';
+import { LazyContactCard, LazyOtherProperties, LazyPropertyMap } from './lazy-sections';
 import PropertyDetails from './property-details';
 import PropertyDetailSkeleton from './property-detail-skeleton';
-
-const ContactCard = dynamic(() => import('@/features/properties/components/property/contact-card'), {
-  loading: () => <SectionSkeleton className="h-80" />,
-});
-
-const OtherProperties = dynamic(() => import('@/features/properties/components/property/other-properties'), {
-  loading: () => <SectionSkeleton className="h-64" />,
-});
-
-const PropertyMap = dynamic(() => import('@/features/properties/components/property/property-map'), {
-  loading: () => <SectionSkeleton className="h-100" />,
-});
 
 export function PropertyDetailPage() {
   const params = useParams();
@@ -78,7 +66,7 @@ export function PropertyDetailPage() {
 
           {/* RIGHT — Smaller */}
           <div className="lg:col-span-4">
-            <ContactCard
+            <LazyContactCard
               agentImage={agentImage}
               agentName={
                 `${property?.owner.firstName ?? ''} ${property?.owner.lastName ?? ''}`.trim() ||
@@ -110,13 +98,13 @@ export function PropertyDetailPage() {
           Buy this property
         </OrangeButton>
       )}
-      <PropertyMap
+      <LazyPropertyMap
         address={property?.location.address}
         latitude={property?.location.coordinates.coordinates[1]}
         longitude={property?.location.coordinates.coordinates[0]}
         height="h-[400px]"
       />
-      <OtherProperties
+      <LazyOtherProperties
         agentName={
           `${property?.owner.firstName ?? ''} ${property?.owner.lastName ?? ''}`.trim() ||
           'June Austen'
@@ -124,11 +112,5 @@ export function PropertyDetailPage() {
         id={property?.owner.user._id ?? ''}
       />
     </div>
-  );
-}
-
-function SectionSkeleton({ className }: { className: string }) {
-  return (
-    <div className={`animate-pulse rounded-xl border border-gray-200 bg-gray-100 ${className}`} />
   );
 }

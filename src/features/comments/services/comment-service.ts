@@ -1,7 +1,7 @@
 'use server';
 import { ApiResponse } from '@/shared/api/base-response';
 import { api } from '@/shared/api/call-apis';
-import { CommentModel } from '@/features/comments/models/comment-model';
+import { CommentModel } from '../models/comment-model';
 import { NextCursorModel } from '@/shared/models/next-cursor-model';
 
 export async function getCommentsByPropertyIdServer({

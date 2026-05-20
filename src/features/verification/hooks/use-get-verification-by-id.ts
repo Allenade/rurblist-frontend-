@@ -2,7 +2,7 @@
 
 import { useQuery } from '@tanstack/react-query';
 import { queryTiming } from '@/shared/react-query';
-import { getVerificationById } from '@/features/verification/services/verification-service-client';
+import { getVerificationById } from '../services/verification-service-client';
 
 export function useGetVerificationById(id: string) {
   return useQuery({

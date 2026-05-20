@@ -1,6 +1,6 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import toast from 'react-hot-toast';
-import { cancelTour } from '@/features/tours/services/tour-service-client';
+import { cancelTour } from '../services/tour-service-client';
 
 export function useCancelTour() {
   const queryClient = useQueryClient();

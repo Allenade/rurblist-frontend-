@@ -1,6 +1,6 @@
 'use client';
 
-import { useGetVerificationById } from '@/features/verification/hooks/use-get-verification-by-id';
+import { useGetVerificationById } from '@/features/verification/hooks';
 import { IconImage, OrangeButton } from '@/shared/ui';
 import { useParams, useRouter } from 'next/navigation';
 import TransactionTimeline from './time-line-ui';

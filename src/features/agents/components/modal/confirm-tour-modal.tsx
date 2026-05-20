@@ -1,8 +1,8 @@
 'use client';
 
-import { TourModel2 } from '@/features/tours/models/tour-model';
-import { useConfirmTour } from '@/features/tours/hooks/use-confirm-tour';
-import { useRescheduleTour } from '@/features/tours/hooks/use-reschedule-tour';
+import { TourModel2 } from '@/features/tours/models';
+import { useConfirmTour } from '@/features/tours/hooks';
+import { useRescheduleTour } from '@/features/tours/hooks';
 import { OrangeButton } from '@/shared/ui';
 import { Input } from '@/shared/ui';
 import { useState } from 'react';

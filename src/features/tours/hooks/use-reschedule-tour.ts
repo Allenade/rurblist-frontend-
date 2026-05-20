@@ -2,7 +2,7 @@
 
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import toast from 'react-hot-toast';
-import { rescheduleTour } from '@/features/tours/services/tour-service-client';
+import { rescheduleTour } from '../services/tour-service-client';
 
 export function useRescheduleTour() {
   const queryClient = useQueryClient();

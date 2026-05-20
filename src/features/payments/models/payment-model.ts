@@ -1,5 +1,5 @@
 import { AgentModel } from '@/features/agents/models';
-import { PlanModel } from '@/features/plans/models/plan-model';
+import { PlanModel } from '@/features/plans/models';
 import { PropertyModel } from '@/features/properties/models';
 import { UserModel } from '@/features/users/models';
 

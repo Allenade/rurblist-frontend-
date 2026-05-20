@@ -10,7 +10,7 @@ import EscrowStepFour from './payment-confirmation/escrow-step-four';
 import { IconImage } from '@/shared/ui';
 import { useVerifyBuyerProperty } from '../../hooks/use-verify-buyer-property';
 import { useGetCurrentUser } from '@/features/users/hooks';
-import { useGetPlans } from '@/features/plans/hooks/use-get-plan';
+import { useGetPlans } from '@/features/plans/hooks';
 import { PricingPlan } from './price-plan/pricing-card';
 import { useGetPropertyById } from '../../hooks/use-get-property-by-id';
 

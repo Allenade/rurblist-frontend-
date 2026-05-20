@@ -1,6 +1,6 @@
 import { ApiResponse } from '@/shared/api/base-response';
 import { NextCursorModel } from '@/shared/models/next-cursor-model';
-import { VerificationModel } from '@/features/verification/models/verification-model';
+import { VerificationModel } from '../models/verification-model';
 import {
   getAllVerificationsServer,
   getVerificationByIdServer,

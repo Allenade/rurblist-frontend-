@@ -1,6 +1,6 @@
 import { ApiResponse } from '@/shared/api/base-response';
 import { api } from '@/shared/api/call-apis';
-import { PlanModel } from '@/features/plans/models/plan-model';
+import { PlanModel } from '../models/plan-model';
 
 export async function getPlansServer(): Promise<ApiResponse<PlanModel[]>> {
   const res = await api.authGet<PlanModel[]>('/plans');

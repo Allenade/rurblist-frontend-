@@ -2,7 +2,7 @@
 
 import { useQuery } from '@tanstack/react-query';
 import { queryTiming } from '@/shared/react-query';
-import { getTourById } from '@/features/tours/services/tour-service-client';
+import { getTourById } from '../services/tour-service-client';
 
 export function useGetTourById(tourId?: string) {
   return useQuery({

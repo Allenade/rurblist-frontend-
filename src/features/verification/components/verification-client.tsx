@@ -3,7 +3,7 @@
 import { useRouter } from 'next/navigation';
 import { IconImage } from '@/shared/ui';
 import { OrangeButton } from '@/shared/ui';
-import { useGetVerificationById } from '@/features/verification/hooks/use-get-verification-by-id';
+import { useGetVerificationById } from '../hooks/use-get-verification-by-id';
 import AgentCard from './agent-v-ui';
 import CurrentStatusCard from './current-stage-v-ui';
 import DocumentStatus from './document-v-ui';

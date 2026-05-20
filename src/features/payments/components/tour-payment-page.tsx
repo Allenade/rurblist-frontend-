@@ -1,7 +1,7 @@
 'use client';
 
 import { usePayForTour } from '../hooks/use-payment-tour';
-import { useGetTourById } from '@/features/tours/hooks/use-get-tour-by-id';
+import { useGetTourById } from '@/features/tours/hooks';
 import { OrangeButton, PageHeader } from '@/shared/ui';
 import { useParams } from 'next/navigation';
 import { useEffect, useState } from 'react';

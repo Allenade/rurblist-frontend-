@@ -3,8 +3,8 @@
 import { useState, useMemo } from 'react';
 import Comment from './comment';
 import CommentModalSkeleton from './comment-modal-skeleton';
-import { usePropertyComments } from '@/features/comments/hooks/use-get-comments';
-import { CommentModel } from '@/features/comments/models/comment-model';
+import { usePropertyComments } from '../hooks/use-get-comments';
+import { CommentModel } from '../models/comment-model';
 import { useAuth } from '@/features/shell/components';
 import { LoadMoreTrigger } from '@/shared/ui';
 

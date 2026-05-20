@@ -1,5 +1,5 @@
 import { ApiResponse } from '@/shared/api/base-response';
-import { PlanModel } from '@/features/plans/models/plan-model';
+import { PlanModel } from '../models/plan-model';
 import { getPlanByIdServer, getPlansServer } from './plan-service';
 
 export async function getPlans(): Promise<ApiResponse<PlanModel[]>> {
