@@ -3,9 +3,9 @@
 import { useMutation } from '@tanstack/react-query';
 import toast from 'react-hot-toast';
 import { useRouter } from 'next/navigation';
-import { useSignupStore } from '@/features/auth/store/auth-store';
-import { useOtpStore } from '@/features/auth/store/otp-store';
-import { signup } from '@/features/auth/services/auth-service-client';
+import { useSignupStore } from '../store';
+import { useOtpStore } from '../store';
+import { signup } from '../services';
 
 export function useSignup() {
   const router = useRouter();

@@ -1,7 +1,7 @@
 'use client';
 
 import { useQuery } from '@tanstack/react-query';
-import { queryTiming } from '@/shared/react-query/query-options';
+import { queryTiming } from '@/shared/react-query';
 import { getTourById } from '@/features/tours/services/tour-service-client';
 
 export function useGetTourById(tourId?: string) {

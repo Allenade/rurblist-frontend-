@@ -7,10 +7,10 @@ import { useEffect, useMemo, useRef, useState } from 'react';
 import { OrangeButton } from '@/shared/ui';
 import { NavLink } from './nav-links';
 import { getNavbarRoutes } from '@/shared/config/get-navbar-routes';
-import { useAuth } from '@/shared/layout/auth-provider';
-import UserAvatar from '@/shared/ui/profile-image/user-avatar';
+import { useAuth } from './auth-provider';
+import { UserAvatar } from '@/shared/ui/profile-image';
 import { Role } from '@/shared/config/routes';
-import { useLogout } from '@/features/auth/hooks/use-logout';
+import { useLogout } from '@/features/auth/hooks';
 
 export default function Navbar() {
   const { user, isLoading } = useAuth();

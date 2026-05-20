@@ -2,7 +2,7 @@
 
 import { ApiResponse } from '@/shared/api/base-response';
 import { api } from '@/shared/api/call-apis';
-import { PaymentDetailModel, PaymentModel } from '@/features/payments/models/payment-model';
+import { PaymentDetailModel, PaymentModel } from '../models/payment-model';
 
 export async function payForTourServer(
   tourId: string,

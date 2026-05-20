@@ -1,12 +1,9 @@
-import { ConditionalShell } from "@/shared/layout/conditional-shell";
+import { ConditionalShell } from '@/features/shell/components';
+
 export default function ProtectedLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
-  return <>
-    <ConditionalShell>
-        {children}
-    </ConditionalShell>
-  </>;
+  return <ConditionalShell>{children}</ConditionalShell>;
 }

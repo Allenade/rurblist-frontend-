@@ -2,7 +2,7 @@
 
 import dynamic from 'next/dynamic';
 import { OrangeButton } from '@/shared/ui';
-import ProfileImage from '@/shared/ui/profile-image/profile-image';
+import { ProfileImage } from '@/shared/ui';
 import { useState } from 'react';
 
 const BookTourModal = dynamic(() => import('./book-tour/book-tour-modal'), {

@@ -1,7 +1,7 @@
 'use client';
 
 import { IconImage } from '@/shared/ui';
-import ReadMoreText from '@/shared/ui/read-more';
+import { ReadMoreText } from '@/shared/ui';
 
 interface PropertyDetailsProps {
   price: number;

@@ -1,4 +1,4 @@
-import { CreateAgentPayload } from '@/features/agents/models/agent-model';
+import { CreateAgentPayload } from '../models/agent-model';
 
 type AgentPayloadForm = {
   firstName?: string;

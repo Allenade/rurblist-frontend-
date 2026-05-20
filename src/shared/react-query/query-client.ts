@@ -1,6 +1,6 @@
 // src/shared/react-query/query-client.ts
 import { QueryCache, QueryClient, MutationCache } from '@tanstack/react-query';
-import { logoutClient } from '@/features/auth/services/logout-client';
+import { logoutClient } from '@/shared/auth/session-client';
 
 function handleAuthError(error: unknown) {
   const message = error instanceof Error ? error.message : '';

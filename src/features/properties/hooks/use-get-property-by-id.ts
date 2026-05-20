@@ -1,8 +1,8 @@
 'use client';
 
 import { useQuery } from '@tanstack/react-query';
-import { queryTiming } from '@/shared/react-query/query-options';
-import { getPropertyById } from '@/features/properties/services/property-service-client';
+import { queryTiming } from '@/shared/react-query';
+import { getPropertyById } from '../services/property-service-client';
 
 export function useGetPropertyById(id: string) {
   return useQuery({

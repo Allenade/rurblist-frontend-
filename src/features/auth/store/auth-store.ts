@@ -1,6 +1,6 @@
 import { create } from 'zustand';
 import type { Role } from '@/shared/config/routes';
-import type { SignupData } from '@/features/auth/models/signup-model';
+import type { SignupData } from '../models';
 
 type SignupStore = {
   data: SignupData | null;

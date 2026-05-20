@@ -1,7 +1,7 @@
 'use client';
 
 import { ApiResponse } from '@/shared/api/base-response';
-import { PaymentDetailModel, PaymentModel } from '@/features/payments/models/payment-model';
+import { PaymentDetailModel, PaymentModel } from '../models/payment-model';
 import {
   downloadReceiptServer,
   getPaymentDetailsServer,

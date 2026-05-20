@@ -2,8 +2,8 @@
 
 import { ApiResponse } from '@/shared/api/base-response';
 import { NextCursorModel } from '@/shared/models/next-cursor-model';
-import { PropertyModel } from '@/features/properties/models/property-model';
-import { currentUserModel } from '@/features/users/models/user-model';
+import { PropertyModel } from '@/features/properties/models';
+import { currentUserModel } from '../models/user-model';
 import { getCurrentUserServer, getSavedPropertiesServer } from './user-services';
 
 export async function getCurrentUser(): Promise<ApiResponse<currentUserModel>> {

@@ -2,8 +2,8 @@
 
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import toast from 'react-hot-toast';
-import { logoutClient } from '@/features/auth/services/logout-client';
-import { logout } from '@/features/auth/services/auth-service-client';
+import { logoutClient } from '../services';
+import { logout } from '../services';
 
 export function useLogout() {
   const queryClient = useQueryClient();

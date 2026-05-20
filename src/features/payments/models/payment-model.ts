@@ -1,7 +1,7 @@
-import { AgentModel } from '@/features/agents/models/agent-model';
+import { AgentModel } from '@/features/agents/models';
 import { PlanModel } from '@/features/plans/models/plan-model';
-import { PropertyModel } from '@/features/properties/models/property-model';
-import { UserModel } from '@/features/users/models/user-model';
+import { PropertyModel } from '@/features/properties/models';
+import { UserModel } from '@/features/users/models';
 
 export interface PaymentModel {
   authorization_url: string;

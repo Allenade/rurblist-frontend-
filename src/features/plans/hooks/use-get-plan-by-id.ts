@@ -1,7 +1,7 @@
 'use client';
 
 import { useQuery } from '@tanstack/react-query';
-import { queryTiming } from '@/shared/react-query/query-options';
+import { queryTiming } from '@/shared/react-query';
 import { getPlanById } from '@/features/plans/services/plan-service-client';
 
 export function useGetPlanById(id: string) {

@@ -4,7 +4,7 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 import {
   saveProperty,
   unsaveProperty,
-} from '@/features/properties/services/property-service-client';
+} from '../services/property-service-client';
 
 export function useSaveProperty() {
   const queryClient = useQueryClient();

@@ -1,8 +1,8 @@
 'use client';
 import { ApiResponse } from '@/shared/api/base-response';
-import { LoginPayload, LoginResponse, RefreshResponse } from '@/features/auth/models/login-model';
-import { SignupPayload } from '@/features/auth/models/signup-model';
-import { ForgotPasswordPayload, ResetPasswordPayload } from '@/features/auth/models/password-model';
+import { LoginPayload, LoginResponse, RefreshResponse } from '../models';
+import { SignupPayload } from '../models';
+import { ForgotPasswordPayload, ResetPasswordPayload } from '../models';
 import {
   forgotPasswordServer,
   loginServer,

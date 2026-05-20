@@ -1,4 +1,4 @@
-import { UserModel } from '@/features/users/models/user-model'
+import { UserModel } from '@/features/users/models'
 
 export interface ReplyModel {
   _id: string

@@ -2,7 +2,7 @@
 
 import { useMemo } from 'react';
 import toast from 'react-hot-toast';
-import { useGetAgentPropertiesById } from '@/features/properties/hooks/use-get-agent-properties-by-id';
+import { useGetAgentPropertiesById } from '../../hooks/use-get-agent-properties-by-id';
 import { LoadMoreTrigger } from '@/shared/ui';
 import OtherPropertiesSkeleton from './other-properties-skeleton';
 import PropertyCard from './property-card';

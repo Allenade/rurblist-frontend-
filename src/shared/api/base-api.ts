@@ -10,8 +10,8 @@ import {
   getRefreshing,
   setRefreshing,
 } from '@/shared/utils/token-manager';
-import { clearAuthCookies } from '@/features/auth/services/logout-service';
-import { refreshTokenServer } from '@/features/auth/services/auth-service';
+import { clearAuthCookies } from '@/shared/auth/session-server';
+import { refreshTokenServer } from '@/shared/api/refresh-token';
 
 const DEFAULT_TIMEOUT = 140000; // 2 minutes
 

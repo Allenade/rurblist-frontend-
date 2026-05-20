@@ -1,5 +1,5 @@
-import { AgentModel, KycStatus, NinSlipUrl, SelfieUrl, VerificationData } from '@/features/agents/models/agent-model';
-import { ProfileImage } from '@/features/users/models/profile-model';
+import { AgentModel, KycStatus, NinSlipUrl, SelfieUrl, VerificationData } from '@/features/agents/models';
+import { ProfileImage } from './profile-model';
 
 type SavedPropertyReference = string | { _id?: string };
 type PreferredLocation = string | { name?: string; state?: string; city?: string };

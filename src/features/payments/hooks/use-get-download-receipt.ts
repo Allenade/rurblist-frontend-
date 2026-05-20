@@ -1,7 +1,7 @@
 'use client';
 
 import { useMutation } from '@tanstack/react-query';
-import { downloadReceipt } from '@/features/payments/services/payment-service-client';
+import { downloadReceipt } from '../services/payment-service-client';
 import toast from 'react-hot-toast';
 
 export function useDownloadReceipt() {

@@ -5,18 +5,18 @@ import Image from 'next/image';
 import dynamic from 'next/dynamic';
 import { useRouter } from 'next/navigation';
 import { useCommentMutation } from '@/features/comments/hooks/use-post-comment-reply';
-import { useLikeProperty } from '@/features/properties/hooks/use-like-unlike';
-import { useSaveProperty } from '@/features/properties/hooks/use-save-unsave-property';
+import { useLikeProperty } from '../../hooks/use-like-unlike';
+import { useSaveProperty } from '../../hooks/use-save-unsave-property';
 import { optimizeCloudinaryImage } from '@/shared/utils/cloudinary';
 import {
   getLocalPropertyState,
   LocalPropertyReaction,
   setLocalPropertyState,
-} from '@/features/properties/utils/property-local-state';
+} from '../../utils/property-local-state';
 import { OrangeButton } from '@/shared/ui';
 import { IconImage } from '@/shared/ui';
-import ProfileImage from '@/shared/ui/profile-image/profile-image';
-import ReadMoreText from '@/shared/ui/read-more';
+import { ProfileImage } from '@/shared/ui';
+import { ReadMoreText } from '@/shared/ui';
 
 const CommentModal = dynamic(() => import('@/features/comments/components/comment-modal'), {
   ssr: false,

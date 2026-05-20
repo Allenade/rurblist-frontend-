@@ -5,7 +5,7 @@ import toast from 'react-hot-toast';
 import {
   deleteProperty,
   updateProperty,
-} from '@/features/properties/services/property-service-client';
+} from '../services/property-service-client';
 
 export function useDeleteProperty() {
   const queryClient = useQueryClient();

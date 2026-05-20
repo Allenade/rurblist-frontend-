@@ -1,7 +1,7 @@
-import { AgentModel } from '@/features/agents/models/agent-model';
-import { PaymentDetailModel } from '@/features/payments/models/payment-model';
-import { PropertyModel } from '@/features/properties/models/property-model';
-import { UserModel } from '@/features/users/models/user-model';
+import { AgentModel } from '@/features/agents/models';
+import { PaymentDetailModel } from '@/features/payments/models';
+import { PropertyModel } from '@/features/properties/models';
+import { UserModel } from '@/features/users/models';
 
 export type ApiDate = string | null;
 export type CloudinaryValue = string | null;

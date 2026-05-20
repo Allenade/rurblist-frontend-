@@ -8,11 +8,11 @@ import EscrowStepTwo from './price-plan/escrow-step-two';
 import EscrowStepThree from './payment-summary/escrow-step-three';
 import EscrowStepFour from './payment-confirmation/escrow-step-four';
 import { IconImage } from '@/shared/ui';
-import { useVerifyBuyerProperty } from '@/features/properties/hooks/use-verify-buyer-property';
-import { useGetCurrentUser } from '@/features/users/hooks/use-get-current-user';
+import { useVerifyBuyerProperty } from '../../hooks/use-verify-buyer-property';
+import { useGetCurrentUser } from '@/features/users/hooks';
 import { useGetPlans } from '@/features/plans/hooks/use-get-plan';
 import { PricingPlan } from './price-plan/pricing-card';
-import { useGetPropertyById } from '@/features/properties/hooks/use-get-property-by-id';
+import { useGetPropertyById } from '../../hooks/use-get-property-by-id';
 
 export interface EscrowFormData {
   fullName: string;

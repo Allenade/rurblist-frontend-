@@ -3,7 +3,7 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import toast from 'react-hot-toast';
 import { useRouter } from 'next/navigation';
-import { uploadProperty } from '@/features/properties/services/property-service-client';
+import { uploadProperty } from '../services/property-service-client';
 
 export function useUploadProperty() {
   const queryClient = useQueryClient();

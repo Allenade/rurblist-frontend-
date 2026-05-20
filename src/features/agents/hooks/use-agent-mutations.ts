@@ -1,13 +1,9 @@
 'use client';
 
 import { useMutation } from '@tanstack/react-query';
-import { CreateAgentPayload, UpdateAgentPayload } from '@/features/agents/models/agent-model';
 import toast from 'react-hot-toast';
-import {
-  completeProfile,
-  createAgent,
-  updateAgent,
-} from '@/features/agents/services/agent-service-client';
+import { CreateAgentPayload, UpdateAgentPayload } from '../models/agent-model';
+import { completeProfile, createAgent, updateAgent } from '../services/agent-service-client';
 
 export function useCreateAgent(isAgent: boolean) {
   return useMutation({

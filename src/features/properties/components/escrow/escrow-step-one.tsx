@@ -4,7 +4,7 @@ import React, { useRef, useState, useEffect } from 'react';
 import { Input } from '@/shared/ui';
 import { IconImage } from '@/shared/ui';
 import { OrangeButton } from '@/shared/ui';
-import type { EscrowFormData } from '@/features/properties/components/escrow/escrow-form';
+import type { EscrowFormData } from './escrow-form';
 
 interface Props {
   formData: EscrowFormData;

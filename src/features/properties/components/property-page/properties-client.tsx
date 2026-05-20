@@ -3,9 +3,9 @@
 import { useCallback, useMemo, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { useDebouncedValue } from '@/shared/hooks/use-debounced-value';
-import { useSearchProperties } from '@/features/properties/hooks/use-search-properties';
-import { PropertyModel } from '@/features/properties/models/property-model';
-import { useAuth } from '@/shared/layout/auth-provider';
+import { useSearchProperties } from '../../hooks/use-search-properties';
+import { PropertyModel } from '../../models/property-model';
+import { useAuth } from '@/features/shell/components';
 import {
   BedsBathsFilter,
   ForSaleFilter,
@@ -13,10 +13,10 @@ import {
   PriceFilter,
   TypeFilter,
 } from '@/shared/ui';
-import PropertiesPageSkeleton from '@/features/properties/components/property/properties-page-skeleton';
-import PropertyBanner from '@/features/properties/components/property-details/property-banner';
-import PropertyCard from '@/features/properties/components/property-details/property-card';
-import SearchBar from '@/shared/ui/search-bar/search-bar2';
+import PropertiesPageSkeleton from '../property/properties-page-skeleton';
+import PropertyBanner from '../property-details/property-banner';
+import PropertyCard from '../property-details/property-card';
+import { PropertySearchBar } from '@/shared/ui';
 
 interface PropertiesClientProps {
   initialSearch: string;
@@ -168,7 +168,7 @@ export default function PropertiesClient({
         <div className="mx-auto max-w-7xl">
           <div className="flex flex-wrap items-center gap-4">
             <div className="flex flex-wrap gap-3">
-              <SearchBar
+              <PropertySearchBar
                 placeholder="Search..."
                 value={searchQuery}
                 className="w-full md:w-96"

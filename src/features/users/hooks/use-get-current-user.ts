@@ -1,7 +1,7 @@
 'use client';
 
 import { useQuery } from '@tanstack/react-query';
-import { getCurrentUser } from '@/features/users/services/user-service-client';
+import { getCurrentUser } from '../services/user-service-client';
 
 export function useGetCurrentUser() {
   return useQuery({

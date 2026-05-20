@@ -1,8 +1,8 @@
 'use client';
 
-import { usePayForProperty } from '@/features/payments/hooks/use-payment-property';
+import { usePayForProperty } from '../hooks/use-payment-property';
 import { useGetPlanById } from '@/features/plans/hooks/use-get-plan-by-id';
-import { useGetPropertyById } from '@/features/properties/hooks/use-get-property-by-id';
+import { useGetPropertyById } from '@/features/properties/hooks';
 import { OrangeButton } from '@/shared/ui';
 import { PageHeader } from '@/shared/ui';
 import PaymentMethodSelector from './payment-method-selector';

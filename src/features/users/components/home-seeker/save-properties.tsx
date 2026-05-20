@@ -1,7 +1,7 @@
 'use client';
 
 import { LoadMoreTrigger } from '@/shared/ui';
-import PropertyCard from '@/features/properties/components/property/property-card';
+import { PropertyCard } from '@/features/properties/components';
 
 interface Property {
   id: string;

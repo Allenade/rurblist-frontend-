@@ -1,8 +1,8 @@
 'use client';
 
 import { useEffect } from 'react';
-import { useVerifyGoogleOtp } from '@/features/auth/hooks/use-verify-google-otp';
-import AuthLoadingScreen from '@/shared/ui/loader/auth-loading-screen';
+import { useVerifyGoogleOtp } from '../hooks';
+import { AuthLoadingScreen } from '@/shared/ui';
 import { useRouter } from 'next/navigation';
 
 export default function OAuthHandler({ otp }: { otp: string }) {

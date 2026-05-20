@@ -1,4 +1,4 @@
-import { AgentModel } from '@/features/agents/models/agent-model';
+import { AgentModel } from '@/features/agents/models';
 import { CommentModel } from '@/features/comments/models/comment-model';
 import { ImageModel } from '@/shared/models/image-model';
 import { LocationModel } from '@/shared/models/location-model';

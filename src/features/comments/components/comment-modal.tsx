@@ -5,7 +5,7 @@ import Comment from './comment';
 import CommentModalSkeleton from './comment-modal-skeleton';
 import { usePropertyComments } from '@/features/comments/hooks/use-get-comments';
 import { CommentModel } from '@/features/comments/models/comment-model';
-import { useAuth } from '@/shared/layout/auth-provider';
+import { useAuth } from '@/features/shell/components';
 import { LoadMoreTrigger } from '@/shared/ui';
 
 interface CommentModalProps {

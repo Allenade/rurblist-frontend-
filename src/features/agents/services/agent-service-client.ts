@@ -1,7 +1,7 @@
 'use client';
 
 import { ApiResponse } from '@/shared/api/base-response';
-import { AgentModel, CreateAgentPayload, UpdateAgentPayload } from '@/features/agents/models/agent-model';
+import { AgentModel, CreateAgentPayload, UpdateAgentPayload } from '../models/agent-model';
 import {
   completeProfileServer,
   createAgentServer,

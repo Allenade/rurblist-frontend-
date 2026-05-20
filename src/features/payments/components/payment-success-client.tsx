@@ -1,12 +1,12 @@
 'use client';
 
-import { useGetPaymentDetails } from '@/features/payments/hooks/use-get-payment';
+import { useGetPaymentDetails } from '../hooks/use-get-payment';
 import PaymentReceipt from './payment-receipt';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import TourSuccessModal from './tour-success-modal';
-import { useDownloadReceipt } from '@/features/payments/hooks/use-get-download-receipt';
-import { useAuth } from '@/shared/layout/auth-provider';
+import { useDownloadReceipt } from '../hooks/use-get-download-receipt';
+import { useAuth } from '@/features/shell/components';
 
 function PaymentSuccessSkeleton() {
   return (

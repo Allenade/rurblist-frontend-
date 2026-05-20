@@ -1,6 +1,6 @@
-import { AgentModel } from '@/features/agents/models/agent-model';
-import { PropertyModel } from '@/features/properties/models/property-model';
-import { UserModel } from '@/features/users/models/user-model';
+import { AgentModel } from '@/features/agents/models';
+import { PropertyModel } from '@/features/properties/models';
+import { UserModel } from '@/features/users/models';
 
 export interface BookInspectionPayload {
   agentId: string;

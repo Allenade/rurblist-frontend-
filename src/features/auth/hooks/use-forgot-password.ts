@@ -3,8 +3,8 @@
 import { useMutation } from '@tanstack/react-query';
 import toast from 'react-hot-toast';
 import { useRouter } from 'next/navigation';
-import { useOtpStore } from '@/features/auth/store/otp-store';
-import { forgotPassword } from '@/features/auth/services/auth-service-client';
+import { useOtpStore } from '../store';
+import { forgotPassword } from '../services';
 
 export function useForgotPassword() {
   const router = useRouter();

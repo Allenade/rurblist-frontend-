@@ -1,5 +1,5 @@
 import { PlanModel } from '@/features/plans/models/plan-model';
-import { UserModel } from '@/features/users/models/user-model';
+import { UserModel } from '@/features/users/models';
 
 type VerificationProviderData = unknown;
 type SavedPropertyReference = string | { _id?: string };

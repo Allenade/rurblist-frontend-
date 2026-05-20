@@ -1,14 +1,12 @@
-import Footer from '@/shared/layout/footer/footer';
-import { AuthProvider } from '@/shared/layout/auth-provider';
-import Navbar from '@/shared/layout/navbar';
+import { AuthProvider, Navbar } from '@/features/shell/components';
+import { Footer } from '@/shared/layout';
+
 export default function PublicLayout({ children }: { children: React.ReactNode }) {
   return (
-    <>
-      <AuthProvider>
-        <Navbar />
-        {children}
-        <Footer />
-      </AuthProvider>
-    </>
+    <AuthProvider>
+      <Navbar />
+      {children}
+      <Footer />
+    </AuthProvider>
   );
 }

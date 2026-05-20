@@ -2,7 +2,7 @@
 
 import { ApiResponse } from '@/shared/api/base-response';
 import { api } from '@/shared/api/call-apis';
-import { AgentModel, CreateAgentPayload, UpdateAgentPayload } from '@/features/agents/models/agent-model';
+import { AgentModel, CreateAgentPayload, UpdateAgentPayload } from '../models/agent-model';
 
 export async function createAgentServer(
   payload: CreateAgentPayload,

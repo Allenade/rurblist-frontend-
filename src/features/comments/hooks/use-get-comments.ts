@@ -4,7 +4,7 @@ import { InfiniteData, useInfiniteQuery } from '@tanstack/react-query';
 import { ApiResponse } from '@/shared/api/base-response';
 import { CommentModel } from '@/features/comments/models/comment-model';
 import { NextCursorModel } from '@/shared/models/next-cursor-model';
-import { getNextCursorPageParam } from '@/shared/react-query/get-next-page-param';
+import { getNextCursorPageParam } from '@/shared/react-query';
 import { getCommentsByPropertyId } from '@/features/comments/services/comment-service-client';
 
 export function usePropertyComments(propertyId: string) {

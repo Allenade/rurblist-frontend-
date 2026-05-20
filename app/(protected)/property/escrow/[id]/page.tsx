@@ -1,9 +1,11 @@
-'use client';
-import EscrowForm from '@/features/properties/components/escrow/escrow-form';
-import { useParams } from 'next/navigation';
+import { EscrowForm } from '@/features/properties/components';
 
-export default function EscrowPage() {
-  const params = useParams();
-  const id = params.id as string;
+export default async function Page({
+  params,
+}: {
+  params: Promise<{ id: string }>;
+}) {
+  const { id } = await params;
+
   return <EscrowForm id={id} />;
 }

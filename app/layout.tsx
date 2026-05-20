@@ -1,6 +1,6 @@
 import type { Metadata } from 'next';
 import './globals.css';
-import ReactQueryProvider from '@/shared/react-query/provider';
+import { ReactQueryProvider } from '@/shared/react-query';
 import ToastProvider from '@/shared/toast/toast-provider';
 
 export const metadata: Metadata = {

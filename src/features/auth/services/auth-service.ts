@@ -2,11 +2,12 @@
 
 import { ApiResponse } from '@/shared/api/base-response';
 import { api } from '@/shared/api/call-apis';
-import { LoginPayload, LoginResponse, RefreshResponse } from '@/features/auth/models/login-model';
-import { SignupPayload } from '@/features/auth/models/signup-model';
+import { LoginPayload, LoginResponse, RefreshResponse } from '../models';
+import { SignupPayload } from '../models';
 import { setAuthAccessToken, setRefreshTokenCookie } from '@/shared/utils/auth-cookies';
-import { ForgotPasswordPayload, ResetPasswordPayload } from '@/features/auth/models/password-model';
+import { ForgotPasswordPayload, ResetPasswordPayload } from '../models';
 import { clearAuthCookies } from './logout-service';
+import { refreshTokenServer as refreshSessionTokenServer } from '@/shared/api/refresh-token';
 
 export type AuthUser = {
   id: string;
@@ -33,18 +34,7 @@ export async function resendOtpServer(email: string) {
 }
 
 export async function refreshTokenServer(): Promise<ApiResponse<RefreshResponse>> {
-  const res = await api.post<RefreshResponse>('/auth/refresh-token');
-
-  if (res.statusCode < 400) {
-    const accessToken = res.data?.accessToken;
-    const refreshToken = res.data?.refreshToken;
-
-    if (accessToken && refreshToken) {
-      await setAuthAccessToken(accessToken);
-      await setRefreshTokenCookie(refreshToken);
-    }
-  }
-  return res;
+  return refreshSessionTokenServer();
 }
 
 export async function forgotPasswordServer(data: ForgotPasswordPayload) {

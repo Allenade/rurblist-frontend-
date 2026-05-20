@@ -1,5 +1,5 @@
 import { ReplyModel } from "./reply-model"
-import { UserModel } from '@/features/users/models/user-model'
+import { UserModel } from '@/features/users/models'
 
 type ParentCommentReference = string | null | { _id?: string }
 

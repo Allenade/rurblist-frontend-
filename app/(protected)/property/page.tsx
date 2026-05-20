@@ -1,4 +1,4 @@
-import PropertiesClient from '@/features/properties/components/property-page/properties-client';
+import { PropertiesClient } from '@/features/properties/components';
 
 export default async function PropertiesPage({
   searchParams,

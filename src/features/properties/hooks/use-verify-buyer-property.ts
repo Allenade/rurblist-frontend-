@@ -2,7 +2,7 @@
 
 import { useMutation } from '@tanstack/react-query';
 import toast from 'react-hot-toast';
-import { verifyBuyerProperty } from '@/features/properties/services/property-service-client';
+import { verifyBuyerProperty } from '../services/property-service-client';
 
 export function useVerifyBuyerProperty() {
   return useMutation({

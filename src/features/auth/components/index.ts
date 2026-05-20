@@ -1,2 +1,12 @@
 export { default as AuthListener } from './auth-listener';
+export { EmailSentPage } from './email-sent-page';
+export { ForgotPasswordOtpPage } from './forgot-password-otp-page';
+export { ForgotPasswordPage } from './forgot-password-page';
+export { LoginPage } from './login-page';
+export { OnboardingPage } from './onboarding-page';
 export { default as OAuthHandler } from './oauth-handler';
+export { OtpEmailPage } from './otp-email-page';
+export { OtpVerificationPage } from './otp-verification-page';
+export { PasswordRecoveryPage } from './password-recovery-page';
+export { ResetPasswordPage } from './reset-password-page';
+export { SignupPage } from './signup-page';

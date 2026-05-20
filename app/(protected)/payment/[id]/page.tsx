@@ -1,4 +1,3 @@
-'use server';
 import { MakePaymentClient } from '@/features/payments/components';
 
 export default async function MakePaymentPage({

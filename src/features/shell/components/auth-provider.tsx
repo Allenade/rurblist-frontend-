@@ -1,8 +1,7 @@
-// components/auth-provider.tsx
 'use client';
 
-import { currentUserModel } from '@/features/users/models/user-model';
-import { useGetCurrentUser } from '@/features/users/hooks/use-get-current-user';
+import { currentUserModel } from '@/features/users/models';
+import { useGetCurrentUser } from '@/features/users/hooks';
 import { createContext, useContext, useMemo } from 'react';
 
 type AuthContextType = {

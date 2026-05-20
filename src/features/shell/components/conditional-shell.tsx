@@ -1,10 +1,9 @@
 'use client';
 
-import { useLayoutStore } from '@/shared/layout/layout-store';
-import Navbar from '@/shared/layout/navbar';
-import Footer from '@/shared/layout/footer/footer';
+import { Footer, useLayoutStore } from '@/shared/layout';
+import Navbar from './navbar';
 import { AuthProvider } from './auth-provider';
-import AuthListener from '@/features/auth/components/auth-listener';
+import { AuthListener } from '@/features/auth/components';
 import { AgentProfileReminder } from './agent-profile-reminder';
 
 export function ConditionalShell({ children }: { children: React.ReactNode }) {

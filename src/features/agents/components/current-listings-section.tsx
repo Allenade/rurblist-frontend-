@@ -3,7 +3,7 @@
 import { IconImage } from '@/shared/ui';
 import { LoadMoreTrigger } from '@/shared/ui';
 import { OrangeButton } from '@/shared/ui';
-import PropertyCard from '@/features/properties/components/property/property-card';
+import { PropertyCard } from '@/features/properties/components';
 import { useRouter } from 'next/navigation';
 
 interface Property {
